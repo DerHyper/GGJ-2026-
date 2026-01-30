@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System;
 using System.Linq;
 using GAS.Abilities;
 using GAS.Attributes;
@@ -16,10 +17,36 @@ namespace GAS.Editor
         private bool _showAdvanced = false;
         private bool _useCost = false;
 
+        // Behavior types cache
+        private static Type[] _behaviorTypes;
+        private static string[] _behaviorNames;
+
         private void OnEnable()
         {
             _target = (AbilityDefinition)target;
             _useCost = _target.CostAttribute != null;
+            CacheBehaviorTypes();
+        }
+
+        private static void CacheBehaviorTypes()
+        {
+            if (_behaviorTypes != null) return;
+
+            _behaviorTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a =>
+                {
+                    try { return a.GetTypes(); }
+                    catch { return Array.Empty<Type>(); }
+                })
+                .Where(t => typeof(IAbilityBehavior).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
+                .ToArray();
+
+            _behaviorNames = new string[_behaviorTypes.Length + 1];
+            _behaviorNames[0] = "(None)";
+            for (int i = 0; i < _behaviorTypes.Length; i++)
+            {
+                _behaviorNames[i + 1] = _behaviorTypes[i].Name;
+            }
         }
 
         public override void OnInspectorGUI()
@@ -49,7 +76,6 @@ namespace GAS.Editor
                 }
                 else
                 {
-                    // Clear cost attribute if unchecked
                     serializedObject.FindProperty("CostAttribute").objectReferenceValue = null;
                 }
             });
@@ -80,12 +106,7 @@ namespace GAS.Editor
             // Behavior
             GASEditorStyles.DrawSection("🎮 BEHAVIOR", () =>
             {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("Behavior"), GUIContent.none);
-
-                if (_target.Behavior != null)
-                {
-                    GASEditorStyles.DrawHint($"Using: {_target.Behavior.GetType().Name}");
-                }
+                DrawBehaviorSelector();
             });
 
             // Advanced foldout
@@ -128,6 +149,64 @@ namespace GAS.Editor
             serializedObject.ApplyModifiedProperties();
         }
 
+        private void DrawBehaviorSelector()
+        {
+            var behaviorProp = serializedObject.FindProperty("Behavior");
+
+            // Find current type index
+            int currentIndex = 0;
+            if (_target.Behavior != null)
+            {
+                var currentType = _target.Behavior.GetType();
+                for (int i = 0; i < _behaviorTypes.Length; i++)
+                {
+                    if (_behaviorTypes[i] == currentType)
+                    {
+                        currentIndex = i + 1;
+                        break;
+                    }
+                }
+            }
+
+            // Type dropdown
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Type:", GUILayout.Width(40));
+            int newIndex = EditorGUILayout.Popup(currentIndex, _behaviorNames);
+            EditorGUILayout.EndHorizontal();
+
+            // Handle type change
+            if (newIndex != currentIndex)
+            {
+                if (newIndex == 0)
+                {
+                    behaviorProp.managedReferenceValue = null;
+                }
+                else
+                {
+                    var newType = _behaviorTypes[newIndex - 1];
+                    behaviorProp.managedReferenceValue = Activator.CreateInstance(newType);
+                }
+            }
+
+            // Draw behavior properties if one is selected
+            if (_target.Behavior != null)
+            {
+                EditorGUILayout.Space(5);
+
+                // Draw all visible children of the behavior
+                var iterator = behaviorProp.Copy();
+                var endProp = behaviorProp.GetEndProperty();
+                iterator.NextVisible(true); // Enter the first child
+
+                while (!SerializedProperty.EqualContents(iterator, endProp))
+                {
+                    EditorGUILayout.PropertyField(iterator, true);
+                    if (!iterator.NextVisible(false))
+                        break;
+                }
+            }
+        }
+
         private void DrawPreview()
         {
             var summary = "";
@@ -151,6 +230,10 @@ namespace GAS.Editor
                 if (targetCount > 0) summary += $" {targetCount}→target";
                 if (selfCount > 0) summary += $" {selfCount}→self";
             }
+
+            // Behavior
+            if (_target.Behavior != null)
+                summary += $"  🎮 {_target.Behavior.GetType().Name}";
 
             GASEditorStyles.DrawPreview(summary, new Color(0.85f, 0.95f, 0.85f));
         }
