@@ -57,8 +57,8 @@ ExportedObj/
 *.opendb
 *.VC.db
 
-# Unity3D generated meta files
-*.meta
+# Unity3D generated meta files (keep *.meta tracked - required for collaboration!)
+# Only ignore debug symbol meta files
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
