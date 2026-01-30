@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3938ffa0f06a549b9a82718327f3eb7f, type: 3}
+  m_Name: AttributeSet_Player
+  m_EditorClassIdentifier: Assembly-CSharp::GAS.Attributes.AttributeSetDefinition
+  Attributes:
+  - Attribute: {fileID: 11400000, guid: b85033ce5a1da465593d05d2e54688ed, type: 2}
+    InitialValue: 1
+  - Attribute: {fileID: 11400000, guid: be98bad68000443c9ae2eb11731c64ae, type: 2}
+    InitialValue: 1
+  - Attribute: {fileID: 11400000, guid: d03911df997dd4c019d66da0057503c8, type: 2}
+    InitialValue: 100
+  - Attribute: {fileID: 11400000, guid: c9cd7e9438c54428cbac825ff990f8e8, type: 2}
+    InitialValue: 100
+  - Attribute: {fileID: 11400000, guid: 03d969d41c94b45b5ba980e97ac9d76f, type: 2}
+    InitialValue: 100
+  - Attribute: {fileID: 11400000, guid: 1f2bf365f8c3643ab94d74dcdadecbe2, type: 2}
+    InitialValue: 1
+  - Attribute: {fileID: 11400000, guid: 76237656d85b74ece96ab6ff6c6bcc45, type: 2}
+    InitialValue: 100
