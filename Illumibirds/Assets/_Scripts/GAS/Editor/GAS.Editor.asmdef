@@ -2,7 +2,7 @@
     "name": "GAS.Editor",
     "rootNamespace": "GAS.Editor",
     "references": [
-        "GUID:ddaafb9740ea74a55bd3b6fa676d2716"
+        "GAS"
     ],
     "includePlatforms": [
         "Editor"

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 610994805374976331}
-  - component: {fileID: 7526338715306071609}
+  - component: {fileID: 5246563810721396577}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7526338715306071609
+--- !u!114 &5246563810721396577
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,7 +41,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 6782269879960568707}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0eb83e7c64377e346970c0290dd1c517, type: 3}
+  m_Script: {fileID: 11500000, guid: 4b238be3b3ab34a3cbfe14ab5b94200a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   gamestate: 0
+  GAMESCENE: 

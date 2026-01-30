@@ -24,11 +24,18 @@ MonoBehaviour:
   ApplyToSelfEffects: []
   ApplyToTargetEffects: []
   Behavior:
-    rid: -2
+    rid: 1134678006946070674
   IsChanneled: 0
   ChannelDuration: 0
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 1134678006946070674
+      type: {class: RaycastBehavior, ns: GAS.Abilities.Behaviors, asm: GAS}
+      data:
+        Range: 10
+        BeamVFXPrefab: {fileID: 0}
+        TargetLayers:
+          serializedVersion: 2
+          m_Bits: 4294967295
+        Is2D: 1

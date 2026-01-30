@@ -1,10 +1,13 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public GameState gamestate = GameState.mainMenu;
 
     public static GameManager Instance;
+    [SerializeField] string GAMESCENE = "";
 
     void Awake()
     {
@@ -26,6 +29,11 @@ public class GameManager : MonoBehaviour
     public bool GameIsPaused()
     {
         return gamestate == GameState.paused;
+    }
+
+    public void StartGame()
+    {
+        SceneManager.LoadScene(GAMESCENE);
     }
 
 }
