@@ -265,7 +265,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 901452551}
-  - component: {fileID: 901452550}
+  - component: {fileID: 901452552}
   m_Layer: 0
   m_Name: Pickup
   m_TagString: Untagged
@@ -273,24 +273,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &901452550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 901452549}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 275bf532acbde4e689e4742f3a878c29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: GAS::GAS.Pickups.EffectPickup
-  _effectsToApply:
-  - {fileID: 11400000, guid: 1ecacb9f066f34901b46a8f930c75b19, type: 2}
-  _destroyOnPickup: 1
-  _respawnTime: 0
-  _allowMultiplePickups: 0
-  _visualRoot: {fileID: 0}
 --- !u!4 &901452551
 Transform:
   m_ObjectHideFlags: 0
@@ -306,6 +288,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &901452552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 901452549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695b5b612a13943949b5ba257d33277c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GAS::GAS.Pickups.Pickup
+  _pickupType: 0
+  _effects: []
+  _ability: {fileID: 0}
+  _destroyOnPickup: 1
+  _respawnTime: 0
+  _visualRoot: {fileID: 0}
+  _gizmoRadius: 0.5
 --- !u!1 &1148237214
 GameObject:
   m_ObjectHideFlags: 0

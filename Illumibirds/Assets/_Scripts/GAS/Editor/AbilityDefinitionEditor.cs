@@ -13,224 +13,146 @@ namespace GAS.Editor
     public class AbilityDefinitionEditor : UnityEditor.Editor
     {
         private AbilityDefinition _target;
-        private bool _showTagsSection = false;
-        private bool _showEffectsSection = true;
-        private bool _showBehaviorSection = true;
+        private bool _showAdvanced = false;
+        private bool _useCost = false;
 
         private void OnEnable()
         {
             _target = (AbilityDefinition)target;
+            _useCost = _target.CostAttribute != null;
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
 
-            // Header
-            GASEditorStyles.DrawHeader("⚔️ Ability Definition");
+            GASEditorStyles.DrawHeader("⚔️ ABILITY");
 
-            EditorGUILayout.HelpBox(
-                "An Ability is an action the player/enemy can activate.\n" +
-                "• Has a cost (consumes an attribute like Stamina)\n" +
-                "• Has a cooldown (time before reuse)\n" +
-                "• Applies Effects to self and/or targets\n" +
-                "• Uses a Behavior for custom logic",
-                MessageType.Info);
+            // Name
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("AbilityName"), new GUIContent("Name"));
 
             EditorGUILayout.Space(10);
 
-            // Basic Info
-            GASEditorStyles.DrawSection("📝 Basic Info", () =>
+            // Cost (conditional)
+            GASEditorStyles.DrawSection("💰 COST", () =>
             {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("AbilityName"),
-                    new GUIContent("Ability Name", "Display name (e.g., 'Fireball', 'Dash')"));
+                _useCost = EditorGUILayout.Toggle("Uses resource", _useCost);
 
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("Icon"),
-                    new GUIContent("Icon", "Sprite for UI display"));
-
-                if (string.IsNullOrEmpty(_target.AbilityName))
+                if (_useCost)
                 {
-                    EditorGUILayout.HelpBox("Give this ability a name!", MessageType.Warning);
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("CostAttribute"), GUIContent.none);
+                    EditorGUILayout.LabelField("-", GUILayout.Width(10));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("CostAmount"), GUIContent.none, GUILayout.Width(50));
+                    EditorGUILayout.LabelField("per use", GUILayout.Width(50));
+                    EditorGUILayout.EndHorizontal();
+                }
+                else
+                {
+                    // Clear cost attribute if unchecked
+                    serializedObject.FindProperty("CostAttribute").objectReferenceValue = null;
                 }
             });
 
-            // Cost & Cooldown
-            GASEditorStyles.DrawSection("💰 Cost & Cooldown", () =>
+            // Cooldown
+            GASEditorStyles.DrawSection("⏱️ COOLDOWN", () =>
             {
-                EditorGUILayout.HelpBox(
-                    "Cost: Which attribute to consume (e.g., Stamina, Mana)\n" +
-                    "Cooldown: Seconds before ability can be used again",
-                    MessageType.None);
-
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("CostAttribute"),
-                    new GUIContent("Cost Attribute", "Leave empty for no cost"));
-
-                if (_target.CostAttribute != null)
-                {
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("CostAmount"),
-                        new GUIContent("Cost Amount", "How much to consume"));
-
-                    if (_target.CostAmount <= 0)
-                    {
-                        EditorGUILayout.HelpBox("Cost amount should be > 0, or remove the Cost Attribute", MessageType.Warning);
-                    }
-                }
-
-                EditorGUILayout.Space(5);
-
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("Cooldown"),
-                    new GUIContent("Cooldown (seconds)", "0 = no cooldown"));
-
-                // Preview
-                var costStr = _target.CostAttribute != null ? $"Costs {_target.CostAmount} {_target.CostAttribute.name}" : "Free";
-                var cdStr = _target.Cooldown > 0 ? $"{_target.Cooldown}s cooldown" : "No cooldown";
-                EditorGUILayout.LabelField($"→ {costStr}, {cdStr}", EditorStyles.helpBox);
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("Cooldown"), GUIContent.none, GUILayout.Width(60));
+                EditorGUILayout.LabelField("seconds", GUILayout.Width(55));
+                EditorGUILayout.EndHorizontal();
             });
 
             // Effects
-            _showEffectsSection = EditorGUILayout.Foldout(_showEffectsSection, "⚡ Effects", true);
-            if (_showEffectsSection)
+            GASEditorStyles.DrawSection("⚡ EFFECTS", () =>
             {
-                GASEditorStyles.DrawSection("", () =>
-                {
-                    EditorGUILayout.HelpBox(
-                        "Effects applied when this ability activates:\n" +
-                        "• Self Effects: Applied to the caster (buffs, self-heal)\n" +
-                        "• Target Effects: Applied to targets hit by the ability",
-                        MessageType.None);
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("On Target:", GUILayout.Width(70));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("ApplyToTargetEffects"), GUIContent.none);
+                EditorGUILayout.EndHorizontal();
 
-                    EditorGUILayout.LabelField("Apply to SELF (caster):", EditorStyles.boldLabel);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("ApplyToSelfEffects"), GUIContent.none);
-
-                    EditorGUILayout.Space(5);
-
-                    EditorGUILayout.LabelField("Apply to TARGET:", EditorStyles.boldLabel);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("ApplyToTargetEffects"), GUIContent.none);
-
-                    if (_target.ApplyToSelfEffects.Count == 0 && _target.ApplyToTargetEffects.Count == 0 && _target.Behavior == null)
-                    {
-                        EditorGUILayout.HelpBox("This ability does nothing! Add effects or a behavior.", MessageType.Warning);
-                    }
-                });
-            }
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("On Self:", GUILayout.Width(70));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("ApplyToSelfEffects"), GUIContent.none);
+                EditorGUILayout.EndHorizontal();
+            });
 
             // Behavior
-            _showBehaviorSection = EditorGUILayout.Foldout(_showBehaviorSection, "🎮 Behavior", true);
-            if (_showBehaviorSection)
+            GASEditorStyles.DrawSection("🎮 BEHAVIOR", () =>
             {
-                GASEditorStyles.DrawSection("", () =>
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("Behavior"), GUIContent.none);
+
+                if (_target.Behavior != null)
                 {
-                    EditorGUILayout.HelpBox(
-                        "Behavior defines WHAT the ability does (spawn projectile, raycast, etc.)\n\n" +
-                        "Built-in behaviors:\n" +
-                        "• ProjectileBehavior - Spawns and launches a projectile\n" +
-                        "• RaycastBehavior - Instant raycast attack (light beam)\n" +
-                        "• AreaOfEffectBehavior - Hits all targets in radius",
-                        MessageType.None);
-
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("Behavior"),
-                        new GUIContent("Behavior", "The logic that runs when ability activates"));
-
-                    if (_target.Behavior != null)
-                    {
-                        EditorGUILayout.LabelField($"Using: {_target.Behavior.GetType().Name}", EditorStyles.helpBox);
-                    }
-                });
-            }
-
-            // Channeling
-            GASEditorStyles.DrawSection("⏳ Channeling", () =>
-            {
-                EditorGUILayout.HelpBox(
-                    "Channeled abilities stay active over time (e.g., charging an attack, beam weapon).\n" +
-                    "Non-channeled abilities activate once and end immediately.",
-                    MessageType.None);
-
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("IsChanneled"),
-                    new GUIContent("Is Channeled", "Does this ability stay active over time?"));
-
-                if (_target.IsChanneled)
-                {
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("ChannelDuration"),
-                        new GUIContent("Channel Duration", "0 = until manually cancelled"));
+                    GASEditorStyles.DrawHint($"Using: {_target.Behavior.GetType().Name}");
                 }
             });
 
-            // Tags
-            _showTagsSection = EditorGUILayout.Foldout(_showTagsSection, "🏷️ Tags (Advanced)", true);
-            if (_showTagsSection)
+            // Advanced foldout
+            EditorGUILayout.Space(5);
+            _showAdvanced = EditorGUILayout.Foldout(_showAdvanced, "▶ Advanced...", true);
+
+            if (_showAdvanced)
             {
-                GASEditorStyles.DrawSection("", () =>
+                EditorGUI.indentLevel++;
+
+                // Icon
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("Icon"));
+
+                // Channeling
+                EditorGUILayout.Space(5);
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("IsChanneled"), new GUIContent("Channeled"));
+                if (_target.IsChanneled)
                 {
-                    EditorGUILayout.HelpBox(
-                        "Tags control when abilities can/cannot be used:\n" +
-                        "• Required: Must have these tags to activate\n" +
-                        "• Blocked: Cannot activate if have these tags\n" +
-                        "• Granted: Added while ability is active\n" +
-                        "• Cooldown: Added while on cooldown",
-                        MessageType.None);
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("ChannelDuration"), GUIContent.none, GUILayout.Width(50));
+                    EditorGUILayout.LabelField("sec (0=manual)", GUILayout.Width(80));
+                }
+                EditorGUILayout.EndHorizontal();
 
-                    EditorGUILayout.LabelField("Required Tags (must have all):", EditorStyles.boldLabel);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("ActivationRequiredTags"), GUIContent.none);
+                // Tags
+                EditorGUILayout.Space(5);
+                EditorGUILayout.LabelField("Tags", EditorStyles.boldLabel);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("ActivationRequiredTags"), new GUIContent("Required"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("ActivationBlockedTags"), new GUIContent("Blocked by"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("ActivationGrantedTags"), new GUIContent("Grants while active"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("CooldownTags"), new GUIContent("Grants on cooldown"));
 
-                    EditorGUILayout.LabelField("Blocked Tags (cannot have any):", EditorStyles.boldLabel);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("ActivationBlockedTags"), GUIContent.none);
-
-                    EditorGUILayout.Space(5);
-
-                    EditorGUILayout.LabelField("Granted while active:", EditorStyles.boldLabel);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("ActivationGrantedTags"), GUIContent.none);
-
-                    EditorGUILayout.LabelField("Granted while on cooldown:", EditorStyles.boldLabel);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("CooldownTags"), GUIContent.none);
-                });
+                EditorGUI.indentLevel--;
             }
 
-            // Summary
+            // Preview summary
             EditorGUILayout.Space(10);
-            DrawSummary();
+            DrawPreview();
 
             serializedObject.ApplyModifiedProperties();
         }
 
-        private void DrawSummary()
+        private void DrawPreview()
         {
-            GASEditorStyles.DrawSection("📋 Summary", () =>
+            var summary = "";
+
+            // Cost
+            if (_target.CostAttribute != null && _target.CostAmount > 0)
+                summary += $"💰 {_target.CostAmount} {_target.CostAttribute.name}";
+            else
+                summary += "💰 Free";
+
+            // Cooldown
+            if (_target.Cooldown > 0)
+                summary += $"  ⏱️ {_target.Cooldown}s";
+
+            // Effects count
+            var targetCount = _target.ApplyToTargetEffects.Count(e => e != null);
+            var selfCount = _target.ApplyToSelfEffects.Count(e => e != null);
+            if (targetCount > 0 || selfCount > 0)
             {
-                var summary = $"「{(_target.AbilityName ?? "Unnamed")}」\n";
+                summary += "  ⚡";
+                if (targetCount > 0) summary += $" {targetCount}→target";
+                if (selfCount > 0) summary += $" {selfCount}→self";
+            }
 
-                // Cost
-                if (_target.CostAttribute != null && _target.CostAmount > 0)
-                    summary += $"\n💰 Costs {_target.CostAmount} {_target.CostAttribute.name}";
-                else
-                    summary += "\n💰 Free to use";
-
-                // Cooldown
-                if (_target.Cooldown > 0)
-                    summary += $"\n⏱️ {_target.Cooldown}s cooldown";
-
-                // Effects
-                if (_target.ApplyToSelfEffects.Count > 0)
-                    summary += $"\n✨ Self: {string.Join(", ", _target.ApplyToSelfEffects.Where(e => e != null).Select(e => e.name))}";
-                if (_target.ApplyToTargetEffects.Count > 0)
-                    summary += $"\n🎯 Target: {string.Join(", ", _target.ApplyToTargetEffects.Where(e => e != null).Select(e => e.name))}";
-
-                // Behavior
-                if (_target.Behavior != null)
-                    summary += $"\n🎮 Behavior: {_target.Behavior.GetType().Name}";
-
-                // Channeled
-                if (_target.IsChanneled)
-                    summary += _target.ChannelDuration > 0 ? $"\n⏳ Channeled ({_target.ChannelDuration}s)" : "\n⏳ Channeled (until cancelled)";
-
-                // Blocked by
-                if (_target.ActivationBlockedTags.Count > 0)
-                    summary += $"\n🚫 Blocked by: {string.Join(", ", _target.ActivationBlockedTags.Where(t => t != null).Select(t => t.name))}";
-
-                GUI.color = new Color(0.85f, 0.95f, 0.85f);
-                EditorGUILayout.LabelField(summary, EditorStyles.helpBox);
-                GUI.color = Color.white;
-            });
+            GASEditorStyles.DrawPreview(summary, new Color(0.85f, 0.95f, 0.85f));
         }
     }
 }

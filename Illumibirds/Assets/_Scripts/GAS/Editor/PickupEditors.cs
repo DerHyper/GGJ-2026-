@@ -5,112 +5,117 @@ using UnityEngine;
 
 namespace GAS.Editor
 {
-    [CustomEditor(typeof(EffectPickup))]
-    public class EffectPickupEditor : UnityEditor.Editor
+    [CustomEditor(typeof(Pickup))]
+    public class PickupEditor : UnityEditor.Editor
     {
-        public override void OnInspectorGUI()
+        private Pickup _target;
+        private bool _showSettings = false;
+
+        private static readonly string[] TypeLabels = { "💊 Effect", "⚔️ Ability" };
+        private static readonly Color[] TypeColors =
         {
-            GASEditorStyles.DrawHeader("💊 Effect Pickup");
+            new Color(0.3f, 1f, 0.5f),
+            new Color(1f, 0.8f, 0.3f)
+        };
 
-            EditorGUILayout.HelpBox(
-                "ONE-TIME pickup that APPLIES EFFECTS when touched.\n\n" +
-                "USE FOR:\n" +
-                "• Health pickups (heal effect)\n" +
-                "• Buff pickups (speed boost, damage boost)\n" +
-                "• Stat upgrades (max health increase)\n" +
-                "• Collectibles that give temporary powers\n\n" +
-                "HOW IT WORKS:\n" +
-                "Player touches → Effects applied → Pickup disappears (or respawns)",
-                MessageType.Info);
-
-            EditorGUILayout.Space(5);
-
-            // Comparison box
-            GUI.color = new Color(1f, 1f, 0.8f);
-            EditorGUILayout.HelpBox(
-                "❓ WHEN TO USE WHICH?\n\n" +
-                "• EffectPickup → Apply stats/buffs (Health +25, Speed x1.5)\n" +
-                "• AbilityPickup → Grant new abilities (Fireball, Dash)\n" +
-                "• DamageZone → Continuous area damage (Fire, Poison Gas)",
-                MessageType.None);
-            GUI.color = Color.white;
-
-            EditorGUILayout.Space(10);
-
-            DrawDefaultInspector();
+        private void OnEnable()
+        {
+            _target = (Pickup)target;
         }
-    }
 
-    [CustomEditor(typeof(AbilityPickup))]
-    public class AbilityPickupEditor : UnityEditor.Editor
-    {
         public override void OnInspectorGUI()
         {
-            GASEditorStyles.DrawHeader("⚔️ Ability Pickup");
+            serializedObject.Update();
 
-            EditorGUILayout.HelpBox(
-                "ONE-TIME pickup that GRANTS AN ABILITY when touched.\n\n" +
-                "USE FOR:\n" +
-                "• Weapon pickups (grants attack ability)\n" +
-                "• Power-ups (grants special move)\n" +
-                "• Unlockable skills (dash, double jump)\n" +
-                "• Spell scrolls (grants magic ability)\n\n" +
-                "HOW IT WORKS:\n" +
-                "Player touches → Ability added to their list → Pickup disappears",
-                MessageType.Info);
+            GASEditorStyles.DrawHeader("📦 PICKUP");
 
-            EditorGUILayout.Space(5);
-
-            // Comparison box
-            GUI.color = new Color(1f, 1f, 0.8f);
-            EditorGUILayout.HelpBox(
-                "❓ WHEN TO USE WHICH?\n\n" +
-                "• EffectPickup → Apply stats/buffs (Health +25, Speed x1.5)\n" +
-                "• AbilityPickup → Grant new abilities (Fireball, Dash)\n" +
-                "• DamageZone → Continuous area damage (Fire, Poison Gas)",
-                MessageType.None);
-            GUI.color = Color.white;
+            // Type toggle
+            var typeProp = serializedObject.FindProperty("_pickupType");
+            typeProp.enumValueIndex = GASEditorStyles.DrawToggleButtons(typeProp.enumValueIndex, TypeLabels, TypeColors);
 
             EditorGUILayout.Space(10);
 
-            DrawDefaultInspector();
+            // Conditional fields based on type
+            if (_target.Type == PickupType.Effect)
+            {
+                GASEditorStyles.DrawSection("", () =>
+                {
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_effects"), new GUIContent("Effects"));
+                });
+            }
+            else
+            {
+                GASEditorStyles.DrawSection("", () =>
+                {
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_ability"), new GUIContent("Ability"));
+                });
+            }
+
+            // Settings foldout
+            EditorGUILayout.Space(5);
+            _showSettings = EditorGUILayout.Foldout(_showSettings, "▶ Settings...", true);
+
+            if (_showSettings)
+            {
+                EditorGUI.indentLevel++;
+
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_destroyOnPickup"), new GUIContent("Destroy on pickup"));
+
+                if (!_target.DestroyOnPickup)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("_respawnTime"), GUIContent.none, GUILayout.Width(50));
+                    EditorGUILayout.LabelField("sec respawn (0=never)", GUILayout.Width(120));
+                    EditorGUILayout.EndHorizontal();
+                }
+
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_visualRoot"), new GUIContent("Visual Root"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_gizmoRadius"), new GUIContent("Gizmo Radius"));
+
+                EditorGUI.indentLevel--;
+            }
+
+            serializedObject.ApplyModifiedProperties();
         }
     }
 
     [CustomEditor(typeof(DamageZone))]
     public class DamageZoneEditor : UnityEditor.Editor
     {
+        private bool _showSettings = false;
+
         public override void OnInspectorGUI()
         {
-            GASEditorStyles.DrawHeader("🔥 Damage Zone");
+            serializedObject.Update();
 
-            EditorGUILayout.HelpBox(
-                "CONTINUOUS AREA that REPEATEDLY applies effects while inside.\n\n" +
-                "USE FOR:\n" +
-                "• Fire/lava (damage over time)\n" +
-                "• Poison gas clouds\n" +
-                "• Healing zones (apply heal every second)\n" +
-                "• Buff areas (speed boost while inside)\n" +
-                "• Debuff zones (slow while inside)\n\n" +
-                "HOW IT WORKS:\n" +
-                "Entity enters → Effect applied every X seconds → Stops when they leave",
-                MessageType.Info);
+            GASEditorStyles.DrawHeader("🔥 DAMAGE ZONE");
+            GASEditorStyles.DrawHint("Applies effects repeatedly while inside");
 
             EditorGUILayout.Space(5);
 
-            // Comparison box
-            GUI.color = new Color(1f, 1f, 0.8f);
-            EditorGUILayout.HelpBox(
-                "❓ WHEN TO USE WHICH?\n\n" +
-                "• EffectPickup → Apply stats/buffs (Health +25, Speed x1.5)\n" +
-                "• AbilityPickup → Grant new abilities (Fireball, Dash)\n" +
-                "• DamageZone → Continuous area damage (Fire, Poison Gas)",
-                MessageType.None);
-            GUI.color = Color.white;
+            GASEditorStyles.DrawSection("", () =>
+            {
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_effectToApply"), new GUIContent("Effect"));
 
-            EditorGUILayout.Space(10);
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("Every", GUILayout.Width(40));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_applicationInterval"), GUIContent.none, GUILayout.Width(50));
+                EditorGUILayout.LabelField("sec", GUILayout.Width(25));
+                EditorGUILayout.EndHorizontal();
+            });
 
-            DrawDefaultInspector();
+            _showSettings = EditorGUILayout.Foldout(_showSettings, "▶ Settings...", true);
+
+            if (_showSettings)
+            {
+                EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_applyOnEnter"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_affectedTags"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_gizmoColor"));
+                EditorGUI.indentLevel--;
+            }
+
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }
