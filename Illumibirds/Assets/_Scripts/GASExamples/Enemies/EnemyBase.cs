@@ -4,6 +4,7 @@ using GAS.Attributes;
 using GAS.Core;
 using GAS.Effects;
 using UnityEngine;
+using Attribute = GAS.Attributes.Attribute;
 
 namespace Examples.Enemies
 {
@@ -45,7 +46,7 @@ namespace Examples.Enemies
         public EnemyState currentState;
         EnemyState startingState = new AttackState();
 
-        public Action<EnemyBase>  OnDie;
+        public static Action<EnemyBase> OnDie;
 
         protected virtual void Awake()
         {

@@ -1,73 +1,65 @@
 using System;
 using System.Collections.Generic;
 using Examples.Enemies;
+using Rooms;
 using UnityEngine;
 
 public class RandomizedEnemySpawner : MonoBehaviour
 {
     public List<EnemyWave> possibleEnemyWaves;
-    List<Transform> possiblePositions;
-
-    List<EnemyBase> spawnedEnemies;
-
     public Action OnWaveDefeated;
+
+    private Room currentCombatRoom;
+
+    private void OnEnable()
+    {
+        if (RoomCombatManager.Instance != null)
+            RoomCombatManager.Instance.OnRoomCleared += OnRoomCleared;
+    }
+
+    private void OnDisable()
+    {
+        if (RoomCombatManager.Instance != null)
+            RoomCombatManager.Instance.OnRoomCleared -= OnRoomCleared;
+    }
+
     public void SpawnEnemies()
     {
-        spawnedEnemies = new();
-        
-        possiblePositions = RoomManager.Instance.GetCurrentRoom().possibleEnemySpawns;
+        var roomManager = RoomManager.Instance;
+        if (roomManager == null) return;
+
+        var room = roomManager.GetCurrentRoom();
+        if (room == null) return;
+
+        currentCombatRoom = room;
+        var spawnPositions = room.SpawnPositions;
+
+        if (spawnPositions == null || spawnPositions.Count == 0)
+        {
+            Debug.LogWarning($"No spawn positions in room {room.Id}");
+            return;
+        }
+
+        if (possibleEnemyWaves == null || possibleEnemyWaves.Count == 0) return;
+
         int rnd = UnityEngine.Random.Range(0, possibleEnemyWaves.Count);
         EnemyWave wave = possibleEnemyWaves[rnd];
 
-        for (int i = 0; i < wave.enemies.Count; i++)
+        int enemyCount = Mathf.Min(wave.enemies.Count, spawnPositions.Count);
+
+        for (int i = 0; i < enemyCount; i++)
         {
-            EnemyBase newEnemy = Instantiate(wave.enemies[i], possiblePositions[i].position, Quaternion.identity);
-            SubscribeToEnemyDeath(newEnemy);
+            EnemyBase newEnemy = Instantiate(wave.enemies[i], spawnPositions[i], Quaternion.identity);
+            room.RegisterEnemy(newEnemy);
         }
     }
 
-    // void SpawnRandomEnemyWave(Vector2 pos)
-    // {
-    //     int rnd = UnityEngine.Random.Range(0, possibleEnemyWaves.Count);
-    //     EnemyWave wave = possibleEnemyWaves[rnd];
-
-    //     for (int i = 0; i < wave.enemies.Count; i++)
-    //     {
-    //         Instantiate(wave.enemies[i], pos, Quaternion.identity);
-
-    //     }
-    //     // Destroy(this.gameObject, 0.1f);
-    // }
-
-
-
-    public void SubscribeToEnemyDeath(EnemyBase enemy)
+    private void OnRoomCleared(Room room)
     {
-        if (!spawnedEnemies.Contains(enemy)) spawnedEnemies.Add(enemy);
-        enemy.OnDie += OnEnemyDied;
-    }
-
-
-    void OnEnemyDied(EnemyBase diedEnemy)
-    {
-        diedEnemy.OnDie -= OnEnemyDied;
-
-        for (int i = 0; i < spawnedEnemies.Count; i++)
+        if (room == currentCombatRoom)
         {
-            if (!spawnedEnemies[i]._isDead)
-                break;
-
             OnWaveDefeated?.Invoke();
-        }
-    }
-
-    void OnDisable()
-    {
-        if (spawnedEnemies == null || spawnedEnemies.Count == 0) return;
-
-        for (int i = 0; i < spawnedEnemies.Count; i++)
-        {
-            spawnedEnemies[i].OnDie -= OnEnemyDied;
+            currentCombatRoom = null;
         }
     }
 }
