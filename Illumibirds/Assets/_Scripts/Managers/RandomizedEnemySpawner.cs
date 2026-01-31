@@ -9,6 +9,8 @@ public class RandomizedEnemySpawner : MonoBehaviour
     public List<EnemyWave> possibleEnemyWaves;
     public Action OnWaveDefeated;
 
+    [SerializeField] RandomAbilityPickup abilityPickupPrefab;
+
     private Room currentCombatRoom;
     private bool initialized;
 
@@ -77,6 +79,11 @@ public class RandomizedEnemySpawner : MonoBehaviour
         if (room == currentCombatRoom)
         {
             OnWaveDefeated?.Invoke();
+            Debug.Log("CLEAR WAVE");
+            if (abilityPickupPrefab != null)
+            {
+                Instantiate(abilityPickupPrefab, Vector2.zero, Quaternion.identity);
+            }
             currentCombatRoom = null;
         }
     }

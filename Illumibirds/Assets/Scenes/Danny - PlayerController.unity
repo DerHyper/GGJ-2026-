@@ -1474,6 +1474,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6188327093961202147, guid: 3dd9ddb5a966cbe48afae3df855a2b92, type: 3}
+      propertyPath: abilityPickupPrefab
+      value: 
+      objectReference: {fileID: 2762628071059373274, guid: 3a43ffd8a6eac924581f33e655c4ac9e, type: 3}
     - target: {fileID: 7094297107838469168, guid: 3dd9ddb5a966cbe48afae3df855a2b92, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

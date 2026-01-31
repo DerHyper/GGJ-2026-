@@ -10,12 +10,28 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1507984180292911190, guid: 4c33caef549e01249b7c9f431b46f5b9, type: 3}
       propertyPath: m_Name
-      value: Pickup Heal
+      value: Pickup Heal +
       objectReference: {fileID: 0}
     - target: {fileID: 4984400994111539336, guid: 4c33caef549e01249b7c9f431b46f5b9, type: 3}
       propertyPath: '_effects.Array.data[0]'
       value: 
       objectReference: {fileID: 11400000, guid: 022eb1e2dafe9ed448505b9e89720bfa, type: 2}
+    - target: {fileID: 8208389920321518040, guid: 4c33caef549e01249b7c9f431b46f5b9, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6fc46f019d3a0f544805343557c78552, type: 3}
+    - target: {fileID: 8208389920321518040, guid: 4c33caef549e01249b7c9f431b46f5b9, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8208389920321518040, guid: 4c33caef549e01249b7c9f431b46f5b9, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8208389920321518040, guid: 4c33caef549e01249b7c9f431b46f5b9, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8339680672000128795, guid: 4c33caef549e01249b7c9f431b46f5b9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
