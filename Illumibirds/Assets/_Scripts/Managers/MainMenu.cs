@@ -6,4 +6,9 @@ public class MainMenu : MonoBehaviour
     {
         GameManager.Instance.StartGame();
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
