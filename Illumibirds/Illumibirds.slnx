@@ -1,5 +1,5 @@
 ﻿<Solution>
-  <Project Path="GAS.Editor.csproj" />
   <Project Path="IllumiBirds.csproj" />
+  <Project Path="GAS.Editor.csproj" />
   <Project Path="GAS.csproj" />
 </Solution>
