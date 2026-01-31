@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -24,38 +26,191 @@ public class AStarPathfinding : MonoBehaviour
     private Node[,] grid;
     private int gridWidth;
     private int gridHeight;
+    [SerializeField] private int walkPointsPerTiles = 4;
     public Transform TestEnemy;
     public Transform TestPlayer;
 
-    private void Start() {
+    private void Start()
+    {
+        InitForEnemy(WalkableTiles, walkPointsPerTiles);
+    }
 
+    public void InitForEnemy(Tilemap WalkableTiles, int walkPointsPerTiles)
+    {
         // Init with room size
         BoundsInt bounds = WalkableTiles.cellBounds;
-        int width =  bounds.size.x;
-        int height = bounds.size.y;
-        InitializeGrid(width,height);
+        int width = bounds.size.x * walkPointsPerTiles;
+        int height = bounds.size.y * walkPointsPerTiles;
+        InitializeGrid(width, height);
+        SetWalkableForTilemap(WalkableTiles);
+        DilateObstacles();
+    }
 
-        // Set Walkable
+    private void SetWalkableForTilemap(Tilemap WalkableTiles)
+    {
+        BoundsInt bounds = WalkableTiles.cellBounds;
         TileBase[] allTiles = WalkableTiles.GetTilesBlock(bounds);
-        for (int x = 0; x < bounds.size.x; x++) {
-            for (int y = 0; y < bounds.size.y; y++) {
+        for (int x = 0; x < bounds.size.x; x++)
+        {
+            for (int y = 0; y < bounds.size.y; y++)
+            {
                 TileBase tile = allTiles[x + y * bounds.size.x];
-                if (tile != null) {
-                    SetWalkable(x,y,true);
+                if (tile == null)
+                {
+                    continue;
+                }
+
+                SetWalkableSubpoints(x, y);
+            }
+        }
+    }
+
+    private void SetWalkableSubpoints(int x, int y)
+    {
+        for (int subX = 0; subX < walkPointsPerTiles; subX++)
+        {
+            for (int subY = 0; subY < walkPointsPerTiles; subY++)
+            {
+                int gridX = x * walkPointsPerTiles + subX;
+                int gridY = y * walkPointsPerTiles + subY;
+                SetWalkable(gridX, gridY, true);
+            }
+        }
+    }
+
+    public void DilateObstacles(int iterations = 1)
+{
+    for (int iter = 0; iter < iterations; iter++)
+    {
+        // Erstelle temporäres Grid für aktuelle Iteration
+        bool[,] tempWalkable = new bool[gridWidth, gridHeight];
+        
+        // Kopiere aktuellen Zustand
+        for (int x = 0; x < gridWidth; x++)
+        {
+            for (int y = 0; y < gridHeight; y++)
+            {
+                tempWalkable[x, y] = grid[x, y].walkable;
+            }
+        }
+        
+        // Dilatiere
+        for (int x = 0; x < gridWidth; x++)
+        {
+            for (int y = 0; y < gridHeight; y++)
+            {
+                // Wenn aktuelles Feld nicht begehbar ist
+                if (!grid[x, y].walkable)
+                {
+                    // Setze alle Nachbarn auf nicht begehbar
+                    for (int nx = -1; nx <= 1; nx++)
+                    {
+                        for (int ny = -1; ny <= 1; ny++)
+                        {
+                            int checkX = x + nx;
+                            int checkY = y + ny;
+                            
+                            if (checkX >= 0 && checkX < gridWidth && 
+                                checkY >= 0 && checkY < gridHeight)
+                            {
+                                tempWalkable[checkX, checkY] = false;
+                            }
+                        }
+                    }
                 }
             }
         }
+        
+        // Übernehme Änderungen
+        for (int x = 0; x < gridWidth; x++)
+        {
+            for (int y = 0; y < gridHeight; y++)
+            {
+                grid[x, y].walkable = tempWalkable[x, y];
+            }
+        }
+    }
+}
 
+    void Update()
+    {
         // Test Player
-        var enemyPos = new Vector2Int(Mathf.RoundToInt(TestEnemy.position.x), Mathf.RoundToInt(TestEnemy.position.y));
-        var playerPos = new Vector2Int(Mathf.RoundToInt(TestPlayer.position.x), Mathf.RoundToInt(TestPlayer.position.y));
-        Debug.Log(FindPath(enemyPos, playerPos));
+        var enemyPos = new Vector2(Mathf.RoundToInt(TestEnemy.position.x), Mathf.RoundToInt(TestEnemy.position.y));
+        var playerPos = new Vector2(Mathf.RoundToInt(TestPlayer.position.x), Mathf.RoundToInt(TestPlayer.position.y));
+        var lastItem = FindPath(WorldToTileIndex(enemyPos), WorldToTileIndex(playerPos))[0];
+        foreach (Vector2Int item in FindPath(WorldToTileIndex(enemyPos), WorldToTileIndex(playerPos)))
+        {
+            Debug.DrawLine(TileIndexToWorld(lastItem), TileIndexToWorld(item), Color.red);
+            lastItem = item;
+        }
     }
 
-    // public Vector2Int WorldToTileIndex(Vector2 worldPosition)
-    // {
+    public Vector2Int WorldToTileIndex(Vector2 worldPosition)
+    {
+        // Konvertiere zu Cell-Position
+        Vector3Int cellPosition = WalkableTiles.WorldToCell(worldPosition);
+        BoundsInt bounds = WalkableTiles.cellBounds;
         
-    // }
+        // Relative Tile-Position
+        int tileX = cellPosition.x - bounds.xMin;
+        int tileY = cellPosition.y - bounds.yMin;
+        
+        // Berechne Sub-Tile-Position innerhalb der Zelle
+        Vector3 cellWorldPos = WalkableTiles.CellToWorld(cellPosition);
+        Vector3 cellSize = WalkableTiles.cellSize;
+        
+        float relativeX = (worldPosition.x - cellWorldPos.x) / cellSize.x;
+        float relativeY = (worldPosition.y - cellWorldPos.y) / cellSize.y;
+        
+        int subX = Mathf.FloorToInt(relativeX * walkPointsPerTiles);
+        int subY = Mathf.FloorToInt(relativeY * walkPointsPerTiles);
+        
+        // Clamp Sub-Positionen
+        subX = Mathf.Clamp(subX, 0, walkPointsPerTiles - 1);
+        subY = Mathf.Clamp(subY, 0, walkPointsPerTiles - 1);
+        
+        // Kombiniere zu Grid-Index
+        int gridX = tileX * walkPointsPerTiles + subX;
+        int gridY = tileY * walkPointsPerTiles + subY;
+        
+        // Clamp zu Grid-Grenzen
+        gridX = Mathf.Clamp(gridX, 0, gridWidth - 1);
+        gridY = Mathf.Clamp(gridY, 0, gridHeight - 1);
+        
+        return new Vector2Int(gridX, gridY);
+    }
+
+    public Vector2 TileIndexToWorld(Vector2Int gridIndex)
+    {
+        BoundsInt bounds = WalkableTiles.cellBounds;
+    
+        // Berechne Tile-Index und Sub-Position
+        int tileX = gridIndex.x / walkPointsPerTiles;
+        int tileY = gridIndex.y / walkPointsPerTiles;
+        int subX = gridIndex.x % walkPointsPerTiles;
+        int subY = gridIndex.y % walkPointsPerTiles;
+        
+        // Cell-Position in der Tilemap
+        Vector3Int cellPosition = new Vector3Int(
+            tileX + bounds.xMin,
+            tileY + bounds.yMin,
+            0
+        );
+        
+        // World-Position der Zelle (linke untere Ecke)
+        Vector3 cellWorldPos = WalkableTiles.CellToWorld(cellPosition);
+        Vector3 cellSize = WalkableTiles.cellSize;
+        
+        // Berechne Sub-Position innerhalb der Zelle
+        float subPointSizeX = cellSize.x / walkPointsPerTiles;
+        float subPointSizeY = cellSize.y / walkPointsPerTiles;
+        
+        // Zentriere den Sub-Punkt
+        float worldX = cellWorldPos.x + (subX + 0.5f) * subPointSizeX;
+        float worldY = cellWorldPos.y + (subY + 0.5f) * subPointSizeY;
+        
+        return new Vector2(worldX, worldY);
+    }
 
     // Grid initialisieren
     public void InitializeGrid(int width, int height)
