@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "GUID:ddaafb9740ea74a55bd3b6fa676d2716",
-        "GUID:75469ad4d38634e559750d17036d5f7c"
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "Unity.Cinemachine"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
