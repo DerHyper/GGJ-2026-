@@ -31,4 +31,9 @@ public static class Finder
         foundObject = null;
         return false;
     }
+
+    public static Transform FindCameraTarget()
+    {
+        return GameObject.FindGameObjectWithTag("CameraTarget").transform;
+    }
 }
