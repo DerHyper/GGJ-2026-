@@ -10,27 +10,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1507984180292911190, guid: 4c33caef549e01249b7c9f431b46f5b9, type: 3}
       propertyPath: m_Name
-      value: Pickup MaxStamina +
+      value: Pickup Atk +
       objectReference: {fileID: 0}
     - target: {fileID: 4984400994111539336, guid: 4c33caef549e01249b7c9f431b46f5b9, type: 3}
       propertyPath: '_effects.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: dd01c7bacfd72084c9d7c3dd3de7a344, type: 2}
+      objectReference: {fileID: 11400000, guid: 092cd436abf660542913564893da1a86, type: 2}
     - target: {fileID: 8208389920321518040, guid: 4c33caef549e01249b7c9f431b46f5b9, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 7312d96e977b6e24da9a79d0fc18b9a7, type: 3}
+      objectReference: {fileID: 21300000, guid: 78f4e4fa6dbed5c47aecb12617c59ad3, type: 3}
     - target: {fileID: 8208389920321518040, guid: 4c33caef549e01249b7c9f431b46f5b9, type: 3}
       propertyPath: m_Color.b
-      value: 0.97735846
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8208389920321518040, guid: 4c33caef549e01249b7c9f431b46f5b9, type: 3}
       propertyPath: m_Color.g
-      value: 0.97735846
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8208389920321518040, guid: 4c33caef549e01249b7c9f431b46f5b9, type: 3}
       propertyPath: m_Color.r
-      value: 0.97735846
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8339680672000128795, guid: 4c33caef549e01249b7c9f431b46f5b9, type: 3}
       propertyPath: m_LocalPosition.x

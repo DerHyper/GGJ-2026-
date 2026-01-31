@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: f19ffb61bcded6f47b2e1076689f024e
+guid: 7312d96e977b6e24da9a79d0fc18b9a7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2436689576485346197
-    second: Tile2_0
+      213: 5583558092305732858
+    second: jumping-rope_0
+  - first:
+      213: -1160273056981782671
+    second: jumping-rope_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +49,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 516
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -96,8 +99,6 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-<<<<<<< HEAD
-=======
   - serializedVersion: 4
     buildTarget: Android
     maxTextureSize: 2048
@@ -111,18 +112,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
->>>>>>> 945b198cca4fb2b85d0ae223859d2ab92ba6623c
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Tile2_0
+      name: jumping-rope_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 512
-        height: 512
+        x: 106
+        y: 225
+        width: 300
+        height: 264
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,8 +131,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 59b5e4a724cd0d120800000000000000
-      internalID: 2436689576485346197
+      spriteID: af414a28088cc7d40800000000000000
+      internalID: 5583558092305732858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jumping-rope_1
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 23
+        width: 270
+        height: 279
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17fe4245dc1e5efe0800000000000000
+      internalID: -1160273056981782671
       vertices: []
       indices: 
       edges: []
@@ -141,7 +163,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -151,7 +173,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Tile2_0: 2436689576485346197
+      jumping-rope_0: 5583558092305732858
+      jumping-rope_1: -1160273056981782671
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

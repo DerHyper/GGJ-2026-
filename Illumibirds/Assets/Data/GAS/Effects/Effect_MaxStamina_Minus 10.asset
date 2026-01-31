@@ -15,9 +15,9 @@ MonoBehaviour:
   DurationType: 0
   Duration: 0
   Modifiers:
-  - TargetAttribute: {fileID: 11400000, guid: d4cd5747b2929c24993e413ba86adb38, type: 2}
+  - TargetAttribute: {fileID: 11400000, guid: 03d969d41c94b45b5ba980e97ac9d76f, type: 2}
     Operation: 0
-    Magnitude: 3
+    Magnitude: -10
   GrantedTags: []
   ApplicationRequiredTags: []
   ApplicationBlockedTags: []
