@@ -539,7 +539,7 @@ GameObject:
   - component: {fileID: 1297096570}
   - component: {fileID: 1297096569}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Pickup MoveSpeed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -749,6 +749,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 135863234}
+  - {fileID: 1614554484}
   m_Father: {fileID: 1786351918}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1494237051
@@ -889,6 +890,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1614554483
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1614554484}
+  m_Layer: 0
+  m_Name: Shootpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1614554484
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614554483}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.46, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1494237050}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1786351917
 GameObject:
   m_ObjectHideFlags: 0
@@ -902,6 +934,7 @@ GameObject:
   - component: {fileID: 1786351921}
   - component: {fileID: 1786351922}
   - component: {fileID: 1786351923}
+  - component: {fileID: 1786351924}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1034,9 +1067,60 @@ MonoBehaviour:
   _attributeSetDefinition: {fileID: 11400000, guid: 66eebaea1d2494d47a0da2c60fa34a82, type: 2}
   _startingAbilities:
   - {fileID: 11400000, guid: 390831cf71a48473e84a1273695b8bb1, type: 2}
+  - {fileID: 11400000, guid: 2b557e936a9855c46937ecca803e851c, type: 2}
   _debugLogEffects: 0
   _debugLogAbilities: 0
   _debugLogAttributes: 0
+--- !u!114 &1786351924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786351917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 648bb4593f8c24323b9323577847bba4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Examples.Player.PlayerAbilityInput
+  _abilitySystemComponent: {fileID: 1786351923}
+  _abilityBindings:
+  - InputAction:
+      m_Name: Input
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 4a71edc8-81d3-45db-913c-947174a28784
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 1186236a-d39c-4b96-9545-6ee329f7cc31
+        m_Path: <Keyboard>/space
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Input
+        m_Flags: 0
+      m_Flags: 0
+    Ability: {fileID: 11400000, guid: 2b557e936a9855c46937ecca803e851c, type: 2}
+  - InputAction:
+      m_Name: Input
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 4a71edc8-81d3-45db-913c-947174a28784
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 17b8a766-f979-4885-972e-0f1176bd9ce5
+        m_Path: <Keyboard>/q
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Input
+        m_Flags: 0
+      m_Flags: 0
+    Ability: {fileID: 11400000, guid: 390831cf71a48473e84a1273695b8bb1, type: 2}
 --- !u!1001 &2125891348
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1045,6 +1129,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 564726973}
     m_Modifications:
+    - target: {fileID: 2008524571519637068, guid: b739a57a26f4942a19388b14b9434f79, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6248210977787604220, guid: b739a57a26f4942a19388b14b9434f79, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6465094352716640329, guid: b739a57a26f4942a19388b14b9434f79, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1052,6 +1144,10 @@ PrefabInstance:
     - target: {fileID: 7653337766952016450, guid: b739a57a26f4942a19388b14b9434f79, type: 3}
       propertyPath: m_Name
       value: PauseManager + Panel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7653337766952016450, guid: b739a57a26f4942a19388b14b9434f79, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9072687137254296056, guid: b739a57a26f4942a19388b14b9434f79, type: 3}
       propertyPath: m_Pivot.x
@@ -1115,11 +1211,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9072687137254296056, guid: b739a57a26f4942a19388b14b9434f79, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -55.1329
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9072687137254296056, guid: b739a57a26f4942a19388b14b9434f79, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -20.02281
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9072687137254296056, guid: b739a57a26f4942a19388b14b9434f79, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

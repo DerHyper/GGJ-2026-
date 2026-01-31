@@ -8,7 +8,7 @@ namespace GAS.Abilities.Behaviors
     /// </summary>
     [System.Serializable]
     public class ProjectileBehavior : IAbilityBehavior
-    {
+    {   
         public GameObject ProjectilePrefab;
         public float Speed = 10f;
         public float Lifetime = 5f;
@@ -20,19 +20,12 @@ namespace GAS.Abilities.Behaviors
 
             var spawnPos = owner.transform.position + owner.transform.TransformDirection(SpawnOffset);
             var projectile = Object.Instantiate(ProjectilePrefab, spawnPos, owner.transform.rotation);
+            
 
             var rb = projectile.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
                 rb.linearVelocity = owner.transform.right * Speed;
-            }
-            else
-            {
-                var rb3d = projectile.GetComponent<Rigidbody>();
-                if (rb3d != null)
-                {
-                    rb3d.linearVelocity = owner.transform.forward * Speed;
-                }
             }
 
             if (Lifetime > 0f)

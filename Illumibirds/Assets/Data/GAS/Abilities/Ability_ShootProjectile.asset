@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b38330020b24641298f8a59739193b3e, type: 3}
-  m_Name: Ability_Dash
+  m_Name: Ability_ShootProjectile
   m_EditorClassIdentifier: Assembly-CSharp::GAS.Abilities.AbilityDefinition
-  AbilityName: Dash
+  AbilityName: Shoot Projectile
   Icon: {fileID: 0}
   CostAttribute: {fileID: 11400000, guid: 76237656d85b74ece96ab6ff6c6bcc45, type: 2}
   CostAmount: 20
-  Cooldown: 5
+  Cooldown: 1
   ActivationGrantedTags: []
   ActivationRequiredTags: []
   ActivationBlockedTags: []
@@ -24,12 +24,16 @@ MonoBehaviour:
   ApplyToSelfEffects: []
   ApplyToTargetEffects: []
   Behavior:
-    rid: 1134678006946070716
+    rid: 1134678006946070698
   IsChanneled: 0
   ChannelDuration: 0
   references:
     version: 2
     RefIds:
-    - rid: 1134678006946070716
-      type: {class: DashBehaviour, ns: GAS, asm: GAS}
-      data: 
+    - rid: 1134678006946070698
+      type: {class: ProjectileBehavior, ns: GAS.Abilities.Behaviors, asm: GAS}
+      data:
+        ProjectilePrefab: {fileID: 7997979048116751412, guid: b1cc311daf38a624f9d23ecd1a818c7f, type: 3}
+        Speed: 10
+        Lifetime: 5
+        SpawnOffset: {x: 2, y: 0, z: 0}

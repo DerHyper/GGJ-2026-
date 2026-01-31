@@ -25,9 +25,9 @@ public class PlayerController : MonoBehaviour
     private float _staminaRegenRate = 10f; // per second
 
     [SerializeField] private float _staminaRegenDelay = 1f; // delay after using stamina
-
-
     private float _staminaRegenTimer;
+
+    [Header("Attribute Values")]
     private bool _isDead;
 
     // Public accessors for UI
@@ -36,9 +36,7 @@ public class PlayerController : MonoBehaviour
     public float MaxHealth => _asc.GetAttributeValue(_maxHealthAttr);
     public float Stamina => _asc.GetAttributeValue(_staminaAttr);
     public float MaxStamina => _asc.GetAttributeValue(_maxStaminaAttr);
-
     public float MoveSpeed => _asc.GetAttributeValue(_moveSpeedAttr);
-
     public float HealthPercent => MaxHealth > 0 ? Health / MaxHealth : 0;
     public float StaminaPercent => MaxStamina > 0 ? Stamina / MaxStamina : 0;
     public bool IsDead => _isDead;
@@ -62,6 +60,8 @@ public class PlayerController : MonoBehaviour
         inputActions.Enable();
         inputActions.Player.Attack.performed += OnAttack;
         inputActions.Player.Look.performed += OnLook;
+
+        _asc.OnAttributeChanged += HandleAttributeChanged;
     }
 
     void OnDisable()
@@ -69,10 +69,18 @@ public class PlayerController : MonoBehaviour
         inputActions.Disable();
         inputActions.Player.Attack.performed -= OnAttack;
         inputActions.Player.Look.performed -= OnLook;
+
+        if (_asc != null)
+        {
+            _asc.OnAttributeChanged -= HandleAttributeChanged;
+        }
     }
 
     void Update()
     {
+        if (_isDead) return;
+
+        HandleStaminaRegen();
         if (canMove) DoMove();
     }
 
@@ -87,12 +95,11 @@ public class PlayerController : MonoBehaviour
     void OnLook(InputAction.CallbackContext ctx)
     {
         Vector2 lookVector = inputActions.Player.Look.ReadValue<Vector2>().normalized;
-        Debug.Log($"Look at: {lookVector}");
 
         if (lookVector.sqrMagnitude > 0.1f)
         {
             float angle = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg;
-            render.rotation = Quaternion.Euler(0, 0, angle);
+            transform.rotation = Quaternion.Euler(0, 0, angle);
 
         }
     }
@@ -106,5 +113,109 @@ public class PlayerController : MonoBehaviour
     {
         canMove = _canMove;
     }
+
+
+    #region Stamina
+
+    public bool TryConsumeStamina(float amount)
+    {
+        if (_staminaAttr == null) return true; // No stamina system
+
+        float current = _asc.GetAttributeValue(_staminaAttr);
+        if (current < amount) return false;
+
+        // Consume stamina
+        var attr = _asc.GetAttribute(_staminaAttr);
+        attr.BaseValue -= amount;
+
+        // Reset regen delay
+        _staminaRegenTimer = _staminaRegenDelay;
+
+        return true;
+    }
+
+    private void HandleStaminaRegen()
+    {
+        if (_staminaAttr == null || _maxStaminaAttr == null) return;
+
+        if (_staminaRegenTimer > 0)
+        {
+            _staminaRegenTimer -= Time.deltaTime;
+            return;
+        }
+
+        float current = _asc.GetAttributeValue(_staminaAttr);
+        float max = _asc.GetAttributeValue(_maxStaminaAttr);
+
+        if (current < max)
+        {
+            var attr = _asc.GetAttribute(_staminaAttr);
+            attr.BaseValue = Mathf.Min(attr.BaseValue + _staminaRegenRate * Time.deltaTime, max);
+        }
+    }
+
+    #endregion
+
+    #region Health & Death
+
+    private void HandleAttributeChanged(Attribute attribute, float oldValue, float newValue)
+    {
+        // Check for death
+        if (attribute.Definition == _healthAttr && newValue <= 0 && !_isDead)
+        {
+            Die();
+        }
+
+        // Clamp health to max health
+        if (attribute.Definition == _healthAttr && _maxHealthAttr != null)
+        {
+            float maxHealth = _asc.GetAttributeValue(_maxHealthAttr);
+            if (newValue > maxHealth)
+            {
+                attribute.BaseValue = maxHealth;
+            }
+        }
+
+        // Clamp stamina to max stamina
+        if (attribute.Definition == _staminaAttr && _maxStaminaAttr != null)
+        {
+            float maxStamina = _asc.GetAttributeValue(_maxStaminaAttr);
+            if (newValue > maxStamina)
+            {
+                attribute.BaseValue = maxStamina;
+            }
+        }
+    }
+
+    private void Die()
+    {
+        _isDead = true;
+        Debug.Log("PLAYER DIE");
+        rb.linearVelocity = Vector2.zero;
+        // TODO: Trigger death animation, game over screen, etc.
+    }
+
+    public void Heal(float amount)
+    {
+        if (_healthAttr == null || _isDead) return;
+
+        var attr = _asc.GetAttribute(_healthAttr);
+        float maxHealth = _maxHealthAttr != null ? _asc.GetAttributeValue(_maxHealthAttr) : float.MaxValue;
+        attr.BaseValue = Mathf.Min(attr.BaseValue + amount, maxHealth);
+    }
+
+    /// <summary>
+    /// Deal damage to the player directly (bypassing effects).
+    /// Prefer using Effects for damage when possible.
+    /// </summary>
+    public void TakeDamage(float amount)
+    {
+        if (_healthAttr == null || _isDead) return;
+
+        var attr = _asc.GetAttribute(_healthAttr);
+        attr.BaseValue -= amount;
+    }
+
+    #endregion
 
 }
