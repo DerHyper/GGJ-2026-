@@ -1253,7 +1253,6 @@ MonoBehaviour:
   _moveSpeedAttr: {fileID: 11400000, guid: d4cd5747b2929c24993e413ba86adb38, type: 2}
   _staminaRegenRate: 10
   _staminaRegenDelay: 1
-  render: {fileID: 1494237050}
 --- !u!114 &1786351923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1270,6 +1269,7 @@ MonoBehaviour:
   _startingAbilities:
   - {fileID: 11400000, guid: 390831cf71a48473e84a1273695b8bb1, type: 2}
   - {fileID: 11400000, guid: 2b557e936a9855c46937ecca803e851c, type: 2}
+  - {fileID: 11400000, guid: a8eb7d806bb99e24383a42bbe1e70191, type: 2}
   _debugLogEffects: 0
   _debugLogAbilities: 0
   _debugLogAttributes: 0
@@ -1323,6 +1323,24 @@ MonoBehaviour:
         m_Flags: 0
       m_Flags: 0
     Ability: {fileID: 11400000, guid: 390831cf71a48473e84a1273695b8bb1, type: 2}
+  - InputAction:
+      m_Name: Input
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 4a71edc8-81d3-45db-913c-947174a28784
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 17b8a766-f979-4885-972e-0f1176bd9ce5
+        m_Path: <Keyboard>/f
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Input
+        m_Flags: 0
+      m_Flags: 0
+    Ability: {fileID: 11400000, guid: a8eb7d806bb99e24383a42bbe1e70191, type: 2}
 --- !u!1001 &1907558177
 PrefabInstance:
   m_ObjectHideFlags: 0

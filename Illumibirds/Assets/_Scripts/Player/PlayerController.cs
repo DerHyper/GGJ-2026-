@@ -42,10 +42,8 @@ public class PlayerController : MonoBehaviour
     public bool IsDead => _isDead;
 
 
-
     Rigidbody2D rb;
     InputSystem_Actions inputActions;
-    [SerializeField] Transform render;
     bool canMove = true;
 
     void Awake()

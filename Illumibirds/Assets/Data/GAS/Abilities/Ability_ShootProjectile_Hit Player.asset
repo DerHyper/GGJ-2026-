@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b38330020b24641298f8a59739193b3e, type: 3}
-  m_Name: Ability_ShootProjectile
+  m_Name: Ability_ShootProjectile_Hit Player
   m_EditorClassIdentifier: Assembly-CSharp::GAS.Abilities.AbilityDefinition
   AbilityName: Shoot Projectile
   Icon: {fileID: 0}
@@ -22,7 +22,8 @@ MonoBehaviour:
   ActivationBlockedTags: []
   CooldownTags: []
   ApplyToSelfEffects: []
-  ApplyToTargetEffects: []
+  ApplyToTargetEffects:
+  - {fileID: 11400000, guid: 588e319c6d915484f983bf96f8440cad, type: 2}
   Behavior:
     rid: 1134678018525495371
   IsChanneled: 0
@@ -37,3 +38,6 @@ MonoBehaviour:
         Speed: 10
         Lifetime: 5
         SpawnOffset: {x: 0, y: 0, z: 0}
+        hitLayer:
+          serializedVersion: 2
+          m_Bits: 64

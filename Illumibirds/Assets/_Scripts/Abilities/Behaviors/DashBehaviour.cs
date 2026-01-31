@@ -20,8 +20,8 @@ namespace GAS
             Vector2 direction = owner.transform.right.normalized;
 
             Debug.Log($"Dashing to: {direction}");
-            
-            owner.StartCoroutine(DashCoroutine(rb,direction, dashDuration, dashPower));
+
+            owner.StartCoroutine(DashCoroutine(rb, direction, dashDuration, dashPower));
 
         }
 
@@ -30,33 +30,27 @@ namespace GAS
         {
             _rb.linearVelocity = direction * power;
 
-            if(_rb.TryGetComponent<PlayerController>(out PlayerController player))
-            {
-                player.ToggleControl(false);
-            }
+            ToggleMovementIfIsPlayer(_rb, false);
 
             yield return new WaitForSeconds(duration);
 
             _rb.linearVelocity = Vector2.zero;
 
-            if(_rb.TryGetComponent<PlayerController>(out player))
-            {
-                player.ToggleControl(true);
-            }
+           ToggleMovementIfIsPlayer(_rb, true);
 
 
         }
 
+        void ToggleMovementIfIsPlayer(Rigidbody2D _rb, bool active)
+        {
+            if (_rb.TryGetComponent<PlayerController>(out PlayerController player))
+            {
+                player.ToggleControl(active);
+            }
+        }
+
         void IAbilityBehavior.OnEnd(AbilityInstance ability, AbilitySystemComponent owner)
         {
-            //  if(owner.TryGetComponent<PlayerController>(out PlayerController player))
-            // {
-            //     player.ToggleControl(true);
-            // }
-
-            // Rigidbody2D rb = owner.GetComponent<Rigidbody2D>();
-            // rb.linearVelocity = Vector2.zero;
-
             return;
         }
 

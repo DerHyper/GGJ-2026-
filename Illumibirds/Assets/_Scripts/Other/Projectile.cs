@@ -1,3 +1,4 @@
+using GAS.Abilities;
 using GAS.Attributes;
 using GAS.Core;
 using UnityEngine;
@@ -8,18 +9,58 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] AttributeDefinition _healthAttr;
     [SerializeField] AttributeModifier healthAttrModifier;
-    public void Initiate(float moveSpeed, float timeToLive, Vector2 direction)
+    AbilitySystemComponent owner;
+    AbilityInstance ability;
+
+    LayerMask hitLayer;
+
+    public void Initiate(float moveSpeed, float timeToLive, Vector2 direction, AbilityInstance _ability, AbilitySystemComponent _owner, LayerMask _hitLayer)
     {
-        Debug.LogWarning("MUST BE IMPLEMENTED");
+        ability = _ability;
+        owner = _owner;
+
+
+        var rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.linearVelocity = direction * moveSpeed;
+        }
+
+        if (timeToLive > 0f)
+        {
+            Destroy(gameObject, timeToLive);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+        //CHECK FOR HITLAYER
+        if (!((hitLayer.value & (1 << collision.gameObject.layer)) != 0))
+        {
+            return;
+        }
+
         if (collision.TryGetComponent<AbilitySystemComponent>(out AbilitySystemComponent _asc))
         {
-            //DO DAMAGE HERE
             Debug.Log($"Projectile hit: {collision.name}");
-            _asc.GetAttribute(_healthAttr).AddModifier(healthAttrModifier);
+
+
+            if (owner != null)
+            {
+                ApplyEffectsToTarget(owner, _asc);
+            }
+            else
+            {
+                _asc.GetAttribute(_healthAttr).AddModifier(healthAttrModifier);
+            }
+        }
+    }
+
+    private void ApplyEffectsToTarget(AbilitySystemComponent owner, AbilitySystemComponent target)
+    {
+        foreach (var effect in ability.Definition.ApplyToTargetEffects)
+        {
+            owner.ApplyEffectToTarget(effect, target);
         }
     }
 }
