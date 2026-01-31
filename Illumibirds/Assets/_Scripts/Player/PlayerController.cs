@@ -56,7 +56,6 @@ public class PlayerController : MonoBehaviour
     void OnEnable()
     {
         inputActions.Enable();
-        inputActions.Player.Attack.performed += OnAttack;
         inputActions.Player.Look.performed += OnLook;
 
         _asc.OnAttributeChanged += HandleAttributeChanged;
@@ -65,7 +64,6 @@ public class PlayerController : MonoBehaviour
     void OnDisable()
     {
         inputActions.Disable();
-        inputActions.Player.Attack.performed -= OnAttack;
         inputActions.Player.Look.performed -= OnLook;
 
         if (_asc != null)
@@ -100,11 +98,6 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 0, angle);
 
         }
-    }
-
-    void OnAttack(InputAction.CallbackContext ctx)
-    {
-        Debug.Log("DO ATTACK");
     }
 
     public void ToggleControl(bool _canMove)
@@ -193,26 +186,26 @@ public class PlayerController : MonoBehaviour
         // TODO: Trigger death animation, game over screen, etc.
     }
 
-    public void Heal(float amount)
-    {
-        if (_healthAttr == null || _isDead) return;
+    // public void Heal(float amount)
+    // {
+    //     if (_healthAttr == null || _isDead) return;
 
-        var attr = _asc.GetAttribute(_healthAttr);
-        float maxHealth = _maxHealthAttr != null ? _asc.GetAttributeValue(_maxHealthAttr) : float.MaxValue;
-        attr.BaseValue = Mathf.Min(attr.BaseValue + amount, maxHealth);
-    }
+    //     var attr = _asc.GetAttribute(_healthAttr);
+    //     float maxHealth = _maxHealthAttr != null ? _asc.GetAttributeValue(_maxHealthAttr) : float.MaxValue;
+    //     attr.BaseValue = Mathf.Min(attr.BaseValue + amount, maxHealth);
+    // }
 
-    /// <summary>
-    /// Deal damage to the player directly (bypassing effects).
-    /// Prefer using Effects for damage when possible.
-    /// </summary>
-    public void TakeDamage(float amount)
-    {
-        if (_healthAttr == null || _isDead) return;
+    // /// <summary>
+    // /// Deal damage to the player directly (bypassing effects).
+    // /// Prefer using Effects for damage when possible.
+    // /// </summary>
+    // public void TakeDamage(float amount)
+    // {
+    //     if (_healthAttr == null || _isDead) return;
 
-        var attr = _asc.GetAttribute(_healthAttr);
-        attr.BaseValue -= amount;
-    }
+    //     var attr = _asc.GetAttribute(_healthAttr);
+    //     attr.BaseValue -= amount;
+    // }
 
     #endregion
 

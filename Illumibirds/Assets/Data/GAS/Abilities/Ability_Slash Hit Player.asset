@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b38330020b24641298f8a59739193b3e, type: 3}
+  m_Name: Ability_Slash Hit Player
+  m_EditorClassIdentifier: Assembly-CSharp::GAS.Abilities.AbilityDefinition
+  AbilityName: Slash Melee
+  Icon: {fileID: 0}
+  CostAttribute: {fileID: 11400000, guid: 76237656d85b74ece96ab6ff6c6bcc45, type: 2}
+  CostAmount: 20
+  Cooldown: 0.5
+  ActivationGrantedTags: []
+  ActivationRequiredTags: []
+  ActivationBlockedTags: []
+  CooldownTags: []
+  ApplyToSelfEffects: []
+  ApplyToTargetEffects:
+  - {fileID: 11400000, guid: 588e319c6d915484f983bf96f8440cad, type: 2}
+  Behavior:
+    rid: 1134678018525495400
+  IsChanneled: 0
+  ChannelDuration: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 1134678018525495400
+      type: {class: MeleeAttackBehaviour, ns: , asm: IllumiBirds}
+      data:
+        Lifetime: 0.1
+        hitBoxPrefab: {fileID: 7393670775635093806, guid: 542ca3e22025c2143bdf81cd778f7f3d, type: 3}
+        hitLayer:
+          serializedVersion: 2
+          m_Bits: 64
+        SpawnOffset: {x: 1, y: 0, z: 0}

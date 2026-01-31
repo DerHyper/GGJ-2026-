@@ -1,3 +1,4 @@
+using GAS.Abilities;
 using GAS.Attributes;
 using GAS.Core;
 using GAS.Effects;
@@ -5,10 +6,7 @@ using UnityEngine;
 
 namespace Examples.Enemies
 {
-    /// <summary>
-    /// Base class for enemies using the Gameplay Ability System.
-    /// Different enemy types can use different AttributeSetDefinitions.
-    /// </summary>
+
     [RequireComponent(typeof(AbilitySystemComponent))]
     public class EnemyBase : MonoBehaviour
     {
@@ -20,6 +18,7 @@ namespace Examples.Enemies
         [SerializeField] protected AttributeDefinition _rangeAttr;
 
         [Header("Combat")]
+        public AbilityDefinition abilityToUse;
         [SerializeField] protected GameplayEffectDefinition _attackEffect;
         [SerializeField] protected float _attackCooldown = 1f;
 
@@ -28,20 +27,15 @@ namespace Examples.Enemies
         [SerializeField] protected string PLAYERTAG = "Player";
 
         // Components
-        protected AbilitySystemComponent _asc;
+        public AbilitySystemComponent _asc;
         protected Rigidbody2D _rb;
 
         // State
-        protected bool _isDead;
-        protected float _attackTimer;
-        protected Transform _target;
+        public bool _isDead;
+        public float _attackTimer;
+        public Transform _target;
 
-        // Public accessors
-        // public float Health => _asc.GetAttributeValue(_healthAttr);
-        // public float MaxHealth => _maxHealthAttr != null ? _asc.GetAttributeValue(_maxHealthAttr) : Health;
-        // public float HealthPercent => MaxHealth > 0 ? Health / MaxHealth : 0;
-        // public bool IsDead => _isDead;
-        // public AbilitySystemComponent AbilitySystem => _asc;
+        public EnemyState currentState;
 
         protected virtual void Awake()
         {
@@ -59,7 +53,6 @@ namespace Examples.Enemies
             _asc.OnAttributeChanged -= HandleAttributeChanged;
         }
 
-
         protected virtual void OnDestroy()
         {
             if (_asc != null)
@@ -75,7 +68,7 @@ namespace Examples.Enemies
             if (_isDead) return;
 
             UpdateAttackCooldown();
-            UpdateBehavior();
+            currentState.OnUpdate(this.gameObject);
         }
 
         #region Targeting
@@ -97,7 +90,7 @@ namespace Examples.Enemies
             }
         }
 
-        protected bool TargetIsInRange()
+        public bool TargetIsInRange()
         {
             if (_target == null) return false;
             float range = _rangeAttr != null ? _asc.GetAttributeValue(_rangeAttr) : 2f;
@@ -118,47 +111,19 @@ namespace Examples.Enemies
             }
         }
 
-        protected virtual bool CanAttack()
+        public virtual bool CanAttack()
         {
             return _attackTimer <= 0 && !_isDead && _target != null;
         }
 
-        protected virtual void TryAttack()
+        public void ResetTimer()
         {
-            if (!CanAttack()) return;
-
-            PerformAttack();
             _attackTimer = _attackCooldown;
-        }
-
-        protected virtual void PerformAttack()
-        {
-            if (_target == null) return;
-
-            AbilitySystemComponent targetASC = _target.GetComponent<AbilitySystemComponent>();
-            if (targetASC == null) return;
-
-            //CHANGE FOR HITBOX OR PROJECTILE
-            if (_attackEffect != null)
-            {
-                _asc.ApplyEffectToTarget(_attackEffect, targetASC);
-            }
-
-            Debug.Log($"{name} attacked {_target.name}");
         }
 
         #endregion
 
         #region Behavior (override in subclasses)
-
-        protected virtual void UpdateBehavior()
-        {
-            // Default: attack if in range
-            if (TargetIsInRange())
-            {
-                TryAttack();
-            }
-        }
 
         #endregion
 

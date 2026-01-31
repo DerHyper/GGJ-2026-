@@ -361,7 +361,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GAS::GAS.Core.AbilitySystemComponent
   _attributeSetDefinition: {fileID: 11400000, guid: 6fd554a98fb484d1a98083bc9b97d921, type: 2}
   _startingAbilities:
-  - {fileID: 11400000, guid: 2b557e936a9855c46937ecca803e851c, type: 2}
+  - {fileID: 11400000, guid: 95a71aaf8b5414547b1b7524131b2552, type: 2}
   _debugLogEffects: 0
   _debugLogAbilities: 0
   _debugLogAttributes: 0
@@ -471,6 +471,7 @@ MonoBehaviour:
   _damageAttr: {fileID: 11400000, guid: be98bad68000443c9ae2eb11731c64ae, type: 2}
   _attackSpeedAttr: {fileID: 11400000, guid: b85033ce5a1da465593d05d2e54688ed, type: 2}
   _rangeAttr: {fileID: 11400000, guid: 1f2bf365f8c3643ab94d74dcdadecbe2, type: 2}
+  abilityToUse: {fileID: 11400000, guid: 95a71aaf8b5414547b1b7524131b2552, type: 2}
   _attackEffect: {fileID: 11400000, guid: 588e319c6d915484f983bf96f8440cad, type: 2}
   _attackCooldown: 2
   PLAYERTAG: Player
