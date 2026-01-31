@@ -12,8 +12,8 @@ public class RoomManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
-            SetCurrentRoom(startingRoom);
+            // DontDestroyOnLoad(gameObject);
+
         }
         else
         {
@@ -21,6 +21,10 @@ public class RoomManager : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        SetCurrentRoom(startingRoom);
+    }
 
 
     public Room GetCurrentRoom()

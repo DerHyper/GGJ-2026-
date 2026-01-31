@@ -3,6 +3,8 @@ using UnityEngine;
 public class PersistentObjects : MonoBehaviour
 {
     [SerializeField] GameManager gameManagerPrefab;
+    // [SerializeField] RoomManager roomManager;
+
 
     public static PersistentObjects Instance;
 
@@ -23,5 +25,6 @@ public class PersistentObjects : MonoBehaviour
     {
 
         Instantiate(gameManagerPrefab, transform);
+        // Instantiate(roomManager, transform);
     }
 }

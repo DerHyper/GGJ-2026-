@@ -49,6 +49,12 @@ namespace Examples.Enemies
         {
             _asc = GetComponent<AbilitySystemComponent>();
             _rb = GetComponent<Rigidbody2D>();
+
+            
+        }
+
+        void Start()
+        {
             pathfinding = new();
             ChangeState(startingState);
         }
@@ -69,6 +75,9 @@ namespace Examples.Enemies
             {
                 _asc.OnAttributeChanged -= HandleAttributeChanged;
             }
+
+            pathfinding.DesubscribeFromEvent();
+            pathfinding = null;
         }
 
         protected virtual void Update()
@@ -78,12 +87,12 @@ namespace Examples.Enemies
             if (_isDead) return;
 
             UpdateAttackCooldown();
-            currentState.OnUpdate(this.gameObject);
+            if(currentState != null) currentState.OnUpdate(this.gameObject);
         }
 
         public void ChangeState(EnemyState newState)
         {
-            Debug.Log($"{name} changing State to: {newState}");
+            // Debug.Log($"{name} changing State to: {newState}");
             currentState = newState;
 
             currentState.OnStart(this.gameObject);

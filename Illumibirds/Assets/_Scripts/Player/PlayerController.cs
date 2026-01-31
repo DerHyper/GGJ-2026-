@@ -225,6 +225,8 @@ public class PlayerController : MonoBehaviour
         Debug.Log("PLAYER DIE");
         rb.linearVelocity = Vector2.zero;
         // TODO: Trigger death animation, game over screen, etc.
+
+        GameManager.Instance.ChangeState(GameState.gameOver);
     }
 
     // public void Heal(float amount)

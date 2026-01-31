@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,6 +9,8 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
     [SerializeField] string GAMESCENE = "";
+
+    public Action<GameState> OnGameStateChanged;
 
     void Awake()
     {
@@ -24,6 +27,7 @@ public class GameManager : MonoBehaviour
     public void ChangeState(GameState newState)
     {
         gamestate = newState;
+        OnGameStateChanged?.Invoke(gamestate);
     }
 
     public bool GameIsPaused()
