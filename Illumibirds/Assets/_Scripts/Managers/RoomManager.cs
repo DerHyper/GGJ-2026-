@@ -1,19 +1,22 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class RoomManager : MonoBehaviour
 {
     Room CurrentRoom;
-    [SerializeField] Room startingRoom;
     public static RoomManager Instance;
     public UnityEvent CurrentRoomChanged;
+    [SerializeField] PlayerController playerPrefab;
+
+    [SerializeField] Room[] possibleRooms;
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            InitiateRandomRoom();
             // DontDestroyOnLoad(gameObject);
-
         }
         else
         {
@@ -21,11 +24,30 @@ public class RoomManager : MonoBehaviour
         }
     }
 
-    void Start()
+    // void Start()
+    // {
+        
+    // }
+
+    void InitiateRandomRoom()
     {
-        SetCurrentRoom(startingRoom);
+        int rand = UnityEngine.Random.Range(0, possibleRooms.Length);
+
+        Room newRoom = Instantiate(possibleRooms[rand], Vector3.zero, Quaternion.identity);
+        SetCurrentRoom(newRoom);
+        SpawnPlayer();
+        SpawnEnemies();
     }
 
+    void SpawnPlayer()
+    {
+        PlayerController player = Instantiate(playerPrefab, CurrentRoom.playerSpawn.position, Quaternion.identity);
+    }
+
+    void SpawnEnemies()
+    {
+        FindFirstObjectByType<RandomizedEnemySpawner>(FindObjectsInactive.Exclude).SpawnEnemies();
+    }
 
     public Room GetCurrentRoom()
     {

@@ -5,20 +5,19 @@ using UnityEngine;
 public class RandomizedEnemySpawner : MonoBehaviour
 {
     public List<EnemyBase> possibleEnemies;
-    public List<Transform> possiblePositions;
+    List<Transform> possiblePositions;
 
-    public int maxAmount;
+    int maxAmount;
     int amount;
     // List<Transform> usedPositions;
 
-    void Start()
+    public void SpawnEnemies()
     {
-        if(maxAmount > possiblePositions.Count) Debug.LogWarning("Max enemiAmount is higher than Possible Spawn Count");
-        SpawnEnemies();
-    }
+        possiblePositions = RoomManager.Instance.GetCurrentRoom().possibleEnemySpawns;
+        maxAmount = RoomManager.Instance.GetCurrentRoom().maxEnemyCount;
 
-    void SpawnEnemies()
-    {
+        if(maxAmount > possiblePositions.Count) Debug.LogWarning("Max enemyAmount is higher than Possible Spawn Count");
+
         amount = UnityEngine.Random.Range(1, maxAmount + 1);
 
         for (int i = 0; i < amount; i++)

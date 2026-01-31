@@ -4,7 +4,8 @@ public static class Finder
 {
     public static Transform FindPlayer()
     {
-        return GameObject.Find("Player").transform;
+        Transform playerTransform = GameObject.FindWithTag("Player").transform;
+        return playerTransform;
     }
 
     /// <summary>
