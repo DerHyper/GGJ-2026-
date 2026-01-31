@@ -1,6 +1,7 @@
 using UnityEngine;
 using GAS.Abilities;
 using GAS.Core;
+using System;
 
 [System.Serializable]
 public class MeleeAttackBehaviour : IAbilityBehavior
@@ -9,8 +10,7 @@ public class MeleeAttackBehaviour : IAbilityBehavior
     // [SerializeField] bool SingleHit = true;
     [SerializeField] MeleeHitBox hitBoxPrefab;
     public LayerMask hitLayer;
-    [SerializeField] Vector3 SpawnOffset = Vector3.zero;
-
+    // [SerializeField] Vector3 SpawnOffset = Vector3.zero;
     bool IAbilityBehavior.CanActivate(AbilityInstance ability, AbilitySystemComponent owner)
     {
         return true;
@@ -21,8 +21,11 @@ public class MeleeAttackBehaviour : IAbilityBehavior
         Debug.Log("MELEE");
         if (hitBoxPrefab == null) return;
 
-        var spawnPos = owner.transform.position + owner.transform.TransformDirection(SpawnOffset);
-        MeleeHitBox hitbox = Object.Instantiate(hitBoxPrefab, spawnPos, owner.transform.rotation).GetComponent<MeleeHitBox>();
+        //   owner.transform.position + owner.transform.TransformDirection(SpawnOffset);
+        var spawnPos = owner.transform.GetComponentInChildren<HitboxParentMarker>().transform.position;
+
+
+        MeleeHitBox hitbox = UnityEngine.Object.Instantiate(hitBoxPrefab, spawnPos, owner.transform.rotation).GetComponent<MeleeHitBox>();
 
         hitbox.Initiate(Lifetime, ability, owner, hitLayer);
     }

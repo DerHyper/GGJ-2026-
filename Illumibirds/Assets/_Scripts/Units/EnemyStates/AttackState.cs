@@ -17,12 +17,15 @@ public class AttackState : EnemyState
         if (enemyBase == null) return;
         if (enemyBase._isDead) return;
 
+        TurnToPlayer();
+
         if (enemyBase.IsTooCloseToTarget())
         {
             Debug.Log("TOO CLOSE");
         }
         else if (enemyBase.TargetIsInRange())
         {
+            
             TryAttack();
         }
         else
@@ -47,5 +50,15 @@ public class AttackState : EnemyState
 
         PerformAttack();
         enemyBase.ResetTimer();
+    }
+
+    void TurnToPlayer()
+    {
+        if (enemyBase._target != null && enemyBase.aimTransform != null)
+        {
+            Vector3 direction = enemyBase._target.position - enemyBase.aimTransform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            enemyBase.aimTransform.rotation = Quaternion.Euler(0, 0, angle);
+        }
     }
 }

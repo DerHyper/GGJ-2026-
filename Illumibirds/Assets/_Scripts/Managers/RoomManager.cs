@@ -3,7 +3,8 @@ using UnityEngine.Events;
 
 public class RoomManager : MonoBehaviour
 {
-    [SerializeField] private Room CurrentRoom;
+    Room CurrentRoom;
+    [SerializeField] Room startingRoom;
     public static RoomManager Instance;
     public UnityEvent CurrentRoomChanged;
     private void Awake()
@@ -12,12 +13,15 @@ public class RoomManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            SetCurrentRoom(startingRoom);
         }
         else
         {
             Destroy(gameObject);
         }
     }
+
+
 
     public Room GetCurrentRoom()
     {

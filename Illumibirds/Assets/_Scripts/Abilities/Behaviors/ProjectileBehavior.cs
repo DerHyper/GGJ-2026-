@@ -22,9 +22,13 @@ namespace GAS.Abilities.Behaviors
         {
             if (ProjectilePrefab == null) return;
 
-            var spawnPos = owner.transform.position + owner.transform.TransformDirection(SpawnOffset);
+            var spawnPos =  owner.transform.GetComponentInChildren<HitboxParentMarker>().transform.position;
+            Vector2 dir = spawnPos - owner.transform.position;
+            dir.Normalize();
+
+
             Projectile projectile = Object.Instantiate(ProjectilePrefab, spawnPos, owner.transform.rotation).GetComponent<Projectile>();
-            projectile.Initiate(Speed, Lifetime, owner.transform.right.normalized, ability, owner, hitLayer, piercingBullet);
+            projectile.Initiate(Speed, Lifetime, dir, ability, owner, hitLayer, piercingBullet);
 
         }
 

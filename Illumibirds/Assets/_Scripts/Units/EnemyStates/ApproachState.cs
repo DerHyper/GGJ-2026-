@@ -13,6 +13,13 @@ public class ApproachState : EnemyState
     public void OnUpdate(GameObject gameObject)
     {
         
+        if (enemyBase.TargetIsInRange())
+        {
+            enemyBase.ChangeState(new AttackState());
+            return;
+        }
+        
+
         AStarPathfinding pathfinding = enemyBase.pathfinding;
 
         Vector2 nextWalkPoint = pathfinding.GetNextPointWorld(

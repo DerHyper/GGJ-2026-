@@ -19,7 +19,6 @@ namespace Examples.Enemies
         [SerializeField] protected AttributeDefinition _rangeAttr;
 
         [SerializeField] protected AttributeDefinition _minimumAttackDistance;
-
         public float movementSpeed { get; private set; } = 4;
 
 
@@ -35,6 +34,7 @@ namespace Examples.Enemies
 
         // Components
         public AbilitySystemComponent _asc;
+        public Transform aimTransform;
         protected Rigidbody2D _rb;
 
         // State
