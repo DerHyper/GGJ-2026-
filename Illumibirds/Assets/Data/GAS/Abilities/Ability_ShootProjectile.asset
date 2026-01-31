@@ -24,16 +24,16 @@ MonoBehaviour:
   ApplyToSelfEffects: []
   ApplyToTargetEffects: []
   Behavior:
-    rid: 1134678006946070698
+    rid: 1134678018525495371
   IsChanneled: 0
   ChannelDuration: 0
   references:
     version: 2
     RefIds:
-    - rid: 1134678006946070698
-      type: {class: ProjectileBehavior, ns: GAS.Abilities.Behaviors, asm: GAS}
+    - rid: 1134678018525495371
+      type: {class: ProjectileBehavior, ns: GAS.Abilities.Behaviors, asm: IllumiBirds}
       data:
         ProjectilePrefab: {fileID: 7997979048116751412, guid: b1cc311daf38a624f9d23ecd1a818c7f, type: 3}
         Speed: 10
         Lifetime: 5
-        SpawnOffset: {x: 2, y: 0, z: 0}
+        SpawnOffset: {x: 0, y: 0, z: 0}

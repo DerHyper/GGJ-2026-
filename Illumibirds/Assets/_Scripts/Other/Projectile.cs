@@ -1,6 +1,5 @@
 using GAS.Attributes;
 using GAS.Core;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]

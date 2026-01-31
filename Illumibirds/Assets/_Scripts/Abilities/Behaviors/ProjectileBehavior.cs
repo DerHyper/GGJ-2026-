@@ -19,7 +19,7 @@ namespace GAS.Abilities.Behaviors
             if (ProjectilePrefab == null) return;
 
             var spawnPos = owner.transform.position + owner.transform.TransformDirection(SpawnOffset);
-            var projectile = Object.Instantiate(ProjectilePrefab, spawnPos, owner.transform.rotation);
+           var projectile = Object.Instantiate(ProjectilePrefab, spawnPos, owner.transform.rotation).GetComponent<Projectile>();
             
 
             var rb = projectile.GetComponent<Rigidbody2D>();

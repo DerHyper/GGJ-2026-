@@ -24,12 +24,14 @@ MonoBehaviour:
   ApplyToSelfEffects: []
   ApplyToTargetEffects: []
   Behavior:
-    rid: 1134678006946070716
+    rid: 1134678018525495370
   IsChanneled: 0
-  ChannelDuration: 0
+  ChannelDuration: 1
   references:
     version: 2
     RefIds:
-    - rid: 1134678006946070716
-      type: {class: DashBehaviour, ns: GAS, asm: GAS}
-      data: 
+    - rid: 1134678018525495370
+      type: {class: DashBehaviour, ns: GAS, asm: IllumiBirds}
+      data:
+        dashDuration: 0.1
+        dashPower: 30
