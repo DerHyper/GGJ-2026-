@@ -16,6 +16,9 @@ namespace Rooms
     public class RoomManager : MonoBehaviour
     {
         public static RoomManager Instance { get; private set; }
+        public static RoomManager Required => Instance
+            ? Instance
+            : throw new InvalidOperationException($"{nameof(RoomManager)} instance not found. Ensure it exists in the scene.");
 
         [Header("Player")]
         [SerializeField] private Transform playerTransform;
@@ -75,10 +78,7 @@ namespace Rooms
             }
 
             // Register enemies after rooms are detected
-            if (RoomCombatManager.Instance != null)
-            {
-                RoomCombatManager.Instance.RegisterEnemiesInRooms();
-            }
+            RoomCombatManager.Required.RegisterEnemiesInRooms();
         }
 
         private void Update()
@@ -175,7 +175,7 @@ namespace Rooms
                 CreateRoomOverlay(detectedRoom);
 
                 // Register doors in this area
-                DoorController.Instance?.RegisterDoorsInBounds(genRoom.TileBounds);
+                DoorController.Required.RegisterDoorsInBounds(genRoom.TileBounds);
 
                 // Spawn door triggers in this area
                 doorTriggerSpawner?.SpawnTriggersInBounds(genRoom.TileBounds);
@@ -226,7 +226,7 @@ namespace Rooms
             detector.ClearVisitedInBounds(bounds);
 
             // Unregister doors
-            DoorController.Instance?.UnregisterDoorsInBounds(bounds);
+            DoorController.Required.UnregisterDoorsInBounds(bounds);
 
             // Destroy door triggers
             doorTriggerSpawner?.DestroyTriggersInBounds(bounds);
@@ -352,7 +352,7 @@ namespace Rooms
                 var adjacentRooms = GetAdjacentRooms(startingRoom);
                 foreach (var adjRoom in adjacentRooms)
                 {
-                    DoorController.Instance?.OpenDoorsForRoom(adjRoom);
+                    DoorController.Required.OpenDoorsForRoom(adjRoom);
                 }
 
                 CurrentRoomChanged?.Invoke();
@@ -372,7 +372,7 @@ namespace Rooms
             // Close doors behind (from previous room)
             if (currentRoom != null)
             {
-                DoorController.Instance?.CloseDoorsForRoom(currentRoom);
+                DoorController.Required.CloseDoorsForRoom(currentRoom);
             }
 
             // Reveal the new room
@@ -384,7 +384,7 @@ namespace Rooms
             OnRoomEntered?.Invoke(room);
 
             // Start combat in this room
-            RoomCombatManager.Instance?.StartCombat(room);
+            RoomCombatManager.Required.StartCombat(room);
         }
 
         public void RevealRoom(Room room)

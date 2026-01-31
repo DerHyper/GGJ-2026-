@@ -34,14 +34,9 @@ public class AStarPathfinding
 
     public AStarPathfinding()
     {
-        if (RoomManager.Instance == null)
-        {
-            Debug.LogWarning("AStarPathfinding: RoomManager.Instance is null");
-            return;
-        }
-
-        tilemap = RoomManager.Instance.Tilemap;
-        scanner = RoomManager.Instance.Scanner;
+        var roomManager = RoomManager.Required;
+        tilemap = roomManager.Tilemap;
+        scanner = roomManager.Scanner;
 
         if (tilemap == null || scanner == null)
         {
@@ -49,17 +44,13 @@ public class AStarPathfinding
             return;
         }
 
-        RoomManager.Instance.CurrentRoomChanged.AddListener(OnCurrentRoomChanged);
+        roomManager.CurrentRoomChanged.AddListener(OnCurrentRoomChanged);
         OnCurrentRoomChanged();
     }
 
     public void DesubscribeFromEvent()
     {
-        if (RoomManager.Instance != null)
-        {
-            RoomManager.Instance.CurrentRoomChanged.RemoveListener(OnCurrentRoomChanged);
-        }
-        Debug.Log("DESUB");
+        RoomManager.Required.CurrentRoomChanged.RemoveListener(OnCurrentRoomChanged);
     }
 
     /// <summary>

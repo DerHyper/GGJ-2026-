@@ -13,20 +13,17 @@ public class RandomizedEnemySpawner : MonoBehaviour
 
     private void OnEnable()
     {
-        if (RoomCombatManager.Instance != null)
-            RoomCombatManager.Instance.OnRoomCleared += OnRoomCleared;
+        RoomCombatManager.Required.OnRoomCleared += OnRoomCleared;
     }
 
     private void OnDisable()
     {
-        if (RoomCombatManager.Instance != null)
-            RoomCombatManager.Instance.OnRoomCleared -= OnRoomCleared;
+        RoomCombatManager.Required.OnRoomCleared -= OnRoomCleared;
     }
 
     public void SpawnEnemies()
     {
-        var roomManager = RoomManager.Instance;
-        if (roomManager == null) return;
+        var roomManager = RoomManager.Required;
 
         var room = roomManager.GetCurrentRoom();
         if (room == null) return;

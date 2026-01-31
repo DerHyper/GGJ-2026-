@@ -23,7 +23,7 @@ namespace Rooms
         private void Start()
         {
             // Skip auto-spawn if RoomManager handles it via procedural generation
-            if (RoomManager.Instance != null && RoomManager.Instance.UseProceduralGeneration)
+            if (RoomManager.Required.UseProceduralGeneration)
             {
                 return;
             }

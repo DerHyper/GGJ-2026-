@@ -7,6 +7,9 @@ namespace Rooms
     public class RoomCombatManager : MonoBehaviour
     {
         public static RoomCombatManager Instance { get; private set; }
+        public static RoomCombatManager Required => Instance
+            ? Instance
+            : throw new InvalidOperationException($"{nameof(RoomCombatManager)} instance not found. Ensure it exists in the scene.");
 
         public event Action<Room> OnRoomCleared;
         public event Action<Room> OnCombatStarted;
@@ -61,7 +64,7 @@ namespace Rooms
             inCombat = true;
 
             // Close all doors for this room
-            DoorController.Instance?.CloseDoorsForRoom(room);
+            DoorController.Required.CloseDoorsForRoom(room);
 
             OnCombatStarted?.Invoke(room);
             Debug.Log($"RoomCombatManager: Combat started in room {room.Id} with {room.Enemies.Count} enemies");
@@ -103,12 +106,12 @@ namespace Rooms
                 // Open doors leading to unrevealed rooms
                 if (!adjRoom.IsRevealed)
                 {
-                    DoorController.Instance?.OpenDoorsForRoom(adjRoom);
+                    DoorController.Required.OpenDoorsForRoom(adjRoom);
                 }
             }
 
             // Also open doors of the current room (so player can leave)
-            DoorController.Instance?.OpenDoorsForRoom(combatRoom);
+            DoorController.Required.OpenDoorsForRoom(combatRoom);
 
             OnRoomCleared?.Invoke(combatRoom);
 

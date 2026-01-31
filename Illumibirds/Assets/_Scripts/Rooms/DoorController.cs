@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Tiles;
 using UnityEngine;
@@ -10,6 +11,9 @@ namespace Rooms
     public class DoorController : MonoBehaviour
     {
         public static DoorController Instance { get; private set; }
+        public static DoorController Required => Instance
+            ? Instance
+            : throw new InvalidOperationException($"{nameof(DoorController)} instance not found. Ensure it exists in the scene.");
 
         private Tilemap tilemap;
         private TilemapScanner scanner;
@@ -33,7 +37,7 @@ namespace Rooms
         private void Start()
         {
             // Skip auto-init if RoomManager handles it via procedural generation
-            if (RoomManager.Instance != null && RoomManager.Instance.UseProceduralGeneration)
+            if (RoomManager.Required.UseProceduralGeneration)
             {
                 return;
             }
