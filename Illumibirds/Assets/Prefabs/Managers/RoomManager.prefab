@@ -302,6 +302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: IllumiBirds::Rooms.RoomManager
   playerTransform: {fileID: 0}
+  playerPrefab: {fileID: 7034735437236123231, guid: c41d220a33b69bb4e80da8ede1f377ae, type: 3}
   sortingLayerName: Default
   blackTileSortingOrder: 10
   useProceduralGeneration: 1
