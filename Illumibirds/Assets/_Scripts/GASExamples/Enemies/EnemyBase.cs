@@ -1,9 +1,9 @@
+using System;
 using GAS.Abilities;
 using GAS.Attributes;
 using GAS.Core;
 using GAS.Effects;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Examples.Enemies
 {
@@ -45,12 +45,14 @@ namespace Examples.Enemies
         public EnemyState currentState;
         EnemyState startingState = new AttackState();
 
+        public Action<EnemyBase>  OnDie;
+
         protected virtual void Awake()
         {
             _asc = GetComponent<AbilitySystemComponent>();
             _rb = GetComponent<Rigidbody2D>();
 
-            
+
         }
 
         void Start()
@@ -87,7 +89,7 @@ namespace Examples.Enemies
             if (_isDead) return;
 
             UpdateAttackCooldown();
-            if(currentState != null) currentState.OnUpdate(this.gameObject);
+            if (currentState != null) currentState.OnUpdate(this.gameObject);
         }
 
         public void ChangeState(EnemyState newState)
@@ -159,7 +161,7 @@ namespace Examples.Enemies
 
         #region Health & Death
 
-        protected virtual void HandleAttributeChanged(Attribute attribute, float oldValue, float newValue)
+        protected virtual void HandleAttributeChanged(GAS.Attributes.Attribute attribute, float oldValue, float newValue)
         {
             if (attribute.Definition == _healthAttr && newValue <= 0 && !_isDead)
             {
@@ -181,6 +183,7 @@ namespace Examples.Enemies
         {
             _isDead = true;
             Debug.Log($"{name} died!");
+            OnDie?.Invoke(this);
 
             // Stop movement
             if (_rb != null)

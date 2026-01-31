@@ -1,37 +1,73 @@
+using System;
 using System.Collections.Generic;
 using Examples.Enemies;
 using UnityEngine;
 
 public class RandomizedEnemySpawner : MonoBehaviour
 {
-    public List<EnemyBase> possibleEnemies;
+    public List<EnemyWave> possibleEnemyWaves;
     List<Transform> possiblePositions;
 
-    int maxAmount;
-    int amount;
-    // List<Transform> usedPositions;
+    List<EnemyBase> spawnedEnemies;
 
+    public Action OnWaveDefeated;
     public void SpawnEnemies()
     {
+        spawnedEnemies = new();
+        
         possiblePositions = RoomManager.Instance.GetCurrentRoom().possibleEnemySpawns;
-        maxAmount = RoomManager.Instance.GetCurrentRoom().maxEnemyCount;
+        int rnd = UnityEngine.Random.Range(0, possibleEnemyWaves.Count);
+        EnemyWave wave = possibleEnemyWaves[rnd];
 
-        if(maxAmount > possiblePositions.Count) Debug.LogWarning("Max enemyAmount is higher than Possible Spawn Count");
-
-        amount = UnityEngine.Random.Range(1, maxAmount + 1);
-
-        for (int i = 0; i < amount; i++)
+        for (int i = 0; i < wave.enemies.Count; i++)
         {
-            SpawnRandomEnemy(possiblePositions[i].position);
+            EnemyBase newEnemy = Instantiate(wave.enemies[i], possiblePositions[i].position, Quaternion.identity);
+            SubscribeToEnemyDeath(newEnemy);
         }
     }
 
-    void SpawnRandomEnemy(Vector2 pos)
-    {
-        int rnd = UnityEngine.Random.Range(0, possibleEnemies.Count);
-        EnemyBase enemy = possibleEnemies[rnd];
+    // void SpawnRandomEnemyWave(Vector2 pos)
+    // {
+    //     int rnd = UnityEngine.Random.Range(0, possibleEnemyWaves.Count);
+    //     EnemyWave wave = possibleEnemyWaves[rnd];
 
-        Instantiate(enemy, pos, Quaternion.identity);
-        Destroy(this.gameObject, 0.1f);
+    //     for (int i = 0; i < wave.enemies.Count; i++)
+    //     {
+    //         Instantiate(wave.enemies[i], pos, Quaternion.identity);
+
+    //     }
+    //     // Destroy(this.gameObject, 0.1f);
+    // }
+
+
+
+    public void SubscribeToEnemyDeath(EnemyBase enemy)
+    {
+        if (!spawnedEnemies.Contains(enemy)) spawnedEnemies.Add(enemy);
+        enemy.OnDie += OnEnemyDied;
+    }
+
+
+    void OnEnemyDied(EnemyBase diedEnemy)
+    {
+        diedEnemy.OnDie -= OnEnemyDied;
+
+        for (int i = 0; i < spawnedEnemies.Count; i++)
+        {
+            if (!spawnedEnemies[i]._isDead)
+                break;
+
+            OnWaveDefeated?.Invoke();
+        }
+    }
+
+    void OnDisable()
+    {
+        if (spawnedEnemies == null || spawnedEnemies.Count == 0) return;
+
+        for (int i = 0; i < spawnedEnemies.Count; i++)
+        {
+            spawnedEnemies[i].OnDie -= OnEnemyDied;
+        }
     }
 }

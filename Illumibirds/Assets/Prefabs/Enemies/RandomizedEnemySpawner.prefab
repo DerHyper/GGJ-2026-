@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7094297107838469168}
+  - component: {fileID: 6188327093961202147}
   m_Layer: 0
   m_Name: RandomizedEnemySpawner
   m_TagString: Untagged
@@ -31,3 +32,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6188327093961202147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637338826127485873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74a9b9846f96c6c4d8d1931312beb3fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: IllumiBirds::RandomizedEnemySpawner
+  possibleEnemyWaves:
+  - {fileID: 11400000, guid: f847a62bc8ce40d49a9e6cc9d44d754c, type: 2}
+  - {fileID: 11400000, guid: 8e71ee620173cb547bc59217ab68075b, type: 2}
+  - {fileID: 11400000, guid: e9f6cf9164d795847a51093617ebf917, type: 2}
