@@ -10,15 +10,36 @@ public class RandomizedEnemySpawner : MonoBehaviour
     public Action OnWaveDefeated;
 
     private Room currentCombatRoom;
+    private bool initialized;
+
+    private void Start()
+    {
+        initialized = true;
+        Subscribe();
+    }
 
     private void OnEnable()
     {
-        RoomCombatManager.Required.OnRoomCleared += OnRoomCleared;
+        // Only subscribe on re-enable (after Start has run once)
+        if (initialized)
+            Subscribe();
     }
 
     private void OnDisable()
     {
-        RoomCombatManager.Required.OnRoomCleared -= OnRoomCleared;
+        Unsubscribe();
+    }
+
+    private void Subscribe()
+    {
+        RoomCombatManager.Required.OnRoomCleared += OnRoomCleared;
+    }
+
+    private void Unsubscribe()
+    {
+        // Use Instance (not Required) for cleanup - may be null during shutdown
+        if (RoomCombatManager.Instance != null)
+            RoomCombatManager.Instance.OnRoomCleared -= OnRoomCleared;
     }
 
     public void SpawnEnemies()
