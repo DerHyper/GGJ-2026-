@@ -2,10 +2,9 @@ using UnityEngine;
 
 public class EnemyBehavior : MonoBehaviour
 {
-
-    public EnemyState CurrentState;
+    [SerializeField] public EnemyState CurrentState;
     private void Update() 
     {
-        CurrentState.OnUpdate();
+        CurrentState.OnUpdate(gameObject);
     }
 }
