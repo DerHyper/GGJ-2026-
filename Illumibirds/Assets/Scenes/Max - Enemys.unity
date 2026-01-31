@@ -129,6 +129,8 @@ GameObject:
   m_Component:
   - component: {fileID: 488925906}
   - component: {fileID: 488925905}
+  - component: {fileID: 488925908}
+  - component: {fileID: 488925907}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -210,6 +212,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &488925907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 488925904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9d273aed1e112340b4ed702eb94fe3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: IllumiBirds::AStarPathfinding
+  WalkableTiles: {fileID: 0}
+  gridWidth: 0
+  gridHeight: 0
+  walkPointsPerTiles: 4
+  TestEnemy: {fileID: 0}
+  TestPlayer: {fileID: 0}
+--- !u!114 &488925908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 488925904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf9a9422d3f654b038208e59e7c3dd48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: IllumiBirds::EnemyBehavior
 --- !u!1 &542582744
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,13 +280,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 542582744}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.67011, y: 0.71151, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 776392602}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 798549180}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &542582747
 MonoBehaviour:
@@ -269,6 +301,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: IllumiBirds::AStarPathfinding
   WalkableTiles: {fileID: 776392604}
+  gridWidth: 0
+  gridHeight: 0
+  walkPointsPerTiles: 4
   TestEnemy: {fileID: 488925906}
   TestPlayer: {fileID: 1029953177}
 --- !u!1 &776392601
@@ -1402,6 +1437,52 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &798549179
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 798549180}
+  - component: {fileID: 798549181}
+  m_Layer: 0
+  m_Name: Room
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &798549180
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798549179}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.67011, y: -0.71151, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 542582746}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &798549181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798549179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0665199542f5d54382d84127754d838, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: IllumiBirds::Room
+  WalkableTiles: {fileID: 0}
 --- !u!1 &1029953175
 GameObject:
   m_ObjectHideFlags: 0
@@ -1488,6 +1569,53 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5, y: -3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1096076217
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1096076219}
+  - component: {fileID: 1096076218}
+  m_Layer: 0
+  m_Name: RoomManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1096076218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096076217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b71412c7beaa5246b1dd3465f8f9423, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: IllumiBirds::RoomManager
+  CurrentRoomChanged:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!4 &1096076219
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096076217}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.67011, y: -0.71151, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1635,6 +1763,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1441156471}
-  - {fileID: 542582746}
   - {fileID: 1029953177}
   - {fileID: 488925906}
+  - {fileID: 798549180}
+  - {fileID: 1096076219}

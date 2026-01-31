@@ -4,7 +4,7 @@ using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class AStarPathfinding : MonoBehaviour
+public class AStarPathfinding
 {
     public class Node
     {
@@ -21,29 +21,52 @@ public class AStarPathfinding : MonoBehaviour
             walkable = isWalkable;
         }
     }
-
-    public Tilemap WalkableTiles;
+    const int WalkPointsPerTile = 4;
+    [SerializeField] private  Tilemap WalkableTiles;
     private Node[,] grid;
     private int gridWidth;
     private int gridHeight;
-    [SerializeField] private int walkPointsPerTiles = 4;
-    public Transform TestEnemy;
-    public Transform TestPlayer;
 
-    private void Start()
-    {
-        InitForEnemy(WalkableTiles, walkPointsPerTiles);
-    }
-
-    public void InitForEnemy(Tilemap WalkableTiles, int walkPointsPerTiles)
+    public AStarPathfinding()
     {
         // Init with room size
+        OnCurrentRoomChanged();
+        RoomManager.Instance.CurrentRoomChanged.AddListener(OnCurrentRoomChanged);
         BoundsInt bounds = WalkableTiles.cellBounds;
-        int width = bounds.size.x * walkPointsPerTiles;
-        int height = bounds.size.y * walkPointsPerTiles;
+        int width = bounds.size.x * WalkPointsPerTile;
+        int height = bounds.size.y * WalkPointsPerTile;
         InitializeGrid(width, height);
         SetWalkableForTilemap(WalkableTiles);
         DilateObstacles();
+    }
+
+    /// <summary>
+    /// Get path from start to target in world coordinates
+    /// </summary>
+    /// <param name="start"></param>
+    /// <param name="target"></param>
+    /// <returns></returns>
+    public List<Vector2Int> GetPath(Vector2 start, Vector2 target)
+    {
+        // Test Player
+        List<Vector2Int> path = FindPath(WorldToTileIndex(start), WorldToTileIndex(target));
+        
+        // Debug Path
+        var lastItem = path[0];
+        foreach (Vector2Int item in path)
+        {
+            Debug.DrawLine(TileIndexToWorld(lastItem), TileIndexToWorld(item), Color.red);
+            lastItem = item;
+        }
+
+        return path;
+    }
+
+    private void OnCurrentRoomChanged()
+    {
+        WalkableTiles = RoomManager.Instance.GetCurrentRoom().WalkableTiles;
+        SetWalkableForTilemap(WalkableTiles);
+
     }
 
     private void SetWalkableForTilemap(Tilemap WalkableTiles)
@@ -67,12 +90,12 @@ public class AStarPathfinding : MonoBehaviour
 
     private void SetWalkableSubpoints(int x, int y)
     {
-        for (int subX = 0; subX < walkPointsPerTiles; subX++)
+        for (int subX = 0; subX < WalkPointsPerTile; subX++)
         {
-            for (int subY = 0; subY < walkPointsPerTiles; subY++)
+            for (int subY = 0; subY < WalkPointsPerTile; subY++)
             {
-                int gridX = x * walkPointsPerTiles + subX;
-                int gridY = y * walkPointsPerTiles + subY;
+                int gridX = x * WalkPointsPerTile + subX;
+                int gridY = y * WalkPointsPerTile + subY;
                 SetWalkable(gridX, gridY, true);
             }
         }
@@ -132,19 +155,6 @@ public class AStarPathfinding : MonoBehaviour
     }
 }
 
-    void Update()
-    {
-        // Test Player
-        var enemyPos = new Vector2(Mathf.RoundToInt(TestEnemy.position.x), Mathf.RoundToInt(TestEnemy.position.y));
-        var playerPos = new Vector2(Mathf.RoundToInt(TestPlayer.position.x), Mathf.RoundToInt(TestPlayer.position.y));
-        var lastItem = FindPath(WorldToTileIndex(enemyPos), WorldToTileIndex(playerPos))[0];
-        foreach (Vector2Int item in FindPath(WorldToTileIndex(enemyPos), WorldToTileIndex(playerPos)))
-        {
-            Debug.DrawLine(TileIndexToWorld(lastItem), TileIndexToWorld(item), Color.red);
-            lastItem = item;
-        }
-    }
-
     public Vector2Int WorldToTileIndex(Vector2 worldPosition)
     {
         // Konvertiere zu Cell-Position
@@ -162,16 +172,16 @@ public class AStarPathfinding : MonoBehaviour
         float relativeX = (worldPosition.x - cellWorldPos.x) / cellSize.x;
         float relativeY = (worldPosition.y - cellWorldPos.y) / cellSize.y;
         
-        int subX = Mathf.FloorToInt(relativeX * walkPointsPerTiles);
-        int subY = Mathf.FloorToInt(relativeY * walkPointsPerTiles);
+        int subX = Mathf.FloorToInt(relativeX * WalkPointsPerTile);
+        int subY = Mathf.FloorToInt(relativeY * WalkPointsPerTile);
         
         // Clamp Sub-Positionen
-        subX = Mathf.Clamp(subX, 0, walkPointsPerTiles - 1);
-        subY = Mathf.Clamp(subY, 0, walkPointsPerTiles - 1);
+        subX = Mathf.Clamp(subX, 0, WalkPointsPerTile - 1);
+        subY = Mathf.Clamp(subY, 0, WalkPointsPerTile - 1);
         
         // Kombiniere zu Grid-Index
-        int gridX = tileX * walkPointsPerTiles + subX;
-        int gridY = tileY * walkPointsPerTiles + subY;
+        int gridX = tileX * WalkPointsPerTile + subX;
+        int gridY = tileY * WalkPointsPerTile + subY;
         
         // Clamp zu Grid-Grenzen
         gridX = Mathf.Clamp(gridX, 0, gridWidth - 1);
@@ -185,10 +195,10 @@ public class AStarPathfinding : MonoBehaviour
         BoundsInt bounds = WalkableTiles.cellBounds;
     
         // Berechne Tile-Index und Sub-Position
-        int tileX = gridIndex.x / walkPointsPerTiles;
-        int tileY = gridIndex.y / walkPointsPerTiles;
-        int subX = gridIndex.x % walkPointsPerTiles;
-        int subY = gridIndex.y % walkPointsPerTiles;
+        int tileX = gridIndex.x / WalkPointsPerTile;
+        int tileY = gridIndex.y / WalkPointsPerTile;
+        int subX = gridIndex.x % WalkPointsPerTile;
+        int subY = gridIndex.y % WalkPointsPerTile;
         
         // Cell-Position in der Tilemap
         Vector3Int cellPosition = new Vector3Int(
@@ -202,8 +212,8 @@ public class AStarPathfinding : MonoBehaviour
         Vector3 cellSize = WalkableTiles.cellSize;
         
         // Berechne Sub-Position innerhalb der Zelle
-        float subPointSizeX = cellSize.x / walkPointsPerTiles;
-        float subPointSizeY = cellSize.y / walkPointsPerTiles;
+        float subPointSizeX = cellSize.x / WalkPointsPerTile;
+        float subPointSizeY = cellSize.y / WalkPointsPerTile;
         
         // Zentriere den Sub-Punkt
         float worldX = cellWorldPos.x + (subX + 0.5f) * subPointSizeX;
