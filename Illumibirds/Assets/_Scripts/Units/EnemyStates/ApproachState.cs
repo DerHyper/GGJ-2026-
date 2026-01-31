@@ -1,16 +1,19 @@
+using Examples.Enemies;
 using UnityEngine;
 
 public class ApproachState : EnemyState
 {
+
+    EnemyBase enemyBase;
     public void OnStart(GameObject gameObject)
     {
-        
+        enemyBase = gameObject.GetComponent<EnemyBase>();
     }
     
     public void OnUpdate(GameObject gameObject)
     {
-        EnemyBehavior enemyBehavior = gameObject.GetComponent<EnemyBehavior>();
-        AStarPathfinding pathfinding = enemyBehavior.pathfinding;
+        
+        AStarPathfinding pathfinding = enemyBase.pathfinding;
 
         Vector2 nextWalkPoint = pathfinding.GetNextPointWorld(
             gameObject.transform.position, 
@@ -21,7 +24,7 @@ public class ApproachState : EnemyState
 
     private void MoveTowards(GameObject gameObject, Vector2 targetPosition)
     {
-        float step = gameObject.GetComponent<EnemyBehavior>().movementSpeed * Time.deltaTime;
+        float step = enemyBase.movementSpeed * Time.deltaTime;
         gameObject.transform.position = Vector2.MoveTowards(
             gameObject.transform.position, 
             targetPosition, 
