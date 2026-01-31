@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 public class RoomManager : MonoBehaviour
 {
-    private Room CurrentRoom;
+    [SerializeField] private Room CurrentRoom;
     public static RoomManager Instance;
     public UnityEvent CurrentRoomChanged;
     private void Awake()

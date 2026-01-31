@@ -36,17 +36,17 @@ public class AStarPathfinding
         int width = bounds.size.x * WalkPointsPerTile;
         int height = bounds.size.y * WalkPointsPerTile;
         InitializeGrid(width, height);
-        SetWalkableForTilemap(WalkableTiles);
+        SetWalkableForTilemap();
         DilateObstacles();
     }
 
     /// <summary>
-    /// Get path from start to target in world coordinates
+    /// Get path from start to target in grid coordinates
     /// </summary>
     /// <param name="start"></param>
     /// <param name="target"></param>
     /// <returns></returns>
-    public List<Vector2Int> GetPath(Vector2 start, Vector2 target)
+    public List<Vector2Int> GetPathGrid(Vector2 start, Vector2 target)
     {
         // Test Player
         List<Vector2Int> path = FindPath(WorldToTileIndex(start), WorldToTileIndex(target));
@@ -62,14 +62,23 @@ public class AStarPathfinding
         return path;
     }
 
+    public Vector2 GetNextPointWorld(Vector2 start, Vector2 target)
+    {
+        List<Vector2Int> path = FindPath(WorldToTileIndex(start), WorldToTileIndex(target));
+        if (path == null || path.Count == 0)
+            return start; // No path found or already at target
+
+        Vector2Int nextIndex = path[0];
+        return TileIndexToWorld(nextIndex);
+    }
+
     private void OnCurrentRoomChanged()
     {
         WalkableTiles = RoomManager.Instance.GetCurrentRoom().WalkableTiles;
-        SetWalkableForTilemap(WalkableTiles);
-
+        SetWalkableForTilemap();
     }
 
-    private void SetWalkableForTilemap(Tilemap WalkableTiles)
+    private void SetWalkableForTilemap()
     {
         BoundsInt bounds = WalkableTiles.cellBounds;
         TileBase[] allTiles = WalkableTiles.GetTilesBlock(bounds);
@@ -247,7 +256,12 @@ public class AStarPathfinding
         }
     }
 
-    // A* Pathfinding
+    /// <summary>
+    /// A* Pathfinding
+    /// </summary>
+    /// <param name="start"></param>
+    /// <param name="target"></param>
+    /// <returns>List of Vector2Int positions representing the path in grid coordinates</returns>
     public List<Vector2Int> FindPath(Vector2Int start, Vector2Int target)
     {
         Node startNode = grid[start.x, start.y];
