@@ -14,20 +14,17 @@ public class PauseMenu : MonoBehaviour
 
     void OnEnable()
     {
-        Debug.Log("A");
         inputActions.Enable();
         inputActions.Player.PauseGame.performed += OnPause;
     }
 
     void OnDisable()
     {
-        Debug.Log("B");
         inputActions.Player.PauseGame.performed -= OnPause;
     }
 
     void OnPause(InputAction.CallbackContext ctx)
     {
-        Debug.Log("PRESS PAUSE");
         if (GameManager.Instance.gamestate == GameState.inGame) GameManager.Instance.ChangeState(GameState.paused);
         else if (GameManager.Instance.gamestate == GameState.paused) GameManager.Instance.ChangeState(GameState.inGame);
 

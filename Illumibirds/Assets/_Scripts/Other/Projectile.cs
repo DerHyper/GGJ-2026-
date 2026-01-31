@@ -14,10 +14,13 @@ public class Projectile : MonoBehaviour
 
     LayerMask hitLayer;
 
-    public void Initiate(float moveSpeed, float timeToLive, Vector2 direction, AbilityInstance _ability, AbilitySystemComponent _owner, LayerMask _hitLayer)
+    bool piercing = false;
+
+    public void Initiate(float moveSpeed, float timeToLive, Vector2 direction, AbilityInstance _ability, AbilitySystemComponent _owner, LayerMask _hitLayer, bool piercing)
     {
         ability = _ability;
         owner = _owner;
+        hitLayer = _hitLayer;
 
 
         var rb = GetComponent<Rigidbody2D>();
@@ -44,7 +47,6 @@ public class Projectile : MonoBehaviour
         {
             Debug.Log($"Projectile hit: {collision.name}");
 
-
             if (owner != null)
             {
                 ApplyEffectsToTarget(owner, _asc);
@@ -53,6 +55,8 @@ public class Projectile : MonoBehaviour
             {
                 _asc.GetAttribute(_healthAttr).AddModifier(healthAttrModifier);
             }
+            
+            if(!piercing) Destroy(gameObject);
         }
     }
 

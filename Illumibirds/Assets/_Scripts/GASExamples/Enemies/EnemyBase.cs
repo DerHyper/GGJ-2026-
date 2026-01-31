@@ -24,8 +24,8 @@ namespace Examples.Enemies
         [SerializeField] protected float _attackCooldown = 1f;
 
         [Header("Detection")]
-        [SerializeField] protected float _detectionRange = 10f;
-        [SerializeField] protected LayerMask _playerLayer;
+        // [SerializeField] protected float _detectionRange = 10f;
+        [SerializeField] protected string PLAYERTAG = "Player";
 
         // Components
         protected AbilitySystemComponent _asc;
@@ -37,11 +37,11 @@ namespace Examples.Enemies
         protected Transform _target;
 
         // Public accessors
-        public float Health => _asc.GetAttributeValue(_healthAttr);
-        public float MaxHealth => _maxHealthAttr != null ? _asc.GetAttributeValue(_maxHealthAttr) : Health;
-        public float HealthPercent => MaxHealth > 0 ? Health / MaxHealth : 0;
-        public bool IsDead => _isDead;
-        public AbilitySystemComponent AbilitySystem => _asc;
+        // public float Health => _asc.GetAttributeValue(_healthAttr);
+        // public float MaxHealth => _maxHealthAttr != null ? _asc.GetAttributeValue(_maxHealthAttr) : Health;
+        // public float HealthPercent => MaxHealth > 0 ? Health / MaxHealth : 0;
+        // public bool IsDead => _isDead;
+        // public AbilitySystemComponent AbilitySystem => _asc;
 
         protected virtual void Awake()
         {
@@ -49,10 +49,16 @@ namespace Examples.Enemies
             _rb = GetComponent<Rigidbody2D>();
         }
 
-        protected virtual void Start()
+        protected virtual void OnEnable()
         {
             _asc.OnAttributeChanged += HandleAttributeChanged;
         }
+
+        protected virtual void OnDisable()
+        {
+            _asc.OnAttributeChanged -= HandleAttributeChanged;
+        }
+
 
         protected virtual void OnDestroy()
         {
@@ -64,10 +70,11 @@ namespace Examples.Enemies
 
         protected virtual void Update()
         {
+            FindTarget();
+
             if (_isDead) return;
 
             UpdateAttackCooldown();
-            FindTarget();
             UpdateBehavior();
         }
 
@@ -78,24 +85,23 @@ namespace Examples.Enemies
             // Simple: find player by tag or layer
             if (_target == null)
             {
-                var player = GameObject.FindGameObjectWithTag("Player");
+                var player = GameObject.FindGameObjectWithTag(PLAYERTAG);
                 if (player != null)
                 {
                     _target = player.transform;
                 }
+                else
+                {
+                    Debug.LogWarning("No Player found");
+                }
             }
         }
 
-        protected bool IsTargetInRange(float range)
+        protected bool TargetIsInRange()
         {
             if (_target == null) return false;
-            return Vector2.Distance(transform.position, _target.position) <= range;
-        }
-
-        protected bool IsTargetInAttackRange()
-        {
             float range = _rangeAttr != null ? _asc.GetAttributeValue(_rangeAttr) : 2f;
-            return IsTargetInRange(range);
+            return Vector2.Distance(transform.position, _target.position) <= range;
         }
 
         #endregion
@@ -114,7 +120,7 @@ namespace Examples.Enemies
 
         protected virtual bool CanAttack()
         {
-            return _attackTimer <= 0 && !_isDead && _target != null && IsTargetInAttackRange();
+            return _attackTimer <= 0 && !_isDead && _target != null;
         }
 
         protected virtual void TryAttack()
@@ -129,10 +135,10 @@ namespace Examples.Enemies
         {
             if (_target == null) return;
 
-            var targetASC = _target.GetComponent<AbilitySystemComponent>();
+            AbilitySystemComponent targetASC = _target.GetComponent<AbilitySystemComponent>();
             if (targetASC == null) return;
 
-            // Apply attack effect to target
+            //CHANGE FOR HITBOX OR PROJECTILE
             if (_attackEffect != null)
             {
                 _asc.ApplyEffectToTarget(_attackEffect, targetASC);
@@ -148,7 +154,7 @@ namespace Examples.Enemies
         protected virtual void UpdateBehavior()
         {
             // Default: attack if in range
-            if (IsTargetInAttackRange())
+            if (TargetIsInRange())
             {
                 TryAttack();
             }

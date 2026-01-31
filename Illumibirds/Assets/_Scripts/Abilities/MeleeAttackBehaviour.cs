@@ -2,6 +2,7 @@ using UnityEngine;
 using GAS.Abilities;
 using GAS.Core;
 
+[System.Serializable]
 public class MeleeAttackBehaviour : IAbilityBehavior
 {
     [SerializeField] float Lifetime = 0.1f;

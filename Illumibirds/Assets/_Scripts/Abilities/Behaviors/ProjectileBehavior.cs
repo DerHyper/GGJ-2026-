@@ -14,6 +14,8 @@ namespace GAS.Abilities.Behaviors
         public float Lifetime = 5f;
         public Vector3 SpawnOffset = Vector3.zero;
 
+        public bool piercingBullet = false;
+
         public LayerMask hitLayer;
 
         public void OnActivate(AbilityInstance ability, AbilitySystemComponent owner)
@@ -22,7 +24,7 @@ namespace GAS.Abilities.Behaviors
 
             var spawnPos = owner.transform.position + owner.transform.TransformDirection(SpawnOffset);
             Projectile projectile = Object.Instantiate(ProjectilePrefab, spawnPos, owner.transform.rotation).GetComponent<Projectile>();
-            projectile.Initiate(Speed, Lifetime, owner.transform.right.normalized, ability, owner, hitLayer);
+            projectile.Initiate(Speed, Lifetime, owner.transform.right.normalized, ability, owner, hitLayer, piercingBullet);
 
         }
 

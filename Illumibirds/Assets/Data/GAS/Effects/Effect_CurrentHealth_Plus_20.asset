@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77bb9b7615bf84deb8df1d530265258a, type: 3}
+  m_Name: Effect_CurrentHealth_Plus_20
+  m_EditorClassIdentifier: Assembly-CSharp::GAS.Effects.GameplayEffectDefinition
+  DurationType: 0
+  Duration: 0
+  Modifiers:
+  - TargetAttribute: {fileID: 11400000, guid: d03911df997dd4c019d66da0057503c8, type: 2}
+    Operation: 0
+    Magnitude: 20
+  GrantedTags: []
+  ApplicationRequiredTags: []
+  ApplicationBlockedTags: []
+  CanStack: 0
+  MaxStacks: 0
+  IsPeriodic: 0
+  Period: 1
