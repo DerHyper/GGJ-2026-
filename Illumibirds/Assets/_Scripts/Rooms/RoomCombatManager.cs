@@ -42,7 +42,7 @@ namespace Rooms
         public void RegisterEnemiesInRooms()
         {
             // Find all enemies in the scene and register them to their rooms
-            var enemies = FindObjectsOfType<EnemyBase>();
+            var enemies = FindObjectsByType<EnemyBase>(FindObjectsSortMode.None);
             var roomManager = RoomManager.Instance;
 
             foreach (var enemy in enemies)

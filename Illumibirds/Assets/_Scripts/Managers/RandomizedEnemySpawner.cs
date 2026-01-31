@@ -34,6 +34,7 @@ public class RandomizedEnemySpawner : MonoBehaviour
 
     private void Subscribe()
     {
+        RoomCombatManager.Required.OnCombatStarted += OnCombatStarted;
         RoomCombatManager.Required.OnRoomCleared += OnRoomCleared;
     }
 
@@ -41,7 +42,15 @@ public class RandomizedEnemySpawner : MonoBehaviour
     {
         // Use Instance (not Required) for cleanup - may be null during shutdown
         if (RoomCombatManager.Instance != null)
+        {
+            RoomCombatManager.Instance.OnCombatStarted -= OnCombatStarted;
             RoomCombatManager.Instance.OnRoomCleared -= OnRoomCleared;
+        }
+    }
+
+    private void OnCombatStarted(Room room)
+    {
+        SpawnEnemies();
     }
 
     public void SpawnEnemies()

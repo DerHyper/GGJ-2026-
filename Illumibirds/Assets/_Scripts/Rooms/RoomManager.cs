@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Tiles;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Tilemaps;
@@ -22,6 +23,7 @@ namespace Rooms
 
         [Header("Player")]
         [SerializeField] private Transform playerTransform;
+        [SerializeField] private PlayerController playerPrefab;
 
         [Header("Overlay Settings")]
         [SerializeField] private string sortingLayerName = "Default";
@@ -129,24 +131,72 @@ namespace Rooms
 
         private void MovePlayerToStartingRoom()
         {
+            if (rooms.Count == 0)
+            {
+                Debug.LogWarning("RoomManager: No rooms detected, cannot spawn player");
+                return;
+            }
+
+            // Calculate spawn position
+            var startingRoom = rooms[0];
+            var bounds = startingRoom.WorldBounds;
+            var spawnPos = new Vector3(bounds.center.x, bounds.min.y + 1f, 0f);
+
+            // Try to find existing player
             if (playerTransform == null)
             {
                 var player = GameObject.FindGameObjectWithTag("Player");
                 if (player != null)
                 {
                     playerTransform = player.transform;
+                    Debug.Log("RoomManager: Found existing player in scene");
                 }
             }
 
-            if (playerTransform == null || rooms.Count == 0) return;
+            // Instantiate player if not found and prefab is assigned
+            if (playerTransform == null && playerPrefab != null)
+            {
+                var player = Instantiate(playerPrefab, spawnPos, Quaternion.identity);
+                playerTransform = player.transform;
+                Debug.Log($"RoomManager: Spawned player at {spawnPos}");
 
-            // Move player to center-bottom of starting room
-            var startingRoom = rooms[0];
-            var bounds = startingRoom.WorldBounds;
-            var spawnPos = new Vector3(bounds.center.x, bounds.min.y + 1f, playerTransform.position.z);
+                // Find CameraTarget child and assign to Cinemachine camera
+                SetupCinemachineTarget(player.transform);
+                return;
+            }
+
+            if (playerTransform == null)
+            {
+                Debug.LogWarning("RoomManager: No player found and no playerPrefab assigned!");
+                return;
+            }
+
+            // Move existing player to starting room
             playerTransform.position = spawnPos;
-
             Debug.Log($"RoomManager: Moved player to starting room at {spawnPos}");
+        }
+
+        private void SetupCinemachineTarget(Transform player)
+        {
+            // Find CameraTarget child in player
+            var cameraTarget = player.Find("CameraTarget");
+            if (cameraTarget == null)
+            {
+                Debug.LogWarning("RoomManager: No CameraTarget child found in player, using player transform");
+                cameraTarget = player;
+            }
+
+            // Find Cinemachine camera and set tracking target
+            var cinemachineCamera = FindFirstObjectByType<CinemachineCamera>();
+            if (cinemachineCamera != null)
+            {
+                cinemachineCamera.Target.TrackingTarget = cameraTarget;
+                Debug.Log($"RoomManager: Set Cinemachine tracking target to {cameraTarget.name}");
+            }
+            else
+            {
+                Debug.LogWarning("RoomManager: No CinemachineCamera found in scene");
+            }
         }
 
         private void OnRoomGenerated(GeneratedRoom genRoom)
@@ -173,7 +223,6 @@ namespace Rooms
                 detectedRoom.SpawnPositions = genRoom.SpawnPositions;
                 rooms.Add(detectedRoom);
                 CreateRoomOverlay(detectedRoom);
-                CreateCameraBounds(detectedRoom);
 
                 // Register doors in this area
                 DoorController.Required.RegisterDoorsInBounds(genRoom.TileBounds);
@@ -187,32 +236,6 @@ namespace Rooms
             {
                 Debug.LogWarning($"RoomManager: Failed to detect room at floor {genRoom.FloorNumber}");
             }
-        }
-
-        private void CreateCameraBounds(Room room)
-        {
-            var bounds = room.WorldBounds;
-
-            // Create a GameObject to hold the collider
-            var boundsObj = new GameObject($"CameraBounds_Room{room.Id}");
-            boundsObj.transform.parent = transform;
-            boundsObj.transform.position = bounds.center;
-
-            // Create PolygonCollider2D from bounds
-            var collider = boundsObj.AddComponent<PolygonCollider2D>();
-            collider.isTrigger = true;
-
-            // Set polygon points for a rectangle
-            var halfSize = bounds.extents;
-            collider.points = new Vector2[]
-            {
-                new Vector2(-halfSize.x, -halfSize.y),
-                new Vector2(-halfSize.x, halfSize.y),
-                new Vector2(halfSize.x, halfSize.y),
-                new Vector2(halfSize.x, -halfSize.y)
-            };
-
-            room.CameraBounds = collider;
         }
 
         public void RegisterGeneratedRoom(Room room, int floorNumber)
@@ -288,6 +311,9 @@ namespace Rooms
             {
                 CreateRoomOverlay(room);
             }
+
+            // Spawn/move player to starting room
+            MovePlayerToStartingRoom();
 
             // Reveal and enter starting room
             EnterStartingRoom();

@@ -15,7 +15,7 @@ namespace Rooms
         public bool IsRevealed { get; set; }
         public List<GameObject> BlackOverlayTiles { get; set; } = new List<GameObject>();
 
-        // Camera bounds (for Cinemachine confiner)
+        // Camera bounds (optional, for Cinemachine confiner)
         public Collider2D CameraBounds { get; set; }
 
         // Combat tracking

@@ -22,6 +22,7 @@ public class CinemachineConfinemendListener : MonoBehaviour
         var currentRoom = RoomManager.Instance?.GetCurrentRoom();
         if (currentRoom == null || confiner == null) return;
 
+        // Use CameraBounds if available
         if (currentRoom.CameraBounds != null)
         {
             confiner.BoundingShape2D = currentRoom.CameraBounds;
