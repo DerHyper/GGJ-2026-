@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace GAS
 {
+    [System.Serializable]
     public class DashBehaviour : IAbilityBehavior
     {
         bool IAbilityBehavior.CanActivate(AbilityInstance ability, AbilitySystemComponent owner)
