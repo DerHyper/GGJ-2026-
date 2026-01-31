@@ -162,6 +162,7 @@ namespace Rooms
 
                 // Find CameraTarget child and assign to Cinemachine camera
                 SetupCinemachineTarget(player.transform);
+                EnterRoom(startingRoom);
                 return;
             }
 
@@ -174,6 +175,7 @@ namespace Rooms
             // Move existing player to starting room
             playerTransform.position = spawnPos;
             Debug.Log($"RoomManager: Moved player to starting room at {spawnPos}");
+            EnterRoom(startingRoom);
         }
 
         private void SetupCinemachineTarget(Transform player)
