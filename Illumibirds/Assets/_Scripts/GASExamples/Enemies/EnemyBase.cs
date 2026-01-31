@@ -20,6 +20,8 @@ namespace Examples.Enemies
 
         [SerializeField] protected AttributeDefinition _minimumAttackDistance;
 
+        public float movementSpeed { get; private set; } = 4;
+
 
         [Header("Combat")]
         public AbilityDefinition abilityToUse;
@@ -29,6 +31,7 @@ namespace Examples.Enemies
         [Header("Detection")]
         // [SerializeField] protected float _detectionRange = 10f;
         [SerializeField] protected string PLAYERTAG = "Player";
+        public AStarPathfinding pathfinding;
 
         // Components
         public AbilitySystemComponent _asc;
@@ -46,6 +49,7 @@ namespace Examples.Enemies
         {
             _asc = GetComponent<AbilitySystemComponent>();
             _rb = GetComponent<Rigidbody2D>();
+            pathfinding = new();
             ChangeState(startingState);
         }
 
