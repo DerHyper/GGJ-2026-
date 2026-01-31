@@ -173,6 +173,7 @@ namespace Rooms
                 detectedRoom.SpawnPositions = genRoom.SpawnPositions;
                 rooms.Add(detectedRoom);
                 CreateRoomOverlay(detectedRoom);
+                CreateCameraBounds(detectedRoom);
 
                 // Register doors in this area
                 DoorController.Required.RegisterDoorsInBounds(genRoom.TileBounds);
@@ -186,6 +187,32 @@ namespace Rooms
             {
                 Debug.LogWarning($"RoomManager: Failed to detect room at floor {genRoom.FloorNumber}");
             }
+        }
+
+        private void CreateCameraBounds(Room room)
+        {
+            var bounds = room.WorldBounds;
+
+            // Create a GameObject to hold the collider
+            var boundsObj = new GameObject($"CameraBounds_Room{room.Id}");
+            boundsObj.transform.parent = transform;
+            boundsObj.transform.position = bounds.center;
+
+            // Create PolygonCollider2D from bounds
+            var collider = boundsObj.AddComponent<PolygonCollider2D>();
+            collider.isTrigger = true;
+
+            // Set polygon points for a rectangle
+            var halfSize = bounds.extents;
+            collider.points = new Vector2[]
+            {
+                new Vector2(-halfSize.x, -halfSize.y),
+                new Vector2(-halfSize.x, halfSize.y),
+                new Vector2(halfSize.x, halfSize.y),
+                new Vector2(halfSize.x, -halfSize.y)
+            };
+
+            room.CameraBounds = collider;
         }
 
         public void RegisterGeneratedRoom(Room room, int floorNumber)

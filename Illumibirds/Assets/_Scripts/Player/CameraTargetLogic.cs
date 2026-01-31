@@ -1,25 +1,28 @@
+using Rooms;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class CameraTargetLogic : MonoBehaviour
 {
     private const float WallHeight = 2f;
-    // Update is called once per frame
+
     void Update()
     {
-        Vector2 playerPosition = Finder.FindPlayer().transform.position;
+        var player = Finder.FindPlayer();
+        if (player == null) return;
 
-        Room currentRoom = RoomManager.Instance.GetCurrentRoom();
-        
+        Vector2 playerPosition = player.transform.position;
+
+        Room currentRoom = RoomManager.Instance?.GetCurrentRoom();
+        if (currentRoom == null) return;
+
         float cameraTop = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0)).y;
         float cameraRight = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0)).x;
         float cameraLeft = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).x;
         float cameraBottom = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).y;
 
-        Tilemap walkableTiles = RoomManager.Instance.GetCurrentRoom().WalkableTiles;
-        BoundsInt bounds = walkableTiles.cellBounds;
-        Vector3 min = walkableTiles.CellToWorld(bounds.min);
-        Vector3 max = walkableTiles.CellToWorld(bounds.max);
+        Bounds roomBounds = currentRoom.WorldBounds;
+        Vector3 min = roomBounds.min;
+        Vector3 max = roomBounds.max;
 
         bool overshootTop = cameraTop > max.y + WallHeight;
         bool overshootBottom = cameraBottom < min.y;
