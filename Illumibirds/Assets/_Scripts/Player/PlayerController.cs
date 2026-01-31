@@ -1,3 +1,5 @@
+using System;
+using Examples.Player;
 using GAS.Abilities;
 using GAS.Attributes;
 using GAS.Core;
@@ -20,6 +22,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AttributeDefinition _attackSpeedAttr;
     [SerializeField] private AttributeDefinition _moveSpeedAttr;
 
+
     [Header("Stamina Regen")]
     [SerializeField]
     private float _staminaRegenRate = 10f; // per second
@@ -37,14 +40,20 @@ public class PlayerController : MonoBehaviour
     public float Stamina => _asc.GetAttributeValue(_staminaAttr);
     public float MaxStamina => _asc.GetAttributeValue(_maxStaminaAttr);
     public float MoveSpeed => _asc.GetAttributeValue(_moveSpeedAttr);
-    public float HealthPercent => MaxHealth > 0 ? Health / MaxHealth : 0;
-    public float StaminaPercent => MaxStamina > 0 ? Stamina / MaxStamina : 0;
-    public bool IsDead => _isDead;
 
+    public float AtkSpeed => _asc.GetAttributeValue(_attackSpeedAttr);
+    // public float HealthPercent => MaxHealth > 0 ? Health / MaxHealth : 0;
+    // public float StaminaPercent => MaxStamina > 0 ? Stamina / MaxStamina : 0;
+    public bool IsDead => _isDead;
 
     Rigidbody2D rb;
     InputSystem_Actions inputActions;
     bool canMove = true;
+
+    [Header("Abilities")]
+    [SerializeField] AbilityDefinition meleeAbility;
+    [SerializeField] AbilityDefinition rangeAbility;
+    [SerializeField] AbilityDefinition dodgeAbility;
 
     void Awake()
     {
@@ -78,6 +87,39 @@ public class PlayerController : MonoBehaviour
 
         HandleStaminaRegen();
         if (canMove) DoMove();
+
+        if (inputActions.Player.RangeAttack.IsPressed())
+        {
+            TryRangeAttack();
+        }
+
+        if (inputActions.Player.MeleeAttack.IsPressed())
+        {
+            TryMeleeAttack();
+        }
+
+          if (inputActions.Player.Dodge.IsPressed())
+        {
+            TryDodge();
+        }
+    }
+
+    void TryRangeAttack()
+    {
+        _asc.TryActivateAbility(rangeAbility);
+
+    }
+
+    void TryDodge()
+    {
+        _asc.TryActivateAbility(dodgeAbility);
+
+    }
+
+    void TryMeleeAttack()
+    {
+        _asc.TryActivateAbility(meleeAbility);
+
     }
 
     void DoMove()
@@ -149,7 +191,7 @@ public class PlayerController : MonoBehaviour
 
     #region Health & Death
 
-    private void HandleAttributeChanged(Attribute attribute, float oldValue, float newValue)
+    private void HandleAttributeChanged(GAS.Attributes.Attribute attribute, float oldValue, float newValue)
     {
         // Check for death
         if (attribute.Definition == _healthAttr && newValue <= 0 && !_isDead)

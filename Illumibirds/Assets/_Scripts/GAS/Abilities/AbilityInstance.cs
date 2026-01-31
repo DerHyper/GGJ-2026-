@@ -8,7 +8,7 @@ namespace GAS.Abilities
     public class AbilityInstance
     {
         public AbilityDefinition Definition { get; }
-        public float CooldownRemaining { get; private set; }
+        public float CooldownRemaining;
         public bool IsOnCooldown => CooldownRemaining > 0f;
         public bool IsActive { get; private set; }
         public float ActiveDuration { get; private set; }
@@ -40,9 +40,9 @@ namespace GAS.Abilities
             }
         }
 
-        public void StartCooldown()
+        public void StartCooldown(float multiplier)
         {
-            CooldownRemaining = Definition.Cooldown;
+            CooldownRemaining = Definition.Cooldown * multiplier;
         }
 
         public void Activate()

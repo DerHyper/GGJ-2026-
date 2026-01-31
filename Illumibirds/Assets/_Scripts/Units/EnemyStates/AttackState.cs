@@ -6,7 +6,6 @@ public class AttackState : EnemyState
 {
     EnemyBase enemyBase;
 
-
     public void OnStart(GameObject gameObject)
     {
         enemyBase = gameObject.GetComponent<EnemyBase>();
@@ -18,10 +17,18 @@ public class AttackState : EnemyState
         if (enemyBase == null) return;
         if (enemyBase._isDead) return;
 
-        if (enemyBase.TargetIsInRange())
-            {
-                TryAttack();
-            }
+        if (enemyBase.IsTooCloseToTarget())
+        {
+            Debug.Log("TOO CLOSE");
+        }
+        else if (enemyBase.TargetIsInRange())
+        {
+            TryAttack();
+        }
+        else
+        {
+            enemyBase.ChangeState(new ApproachState());
+        }
     }
 
     protected virtual void PerformAttack()
@@ -30,7 +37,7 @@ public class AttackState : EnemyState
 
         enemyBase._asc.TryActivateAbility(enemyBase.abilityToUse);
 
-        Debug.Log($"{enemyBase.name} attacked {enemyBase._target.name}");
+        // Debug.Log($"{enemyBase.name} attacked {enemyBase._target.name}");
     }
 
 
@@ -39,6 +46,6 @@ public class AttackState : EnemyState
         if (!enemyBase.CanAttack()) return;
 
         PerformAttack();
-       enemyBase.ResetTimer();
+        enemyBase.ResetTimer();
     }
 }

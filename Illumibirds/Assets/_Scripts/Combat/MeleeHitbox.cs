@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using GAS.Abilities;
 using GAS.Core;
+using GAS.Tags;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
@@ -9,6 +11,7 @@ public class MeleeHitBox : MonoBehaviour
     AbilitySystemComponent owner;
     AbilityInstance ability;
     LayerMask hitLayer;
+    [SerializeField] GameplayTag dodgeTag;
 
     bool isActive = false;
     List<AbilitySystemComponent> alreadyHitTargets = new();
@@ -46,9 +49,11 @@ public class MeleeHitBox : MonoBehaviour
         {
             if (alreadyHitTargets.Contains(_asc)) return;
 
+
             alreadyHitTargets.Add(_asc);
 
-            ApplyEffectsToTarget(owner, _asc);
+            if (!_asc.OwnedTags.Tags.Contains(dodgeTag))
+                ApplyEffectsToTarget(owner, _asc);
 
         }
     }

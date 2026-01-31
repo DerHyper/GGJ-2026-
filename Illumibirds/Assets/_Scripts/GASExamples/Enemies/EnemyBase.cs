@@ -3,6 +3,7 @@ using GAS.Attributes;
 using GAS.Core;
 using GAS.Effects;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Examples.Enemies
 {
@@ -16,6 +17,9 @@ namespace Examples.Enemies
         [SerializeField] protected AttributeDefinition _damageAttr;
         [SerializeField] protected AttributeDefinition _attackSpeedAttr;
         [SerializeField] protected AttributeDefinition _rangeAttr;
+
+        [SerializeField] protected AttributeDefinition _minimumAttackDistance;
+
 
         [Header("Combat")]
         public AbilityDefinition abilityToUse;
@@ -36,11 +40,13 @@ namespace Examples.Enemies
         public Transform _target;
 
         public EnemyState currentState;
+        EnemyState startingState = new AttackState();
 
         protected virtual void Awake()
         {
             _asc = GetComponent<AbilitySystemComponent>();
             _rb = GetComponent<Rigidbody2D>();
+            ChangeState(startingState);
         }
 
         protected virtual void OnEnable()
@@ -70,6 +76,15 @@ namespace Examples.Enemies
             UpdateAttackCooldown();
             currentState.OnUpdate(this.gameObject);
         }
+
+        public void ChangeState(EnemyState newState)
+        {
+            Debug.Log($"{name} changing State to: {newState}");
+            currentState = newState;
+
+            currentState.OnStart(this.gameObject);
+        }
+
 
         #region Targeting
 
@@ -116,14 +131,16 @@ namespace Examples.Enemies
             return _attackTimer <= 0 && !_isDead && _target != null;
         }
 
+        public virtual bool IsTooCloseToTarget()
+        {
+            float distance = Vector2.Distance(_target.position, transform.position);
+            return distance < _asc.GetAttributeValue(_minimumAttackDistance);
+        }
+
         public void ResetTimer()
         {
             _attackTimer = _attackCooldown;
         }
-
-        #endregion
-
-        #region Behavior (override in subclasses)
 
         #endregion
 

@@ -1,6 +1,10 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using GAS.Abilities;
 using GAS.Core;
+using GAS.Tags;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 namespace GAS
@@ -9,6 +13,8 @@ namespace GAS
     public class DashBehaviour : IAbilityBehavior
     {
         [SerializeField] float dashDuration, dashPower;
+        [SerializeField] GameplayTag dodgeTag;
+
         bool IAbilityBehavior.CanActivate(AbilityInstance ability, AbilitySystemComponent owner)
         {
             return true;
@@ -31,12 +37,14 @@ namespace GAS
             _rb.linearVelocity = direction * power;
 
             ToggleMovementIfIsPlayer(_rb, false);
+            ToggleDodgeTagIfIsPlayer(_rb, true);
 
             yield return new WaitForSeconds(duration);
 
             _rb.linearVelocity = Vector2.zero;
 
-           ToggleMovementIfIsPlayer(_rb, true);
+            ToggleMovementIfIsPlayer(_rb, true);
+            ToggleDodgeTagIfIsPlayer(_rb, false);
 
 
         }
@@ -47,6 +55,25 @@ namespace GAS
             {
                 player.ToggleControl(active);
             }
+
+
+        }
+
+        void ToggleDodgeTagIfIsPlayer(Rigidbody2D _rb, bool active)
+        {
+            if (_rb.TryGetComponent<PlayerController>(out PlayerController player))
+            {
+                AbilitySystemComponent asc = _rb.GetComponent<AbilitySystemComponent>();
+                if (active) asc.AddTag(dodgeTag);
+                else if (asc.OwnedTags.Tags.Contains(dodgeTag))
+                {
+                    asc.RemoveTag(dodgeTag);
+                }
+
+                Debug.Log($"Dodging set to: {active}");
+            }
+
+
         }
 
         void IAbilityBehavior.OnEnd(AbilityInstance ability, AbilitySystemComponent owner)

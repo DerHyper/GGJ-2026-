@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ff0be0a0f2c14954bf99f46a70eb79c, type: 3}
-  m_Name: Attr_AttackSpeed
+  m_Name: Attr_MinAttackDistance
   m_EditorClassIdentifier: Assembly-CSharp::GAS.Attributes.AttributeDefinition
-  AttributeName: AttackSpeed
-  MinValue: 0.1
+  AttributeName: Stamina
+  MinValue: 0
   MaxValue: 10

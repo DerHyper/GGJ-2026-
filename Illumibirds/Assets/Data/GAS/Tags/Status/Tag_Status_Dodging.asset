@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ff0be0a0f2c14954bf99f46a70eb79c, type: 3}
-  m_Name: Attr_Stamina
-  m_EditorClassIdentifier: Assembly-CSharp::GAS.Attributes.AttributeDefinition
-  AttributeName: Stamina
-  MinValue: 0
-  MaxValue: 200
+  m_Script: {fileID: 11500000, guid: 56ee5ce0b37a24e5ebba6a08b4aebd90, type: 3}
+  m_Name: Tag_Status_Dodging
+  m_EditorClassIdentifier: GAS::GAS.Tags.GameplayTag
+  Parent: {fileID: 0}

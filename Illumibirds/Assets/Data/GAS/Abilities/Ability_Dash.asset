@@ -15,7 +15,7 @@ MonoBehaviour:
   AbilityName: Dash
   Icon: {fileID: 0}
   CostAttribute: {fileID: 11400000, guid: 76237656d85b74ece96ab6ff6c6bcc45, type: 2}
-  CostAmount: 20
+  CostAmount: 30
   Cooldown: 1
   ActivationGrantedTags: []
   ActivationRequiredTags: []
@@ -35,3 +35,4 @@ MonoBehaviour:
       data:
         dashDuration: 0.1
         dashPower: 30
+        dodgeTag: {fileID: 11400000, guid: ab55f01864bc4f34cb32ebc3f2eb840c, type: 2}

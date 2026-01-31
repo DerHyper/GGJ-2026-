@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 77bb9b7615bf84deb8df1d530265258a, type: 3}
-  m_Name: Effect_CurrentHealth_Minus20
+  m_Name: Effect_Dodging
   m_EditorClassIdentifier: Assembly-CSharp::GAS.Effects.GameplayEffectDefinition
   DurationType: 0
   Duration: 0
   Modifiers:
-  - TargetAttribute: {fileID: 11400000, guid: d03911df997dd4c019d66da0057503c8, type: 2}
+  - TargetAttribute: {fileID: 11400000, guid: d4cd5747b2929c24993e413ba86adb38, type: 2}
     Operation: 0
-    Magnitude: -20
-  GrantedTags: []
+    Magnitude: 3
+  GrantedTags:
+  - {fileID: 11400000, guid: ab55f01864bc4f34cb32ebc3f2eb840c, type: 2}
   ApplicationRequiredTags: []
   ApplicationBlockedTags: []
   CanStack: 0

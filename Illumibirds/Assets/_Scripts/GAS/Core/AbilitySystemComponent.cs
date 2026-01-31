@@ -20,6 +20,7 @@ namespace GAS.Core
 
         [SerializeField]
         private List<AbilityDefinition> _startingAbilities = new();
+        [SerializeField] AttributeDefinition _AtkSpeedAttrDefinition;
 
         [Header("Debug")]
         [SerializeField] private bool _debugLogEffects = false;
@@ -501,8 +502,9 @@ namespace GAS.Core
                 _ownedTags.RemoveTag(tag);
             }
 
+            float cooldownMultiplier = GetAttributeValue(_AtkSpeedAttrDefinition);
             // Start cooldown
-            instance.StartCooldown();
+            instance.StartCooldown(cooldownMultiplier);
             instance.Deactivate();
 
             // Add cooldown tags

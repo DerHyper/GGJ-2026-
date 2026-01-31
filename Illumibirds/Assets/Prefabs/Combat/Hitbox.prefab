@@ -183,3 +183,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc1cd68d5899f0b44979cc919c68df56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: IllumiBirds::MeleeHitBox
+  dodgeTag: {fileID: 11400000, guid: ab55f01864bc4f34cb32ebc3f2eb840c, type: 2}

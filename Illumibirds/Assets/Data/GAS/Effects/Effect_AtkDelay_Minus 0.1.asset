@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 77bb9b7615bf84deb8df1d530265258a, type: 3}
-  m_Name: Effect_MaxHealth_Buff_30s
+  m_Name: Effect_AtkDelay_Minus 0.1
   m_EditorClassIdentifier: Assembly-CSharp::GAS.Effects.GameplayEffectDefinition
-  DurationType: 1
-  Duration: 30
+  DurationType: 0
+  Duration: 0
   Modifiers:
-  - TargetAttribute: {fileID: 11400000, guid: c9cd7e9438c54428cbac825ff990f8e8, type: 2}
+  - TargetAttribute: {fileID: 11400000, guid: b85033ce5a1da465593d05d2e54688ed, type: 2}
     Operation: 0
-    Magnitude: 20
+    Magnitude: -0.1
   GrantedTags: []
   ApplicationRequiredTags: []
   ApplicationBlockedTags: []

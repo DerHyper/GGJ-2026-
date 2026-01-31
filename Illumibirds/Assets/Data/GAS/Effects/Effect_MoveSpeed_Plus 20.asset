@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 77bb9b7615bf84deb8df1d530265258a, type: 3}
-  m_Name: Effect_MoveSpeed_add_3
+  m_Name: Effect_MoveSpeed_Plus 20
   m_EditorClassIdentifier: Assembly-CSharp::GAS.Effects.GameplayEffectDefinition
   DurationType: 0
   Duration: 0
