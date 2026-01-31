@@ -35,9 +35,10 @@ MonoBehaviour:
       type: {class: ProjectileBehavior, ns: GAS.Abilities.Behaviors, asm: IllumiBirds}
       data:
         ProjectilePrefab: {fileID: 7997979048116751412, guid: b1cc311daf38a624f9d23ecd1a818c7f, type: 3}
-        Speed: 10
+        Speed: 3
         Lifetime: 5
         SpawnOffset: {x: 2, y: 0, z: 0}
+        piercingBullet: 0
         hitLayer:
           serializedVersion: 2
           m_Bits: 64

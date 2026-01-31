@@ -29,6 +29,12 @@ public class PlayerAttributeUIElement : MonoBehaviour
     }
 
 
+    void OnDisable()
+    {
+        if(attrToDisplay != null)
+        attrToDisplay.OnValueChanged -= UpdateUI;
+    }
+
     void UpdateUI(Attribute attr, float oldValue, float newValue)
     {
         float _fillAmount = newValue / maxValue.CurrentValue;

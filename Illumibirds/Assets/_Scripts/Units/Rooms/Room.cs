@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -6,6 +7,8 @@ public class Room : MonoBehaviour
 {
     public Tilemap WalkableTiles;
     public BoxCollider2D cameraBounds;
+    public List<Transform> possibleEnemySpawns;
+    public Transform playerSpawn;
 
     void Start()
     {

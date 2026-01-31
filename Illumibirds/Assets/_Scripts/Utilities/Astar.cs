@@ -22,7 +22,7 @@ public class AStarPathfinding
         }
     }
     const int WalkPointsPerTile = 4;
-    [SerializeField] private  Tilemap WalkableTiles;
+    [SerializeField] private Tilemap WalkableTiles;
     private Node[,] grid;
     private int gridWidth;
     private int gridHeight;
@@ -40,6 +40,12 @@ public class AStarPathfinding
         DilateObstacles();
     }
 
+    public void DesubscribeFromEvent()
+    {
+        RoomManager.Instance.CurrentRoomChanged.RemoveListener(OnCurrentRoomChanged);
+        Debug.Log("DESUB");
+    }
+
     /// <summary>
     /// Get path from start to target in grid coordinates
     /// </summary>
@@ -50,7 +56,7 @@ public class AStarPathfinding
     {
         // Test Player
         List<Vector2Int> path = FindPath(WorldToTileIndex(start), WorldToTileIndex(target));
-        
+
         // Debug Path
         var lastItem = path[0];
         foreach (Vector2Int item in path)
@@ -74,12 +80,20 @@ public class AStarPathfinding
 
     private void OnCurrentRoomChanged()
     {
-        WalkableTiles = RoomManager.Instance.GetCurrentRoom().WalkableTiles;
+        SetWalkableTiles();
+        if(RoomManager.Instance == null) Debug.LogWarning("INSTANCE IS NULL");
         SetWalkableForTilemap();
+    }
+
+    void SetWalkableTiles()
+    {
+        WalkableTiles = RoomManager.Instance.GetCurrentRoom().WalkableTiles;
     }
 
     private void SetWalkableForTilemap()
     {
+        if(WalkableTiles == null) SetWalkableTiles();
+        
         BoundsInt bounds = WalkableTiles.cellBounds;
         TileBase[] allTiles = WalkableTiles.GetTilesBlock(bounds);
         for (int x = 0; x < bounds.size.x; x++)
@@ -111,123 +125,123 @@ public class AStarPathfinding
     }
 
     public void DilateObstacles(int iterations = 1)
-{
-    for (int iter = 0; iter < iterations; iter++)
     {
-        // Erstelle temporäres Grid für aktuelle Iteration
-        bool[,] tempWalkable = new bool[gridWidth, gridHeight];
-        
-        // Kopiere aktuellen Zustand
-        for (int x = 0; x < gridWidth; x++)
+        for (int iter = 0; iter < iterations; iter++)
         {
-            for (int y = 0; y < gridHeight; y++)
+            // Erstelle temporäres Grid für aktuelle Iteration
+            bool[,] tempWalkable = new bool[gridWidth, gridHeight];
+
+            // Kopiere aktuellen Zustand
+            for (int x = 0; x < gridWidth; x++)
             {
-                tempWalkable[x, y] = grid[x, y].walkable;
-            }
-        }
-        
-        // Dilatiere
-        for (int x = 0; x < gridWidth; x++)
-        {
-            for (int y = 0; y < gridHeight; y++)
-            {
-                // Wenn aktuelles Feld nicht begehbar ist
-                if (!grid[x, y].walkable)
+                for (int y = 0; y < gridHeight; y++)
                 {
-                    // Setze alle Nachbarn auf nicht begehbar
-                    for (int nx = -1; nx <= 1; nx++)
+                    tempWalkable[x, y] = grid[x, y].walkable;
+                }
+            }
+
+            // Dilatiere
+            for (int x = 0; x < gridWidth; x++)
+            {
+                for (int y = 0; y < gridHeight; y++)
+                {
+                    // Wenn aktuelles Feld nicht begehbar ist
+                    if (!grid[x, y].walkable)
                     {
-                        for (int ny = -1; ny <= 1; ny++)
+                        // Setze alle Nachbarn auf nicht begehbar
+                        for (int nx = -1; nx <= 1; nx++)
                         {
-                            int checkX = x + nx;
-                            int checkY = y + ny;
-                            
-                            if (checkX >= 0 && checkX < gridWidth && 
-                                checkY >= 0 && checkY < gridHeight)
+                            for (int ny = -1; ny <= 1; ny++)
                             {
-                                tempWalkable[checkX, checkY] = false;
+                                int checkX = x + nx;
+                                int checkY = y + ny;
+
+                                if (checkX >= 0 && checkX < gridWidth &&
+                                    checkY >= 0 && checkY < gridHeight)
+                                {
+                                    tempWalkable[checkX, checkY] = false;
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-        
-        // Übernehme Änderungen
-        for (int x = 0; x < gridWidth; x++)
-        {
-            for (int y = 0; y < gridHeight; y++)
+
+            // Übernehme Änderungen
+            for (int x = 0; x < gridWidth; x++)
             {
-                grid[x, y].walkable = tempWalkable[x, y];
+                for (int y = 0; y < gridHeight; y++)
+                {
+                    grid[x, y].walkable = tempWalkable[x, y];
+                }
             }
         }
     }
-}
 
     public Vector2Int WorldToTileIndex(Vector2 worldPosition)
     {
         // Konvertiere zu Cell-Position
         Vector3Int cellPosition = WalkableTiles.WorldToCell(worldPosition);
         BoundsInt bounds = WalkableTiles.cellBounds;
-        
+
         // Relative Tile-Position
         int tileX = cellPosition.x - bounds.xMin;
         int tileY = cellPosition.y - bounds.yMin;
-        
+
         // Berechne Sub-Tile-Position innerhalb der Zelle
         Vector3 cellWorldPos = WalkableTiles.CellToWorld(cellPosition);
         Vector3 cellSize = WalkableTiles.cellSize;
-        
+
         float relativeX = (worldPosition.x - cellWorldPos.x) / cellSize.x;
         float relativeY = (worldPosition.y - cellWorldPos.y) / cellSize.y;
-        
+
         int subX = Mathf.FloorToInt(relativeX * WalkPointsPerTile);
         int subY = Mathf.FloorToInt(relativeY * WalkPointsPerTile);
-        
+
         // Clamp Sub-Positionen
         subX = Mathf.Clamp(subX, 0, WalkPointsPerTile - 1);
         subY = Mathf.Clamp(subY, 0, WalkPointsPerTile - 1);
-        
+
         // Kombiniere zu Grid-Index
         int gridX = tileX * WalkPointsPerTile + subX;
         int gridY = tileY * WalkPointsPerTile + subY;
-        
+
         // Clamp zu Grid-Grenzen
         gridX = Mathf.Clamp(gridX, 0, gridWidth - 1);
         gridY = Mathf.Clamp(gridY, 0, gridHeight - 1);
-        
+
         return new Vector2Int(gridX, gridY);
     }
 
     public Vector2 TileIndexToWorld(Vector2Int gridIndex)
     {
         BoundsInt bounds = WalkableTiles.cellBounds;
-    
+
         // Berechne Tile-Index und Sub-Position
         int tileX = gridIndex.x / WalkPointsPerTile;
         int tileY = gridIndex.y / WalkPointsPerTile;
         int subX = gridIndex.x % WalkPointsPerTile;
         int subY = gridIndex.y % WalkPointsPerTile;
-        
+
         // Cell-Position in der Tilemap
         Vector3Int cellPosition = new Vector3Int(
             tileX + bounds.xMin,
             tileY + bounds.yMin,
             0
         );
-        
+
         // World-Position der Zelle (linke untere Ecke)
         Vector3 cellWorldPos = WalkableTiles.CellToWorld(cellPosition);
         Vector3 cellSize = WalkableTiles.cellSize;
-        
+
         // Berechne Sub-Position innerhalb der Zelle
         float subPointSizeX = cellSize.x / WalkPointsPerTile;
         float subPointSizeY = cellSize.y / WalkPointsPerTile;
-        
+
         // Zentriere den Sub-Punkt
         float worldX = cellWorldPos.x + (subX + 0.5f) * subPointSizeX;
         float worldY = cellWorldPos.y + (subY + 0.5f) * subPointSizeY;
-        
+
         return new Vector2(worldX, worldY);
     }
 
@@ -278,7 +292,7 @@ public class AStarPathfinding
             Node currentNode = openList[0];
             for (int i = 1; i < openList.Count; i++)
             {
-                if (openList[i].fCost < currentNode.fCost || 
+                if (openList[i].fCost < currentNode.fCost ||
                     (openList[i].fCost == currentNode.fCost && openList[i].hCost < currentNode.hCost))
                 {
                     currentNode = openList[i];
@@ -321,7 +335,7 @@ public class AStarPathfinding
     private List<Node> GetNeighbors(Node node)
     {
         List<Node> neighbors = new List<Node>();
-        
+
         for (int x = -1; x <= 1; x++)
         {
             for (int y = -1; y <= 1; y++)

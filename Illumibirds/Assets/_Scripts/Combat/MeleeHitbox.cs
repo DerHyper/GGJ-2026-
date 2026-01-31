@@ -47,13 +47,25 @@ public class MeleeHitBox : MonoBehaviour
 
         if (collision.TryGetComponent<AbilitySystemComponent>(out AbilitySystemComponent _asc))
         {
+            // if(collision.TryGetComponent<PlayerController>(out PlayerController player))
+            // {
+            //     if(player.is)    
+            // }
+
             if (alreadyHitTargets.Contains(_asc)) return;
 
 
             alreadyHitTargets.Add(_asc);
 
             if (!_asc.OwnedTags.Tags.Contains(dodgeTag))
+            {
                 ApplyEffectsToTarget(owner, _asc);
+                Debug.Log($"Damage dealt to {_asc.transform.name}");   
+            }
+            else
+            {
+                Debug.Log($"NO Damage dealt to {_asc.transform.name} because OF DODGE");   
+            }
 
         }
     }

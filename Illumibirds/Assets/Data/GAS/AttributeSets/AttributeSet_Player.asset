@@ -28,4 +28,4 @@ MonoBehaviour:
   - Attribute: {fileID: 11400000, guid: 76237656d85b74ece96ab6ff6c6bcc45, type: 2}
     InitialValue: 100
   - Attribute: {fileID: 11400000, guid: d4cd5747b2929c24993e413ba86adb38, type: 2}
-    InitialValue: 4
+    InitialValue: 8

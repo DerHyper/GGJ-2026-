@@ -2,5 +2,7 @@ public enum GameState
 {
     inGame,
     paused,
-    mainMenu
+    mainMenu,
+
+    gameOver
 }

@@ -64,13 +64,19 @@ namespace GAS
             if (_rb.TryGetComponent<PlayerController>(out PlayerController player))
             {
                 AbilitySystemComponent asc = _rb.GetComponent<AbilitySystemComponent>();
-                if (active) asc.AddTag(dodgeTag);
-                else if (asc.OwnedTags.Tags.Contains(dodgeTag))
+                if (active && !asc.OwnedTags.Tags.Contains(dodgeTag))
                 {
+                 asc.AddTag(dodgeTag);
+                  Debug.Log($"Dodging set to: {true}");   
+                }
+                else 
+                {
+                    if (asc.OwnedTags.Tags.Contains(dodgeTag))
                     asc.RemoveTag(dodgeTag);
+                    Debug.Log($"Dodging set to: {false}");
                 }
 
-                Debug.Log($"Dodging set to: {active}");
+                
             }
 
 

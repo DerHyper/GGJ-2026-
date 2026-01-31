@@ -201,7 +201,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c9751d0dfb8c7b428cb951a0bd595c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
-  _healthAttr: {fileID: 11400000, guid: d03911df997dd4c019d66da0057503c8, type: 2}
-  healthAttrModifier:
-    Operation: 0
-    Value: -10
+  dodgeTag: {fileID: 11400000, guid: ab55f01864bc4f34cb32ebc3f2eb840c, type: 2}

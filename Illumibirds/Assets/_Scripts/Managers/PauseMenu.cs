@@ -20,6 +20,7 @@ public class PauseMenu : MonoBehaviour
 
     void OnDisable()
     {
+        inputActions.Disable();
         inputActions.Player.PauseGame.performed -= OnPause;
     }
 

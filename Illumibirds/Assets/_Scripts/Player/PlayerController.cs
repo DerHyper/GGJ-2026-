@@ -127,7 +127,6 @@ public class PlayerController : MonoBehaviour
         Vector2 moveVector = inputActions.Player.Move.ReadValue<Vector2>().normalized;
         float multiplier = 1;
         rb.linearVelocity = moveVector * MoveSpeed * multiplier;
-        // Debug.Log($"Vector: {moveVector}");
     }
 
     void OnLook(InputAction.CallbackContext ctx)
@@ -226,6 +225,8 @@ public class PlayerController : MonoBehaviour
         Debug.Log("PLAYER DIE");
         rb.linearVelocity = Vector2.zero;
         // TODO: Trigger death animation, game over screen, etc.
+
+        GameManager.Instance.ChangeState(GameState.gameOver);
     }
 
     // public void Heal(float amount)
