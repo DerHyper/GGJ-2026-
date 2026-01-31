@@ -10,11 +10,14 @@ public class RandomizedEnemySpawner : MonoBehaviour
 
     List<EnemyBase> spawnedEnemies;
 
+    [SerializeField] RandomAbilityPickup abilityPickupPrefab;
+
     public Action OnWaveDefeated;
+
     public void SpawnEnemies()
     {
         spawnedEnemies = new();
-        
+
         possiblePositions = RoomManager.Instance.GetCurrentRoom().possibleEnemySpawns;
         int rnd = UnityEngine.Random.Range(0, possibleEnemyWaves.Count);
         EnemyWave wave = possibleEnemyWaves[rnd];
@@ -26,20 +29,13 @@ public class RandomizedEnemySpawner : MonoBehaviour
         }
     }
 
-    // void SpawnRandomEnemyWave(Vector2 pos)
-    // {
-    //     int rnd = UnityEngine.Random.Range(0, possibleEnemyWaves.Count);
-    //     EnemyWave wave = possibleEnemyWaves[rnd];
 
-    //     for (int i = 0; i < wave.enemies.Count; i++)
-    //     {
-    //         Instantiate(wave.enemies[i], pos, Quaternion.identity);
-
-    //     }
-    //     // Destroy(this.gameObject, 0.1f);
-    // }
-
-
+    void ClearWave()
+    {
+        OnWaveDefeated?.Invoke();
+        Debug.Log("CLEAR WAVE");
+        Instantiate(abilityPickupPrefab, Vector2.zero, Quaternion.identity);
+    }
 
     public void SubscribeToEnemyDeath(EnemyBase enemy)
     {
@@ -55,10 +51,11 @@ public class RandomizedEnemySpawner : MonoBehaviour
         for (int i = 0; i < spawnedEnemies.Count; i++)
         {
             if (!spawnedEnemies[i]._isDead)
-                break;
+                return;
 
-            OnWaveDefeated?.Invoke();
         }
+        
+        ClearWave();
     }
 
     void OnDisable()
