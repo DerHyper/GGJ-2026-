@@ -127,7 +127,6 @@ public class PlayerController : MonoBehaviour
         Vector2 moveVector = inputActions.Player.Move.ReadValue<Vector2>().normalized;
         float multiplier = 1;
         rb.linearVelocity = moveVector * MoveSpeed * multiplier;
-        // Debug.Log($"Vector: {moveVector}");
     }
 
     void OnLook(InputAction.CallbackContext ctx)

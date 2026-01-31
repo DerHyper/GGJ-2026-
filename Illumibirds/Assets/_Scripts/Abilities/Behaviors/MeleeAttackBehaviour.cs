@@ -7,10 +7,10 @@ using System;
 public class MeleeAttackBehaviour : IAbilityBehavior
 {
     [SerializeField] float Lifetime = 0.1f;
-    // [SerializeField] bool SingleHit = true;
+
     [SerializeField] MeleeHitBox hitBoxPrefab;
     public LayerMask hitLayer;
-    // [SerializeField] Vector3 SpawnOffset = Vector3.zero;
+
     bool IAbilityBehavior.CanActivate(AbilityInstance ability, AbilitySystemComponent owner)
     {
         return true;
@@ -18,10 +18,8 @@ public class MeleeAttackBehaviour : IAbilityBehavior
 
     void IAbilityBehavior.OnActivate(AbilityInstance ability, AbilitySystemComponent owner)
     {
-        Debug.Log("MELEE");
         if (hitBoxPrefab == null) return;
 
-        //   owner.transform.position + owner.transform.TransformDirection(SpawnOffset);
         var spawnPos = owner.transform.GetComponentInChildren<HitboxParentMarker>().transform.position;
 
 

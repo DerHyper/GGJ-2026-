@@ -1,18 +1,19 @@
+using System.Linq;
 using GAS.Abilities;
 using GAS.Attributes;
 using GAS.Core;
+using GAS.Tags;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] AttributeDefinition _healthAttr;
-    [SerializeField] AttributeModifier healthAttrModifier;
     AbilitySystemComponent owner;
     AbilityInstance ability;
 
     LayerMask hitLayer;
+    [SerializeField] GameplayTag dodgeTag;
 
     bool piercing = false;
 
@@ -45,15 +46,15 @@ public class Projectile : MonoBehaviour
 
         if (collision.TryGetComponent<AbilitySystemComponent>(out AbilitySystemComponent _asc))
         {
-            Debug.Log($"Projectile hit: {collision.name}");
 
-            if (owner != null)
+            if (!_asc.OwnedTags.Tags.Contains(dodgeTag))
             {
                 ApplyEffectsToTarget(owner, _asc);
+                Debug.Log($"Damage dealt to {_asc.transform.name}");   
             }
             else
             {
-                _asc.GetAttribute(_healthAttr).AddModifier(healthAttrModifier);
+                Debug.Log($"NO Damage dealt to {_asc.transform.name} because OF DODGE");   
             }
             
             if(!piercing) Destroy(gameObject);
