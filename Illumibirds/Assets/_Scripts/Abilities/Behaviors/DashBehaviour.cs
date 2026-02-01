@@ -25,6 +25,10 @@ namespace GAS
 
             Debug.Log($"Dashing to: {direction}");
 
+            // Camera dash effect
+            if (owner.GetComponent<PlayerController>() != null && CameraEffects.Instance != null)
+                CameraEffects.Instance.OnDash();
+
             owner.StartCoroutine(DashCoroutine(rb, direction, dashDuration, dashPower));
 
         }

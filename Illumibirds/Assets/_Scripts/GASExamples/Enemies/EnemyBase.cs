@@ -183,6 +183,9 @@ namespace Examples.Enemies
             Debug.Log($"{name} died!");
             OnDie?.Invoke(this);
 
+            // Camera effect on kill
+            if (CameraEffects.Instance != null)
+                CameraEffects.Instance.OnEnemyKilled();
 
             // Stop movement
             if (_rb != null)

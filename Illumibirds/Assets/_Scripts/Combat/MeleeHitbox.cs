@@ -60,7 +60,16 @@ public class MeleeHitBox : MonoBehaviour
             if (!_asc.OwnedTags.Tags.Contains(dodgeTag))
             {
                 ApplyEffectsToTarget(owner, _asc);
-                Debug.Log($"Damage dealt to {_asc.transform.name}");   
+                Debug.Log($"Damage dealt to {_asc.transform.name}");
+
+                // Camera effects
+                if (CameraEffects.Instance != null)
+                {
+                    if (owner.GetComponent<PlayerController>() != null)
+                        CameraEffects.Instance.OnHeavyAttack();
+                    else if (_asc.GetComponent<PlayerController>() != null)
+                        CameraEffects.Instance.OnPlayerHit(0.3f);
+                }
             }
             else
             {

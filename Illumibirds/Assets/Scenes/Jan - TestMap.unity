@@ -255,6 +255,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameplayCore
       objectReference: {fileID: 0}
+    - target: {fileID: 8946244315801218936, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
