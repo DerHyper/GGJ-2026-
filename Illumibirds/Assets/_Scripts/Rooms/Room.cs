@@ -58,6 +58,12 @@ namespace Rooms
             CreateCameraBoundsCollider();
         }
 
+        // Camera bounds padding (in world units)
+        private const float PaddingTop = 8f;
+        private const float PaddingBottom = 0f;
+        private const float PaddingLeft = 0f;
+        private const float PaddingRight = 0f;
+
         private void CreateCameraBoundsCollider()
         {
             // Destroy existing if any
@@ -73,19 +79,22 @@ namespace Rooms
             var collider = boundsObj.AddComponent<PolygonCollider2D>();
             collider.isTrigger = true;
 
-            // Set polygon points from bounds (clockwise rectangle)
-            Vector3 min = WorldBounds.min;
-            Vector3 max = WorldBounds.max;
+            // Set polygon points from bounds with padding
+            float minX = WorldBounds.min.x - PaddingLeft;
+            float minY = WorldBounds.min.y - PaddingBottom;
+            float maxX = WorldBounds.max.x + PaddingRight;
+            float maxY = WorldBounds.max.y + PaddingTop;
+
             collider.SetPath(0, new Vector2[]
             {
-                new Vector2(min.x, min.y),
-                new Vector2(min.x, max.y),
-                new Vector2(max.x, max.y),
-                new Vector2(max.x, min.y)
+                new Vector2(minX, minY),
+                new Vector2(minX, maxY),
+                new Vector2(maxX, maxY),
+                new Vector2(maxX, minY)
             });
 
             CameraBounds = collider;
-            Debug.Log($"Room {Id}: Created CameraBounds at {WorldBounds.center} size {WorldBounds.size}");
+            Debug.Log($"Room {Id}: Created CameraBounds at {WorldBounds.center} size {WorldBounds.size} (padded: top={PaddingTop}, bottom={PaddingBottom}, left={PaddingLeft}, right={PaddingRight})");
         }
 
         public bool ContainsWorldPosition(Vector3 worldPos)
