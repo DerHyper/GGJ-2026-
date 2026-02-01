@@ -1,22 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour, IManager
+public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
     [SerializeField] private Transform _sfxParent;
 
     // Music
-    [SerializeField] private AudioSource musicPlayer;
+    [SerializeField] private List<AudioPlayer> musicPlayer;
     [SerializeField] private float fadeAmount = 1;
-    private AudioClip nextMusic;
-
-    private float currentMusicTargetVolume;
-    private float nextMusicTargetVolume;
-    private bool fadeIn = false;
-    private bool fadeOut = false;
+    private MusicTrack nextMusic;
 
     // Pitch
     [SerializeField] private float pitchIncrease = 0.1f;
@@ -50,35 +46,34 @@ public class AudioManager : MonoBehaviour, IManager
             currentPitch = stdPitch;
         }
 
-        if (fadeIn && musicPlayer.volume < currentMusicTargetVolume)
+        foreach (var player in musicPlayer)
         {
-            musicPlayer.volume += fadeAmount * Time.deltaTime;
+            player.Update();
         }
-        else if (fadeIn)
-        {
-            fadeIn = false;
-        }
+        
+    }
 
-        if (fadeOut && musicPlayer.volume > 0)
+    public void PlayMusic(MusicTrack audioClip)
+    {
+        nextMusic = audioClip;
+        for (int i = 0; i < musicPlayer.Count; i++)
         {
-            musicPlayer.volume -= fadeAmount * Time.deltaTime;
-        }
-        else if (fadeOut)
-        {
-            fadeOut = false;
-            fadeIn = true;
-            musicPlayer.Stop();
-            musicPlayer.clip = nextMusic;
-            currentMusicTargetVolume = nextMusicTargetVolume;
-            musicPlayer.Play();
+            musicPlayer[i].PlayMusic(nextMusic, i, i != 0); // All but first layer silent
         }
     }
 
-    public void PlayMusic(AudioClip audioClip, float volume)
+    public void FadeInLayer(int layerIndex)
     {
-        nextMusic = audioClip;
-        nextMusicTargetVolume = volume;
-        fadeOut = true;
+        if (layerIndex < 0 || layerIndex >= musicPlayer.Count) return;
+        musicPlayer[layerIndex].currentMusicTargetVolume = nextMusic.volumes[layerIndex];
+        musicPlayer[layerIndex].fadeIn = true;
+    }
+
+    public void FadeOutLayer(int layerIndex)
+    {
+        if (layerIndex < 0 || layerIndex >= musicPlayer.Count) return;
+        musicPlayer[layerIndex].currentMusicTargetVolume = 0;
+        musicPlayer[layerIndex].fadeOut = true;
     }
 
     public void PlayOncePitched(AudioClip clip, float volume)
@@ -90,7 +85,7 @@ public class AudioManager : MonoBehaviour, IManager
 
     public void PlayOncePitchedRandom(AudioClip clip, float volume)
     {
-        float pitch = Random.Range(stdPitch + randomPitchRange, stdPitch - randomPitchRange);
+        float pitch = UnityEngine.Random.Range(stdPitch - randomPitchRange, stdPitch + randomPitchRange);
         PlayOnce(clip, volume, pitch);
     }
 
@@ -116,5 +111,72 @@ public class AudioManager : MonoBehaviour, IManager
     {
         yield return new WaitForSeconds(destructionTime);
         Destroy(audioSouce);
+    }
+}
+
+[Serializable]
+public class MusicTrack
+{
+    public List<AudioClip> clipLayers;
+    public List<float> volumes;
+
+    public MusicTrack(List<AudioClip> _clips, List<float> _volumes)
+    {
+        clipLayers = _clips;
+        volumes = _volumes;
+    }
+}
+
+[Serializable]
+public class AudioPlayer
+{
+    public AudioSource musicPlayer;
+    public AudioClip nextMusic;
+    public float currentMusicTargetVolume = 0;
+    private float nextMusicTargetVolume = 0;
+    public bool fadeIn = false;
+    public bool fadeOut = false;
+    public float fadeAmount = 1;
+
+    public void Update() {
+        if (fadeIn && musicPlayer.volume < currentMusicTargetVolume)
+        {
+            musicPlayer.volume += fadeAmount * Time.deltaTime;
+        }
+        else if (fadeIn)
+        {
+            fadeIn = false;
+        }
+
+        if (fadeOut && musicPlayer.volume > 0)
+        {
+            musicPlayer.volume -= fadeAmount * Time.deltaTime;
+        }
+        else if (fadeOut)
+        {
+            fadeOut = false;
+            fadeIn = true;
+            currentMusicTargetVolume = nextMusicTargetVolume;
+        }
+    }
+    
+    public void PlayMusic(MusicTrack musicTrack, int index, bool isSilent = false)
+    {
+        if (musicPlayer.clip == null)
+        {
+            // No music is playing, start new music immediately
+            musicPlayer.clip = musicTrack.clipLayers[index];
+            musicPlayer.volume = 0;
+            currentMusicTargetVolume = isSilent ? 0 : musicTrack.volumes[index];
+            musicPlayer.Play();
+            fadeIn = true;
+        }
+        else
+        {
+            // Music is playing, fade out current and prepare next
+            nextMusic = musicTrack.clipLayers[index]; // Single layer
+            nextMusicTargetVolume = isSilent ? 0 : musicTrack.volumes[index];
+            fadeOut = true;
+        }
     }
 }
