@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
     void OnEnable()
     {
         inputActions.Enable();
-        inputActions.Player.Look.performed += OnLook;
+        // inputActions.Player.Look.performed += OnLook;
 
         _asc.OnAttributeChanged += HandleAttributeChanged;
     }
@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
     void OnDisable()
     {
         inputActions.Disable();
-        inputActions.Player.Look.performed -= OnLook;
+        // inputActions.Player.Look.performed -= OnLook;
 
         if (_asc != null)
         {
@@ -151,17 +151,17 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    void OnLook(InputAction.CallbackContext ctx)
-    {
-        Vector2 lookVector = inputActions.Player.Look.ReadValue<Vector2>().normalized;
+    // void OnLook(InputAction.CallbackContext ctx)
+    // {
+    //     Vector2 lookVector = inputActions.Player.Look.ReadValue<Vector2>().normalized;
 
-        if (lookVector.sqrMagnitude > 0.1f)
-        {
-            float angle = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg;
-            hitboxParent.rotation = Quaternion.Euler(0, 0, angle);
+    //     if (lookVector.sqrMagnitude > 0.1f)
+    //     {
+    //         float angle = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg;
+    //         hitboxParent.rotation = Quaternion.Euler(0, 0, angle);
 
-        }
-    }
+    //     }
+    // }
 
     // void LookAtMousePos()
     // {
@@ -175,7 +175,7 @@ public class PlayerController : MonoBehaviour
 
     void RotateTowardsMouse()
     {
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(inputActions.Player.Move.ReadValue<Vector2>());
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(inputActions.Player.MousePos.ReadValue<Vector2>());
         Vector2 lookDirection = (Vector2)mouseWorldPos - (Vector2)transform.position;
 
         float angle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
