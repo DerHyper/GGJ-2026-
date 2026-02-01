@@ -243,7 +243,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 2.78
+  orthographic size: 7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -392,6 +392,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: RandomizedEnemySpawner
       objectReference: {fileID: 0}
+    - target: {fileID: 6188327093961202147, guid: 3dd9ddb5a966cbe48afae3df855a2b92, type: 3}
+      propertyPath: possibleEnemyWaves.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6188327093961202147, guid: 3dd9ddb5a966cbe48afae3df855a2b92, type: 3}
+      propertyPath: 'possibleEnemyWaves.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 1ec9ff1d661aeff41a66e5204aa7db42, type: 2}
     - target: {fileID: 7094297107838469168, guid: 3dd9ddb5a966cbe48afae3df855a2b92, type: 3}
       propertyPath: m_LocalPosition.x
       value: -14.16438

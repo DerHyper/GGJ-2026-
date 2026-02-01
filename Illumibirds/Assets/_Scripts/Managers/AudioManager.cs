@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour, IManager
+public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
     [SerializeField] private Transform _sfxParent;

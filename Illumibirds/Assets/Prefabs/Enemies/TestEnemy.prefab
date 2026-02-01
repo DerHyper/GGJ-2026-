@@ -57,6 +57,8 @@ GameObject:
   - component: {fileID: 8601382353015315973}
   - component: {fileID: 866434213572587734}
   - component: {fileID: 2853259111270074443}
+  - component: {fileID: 177274659457600318}
+  - component: {fileID: 4137928278726038126}
   m_Layer: 7
   m_Name: TestEnemy
   m_TagString: Untagged
@@ -191,15 +193,50 @@ MonoBehaviour:
   _attackSpeedAttr: {fileID: 11400000, guid: b85033ce5a1da465593d05d2e54688ed, type: 2}
   _rangeAttr: {fileID: 11400000, guid: 1f2bf365f8c3643ab94d74dcdadecbe2, type: 2}
   _minimumAttackDistance: {fileID: 11400000, guid: 1f50c8db874ec2948b7014102370801e, type: 2}
+  movementSpeed: 4
   abilityToUse: {fileID: 11400000, guid: 95a71aaf8b5414547b1b7524131b2552, type: 2}
-  _attackEffect: {fileID: 11400000, guid: 588e319c6d915484f983bf96f8440cad, type: 2}
+  _attackEffect: {fileID: 11400000, guid: d0b5e5eb8f0b1de47bd3c43ac321b6bd, type: 2}
   _attackCooldown: 2
-  PLAYERTAG: Player
   _asc: {fileID: 0}
   aimTransform: {fileID: 7911033118404123130}
+  anim: {fileID: 0}
   _isDead: 0
   _attackTimer: 0
   _target: {fileID: 0}
+--- !u!95 &177274659457600318
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5578981314107817130}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 24608763e89544d4893db6cfe45c530c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4137928278726038126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5578981314107817130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51fbbd310d8b8c24185791dd8532e45a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: IllumiBirds::EnemyAnimator
 --- !u!1 &6798009766882066753
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,7 +248,7 @@ GameObject:
   - component: {fileID: 8637274162419263926}
   - component: {fileID: 4869566813346648653}
   m_Layer: 7
-  m_Name: Triangle
+  m_Name: Render
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

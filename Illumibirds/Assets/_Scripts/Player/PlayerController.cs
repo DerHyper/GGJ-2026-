@@ -55,10 +55,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AbilityDefinition rangeAbility;
     [SerializeField] AbilityDefinition dodgeAbility;
 
+    [Header("Animations")]
+    PlayerAnimator anim;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         _asc = GetComponent<AbilitySystemComponent>();
+        anim = GetComponent<PlayerAnimator>();
         inputActions = new();
     }
 
@@ -98,10 +102,12 @@ public class PlayerController : MonoBehaviour
             TryMeleeAttack();
         }
 
-          if (inputActions.Player.Dodge.IsPressed())
+        if (inputActions.Player.Dodge.IsPressed())
         {
             TryDodge();
         }
+
+        SetAnimations();
     }
 
     void TryRangeAttack()
@@ -112,13 +118,19 @@ public class PlayerController : MonoBehaviour
 
     void TryDodge()
     {
-        _asc.TryActivateAbility(dodgeAbility);
+        if (_asc.TryActivateAbility(dodgeAbility))
+        {
+            anim.SetDashTrigger();
+        }
 
     }
 
     void TryMeleeAttack()
     {
-        _asc.TryActivateAbility(meleeAbility);
+        if (_asc.TryActivateAbility(meleeAbility))
+        {
+            anim.SetAttackTrigger();
+        }
 
     }
 
@@ -127,6 +139,13 @@ public class PlayerController : MonoBehaviour
         Vector2 moveVector = inputActions.Player.Move.ReadValue<Vector2>().normalized;
         float multiplier = 1;
         rb.linearVelocity = moveVector * MoveSpeed * multiplier;
+    }
+
+    void SetAnimations()
+    {
+        bool isMoving = (canMove && rb.linearVelocity != Vector2.zero);
+        anim.SetIsMoving(isMoving);
+
     }
 
     void OnLook(InputAction.CallbackContext ctx)
@@ -192,6 +211,12 @@ public class PlayerController : MonoBehaviour
 
     private void HandleAttributeChanged(GAS.Attributes.Attribute attribute, float oldValue, float newValue)
     {
+        if(attribute.Definition == _healthAttr && newValue < oldValue && newValue > 0)
+        {
+            anim.SetGetHitTrigger();
+            GameManager.Instance.FreezeFrame();
+        }
+
         // Check for death
         if (attribute.Definition == _healthAttr && newValue <= 0 && !_isDead)
         {

@@ -34,6 +34,8 @@ public class PauseMenu : MonoBehaviour
 
     public void TogglePauseMenu(bool onOff)
     {
+        if(onOff) Time.timeScale = 0;
+        else Time.timeScale = 1;
         pauseCanvas.SetActive(onOff);
     }
 
