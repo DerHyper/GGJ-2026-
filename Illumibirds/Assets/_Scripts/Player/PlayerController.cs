@@ -223,10 +223,15 @@ public class PlayerController : MonoBehaviour
             Die();
         }
 
-        // Clamp health to max health
+        // Clamp health to max health and handle low health effects
         if (attribute.Definition == _healthAttr && _maxHealthAttr != null)
         {
             float maxHealth = _asc.GetAttributeValue(_maxHealthAttr);
+
+            // Low health pulse when below 25%
+            if (CameraEffects.Instance != null)
+                CameraEffects.Instance.SetLowHealthPulse(newValue / maxHealth < 0.25f && newValue > 0);
+
             if (newValue > maxHealth)
             {
                 attribute.BaseValue = maxHealth;
@@ -249,7 +254,14 @@ public class PlayerController : MonoBehaviour
         _isDead = true;
         Debug.Log("PLAYER DIE");
         rb.linearVelocity = Vector2.zero;
-        // TODO: Trigger death animation, game over screen, etc.
+
+        // Death camera effects
+        if (CameraEffects.Instance != null)
+        {
+            CameraEffects.Instance.SetLowHealthPulse(false);
+            CameraEffects.Instance.Shake(1f);
+            CameraEffects.Instance.SlowMotion(0.2f, 0.5f, 0.1f);
+        }
 
         GameManager.Instance.ChangeState(GameState.gameOver);
     }

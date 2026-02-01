@@ -50,7 +50,16 @@ public class Projectile : MonoBehaviour
             if (!_asc.OwnedTags.Tags.Contains(dodgeTag))
             {
                 ApplyEffectsToTarget(owner, _asc);
-                Debug.Log($"Damage dealt to {_asc.transform.name}");   
+                Debug.Log($"Damage dealt to {_asc.transform.name}");
+
+                // Camera effects
+                if (CameraEffects.Instance != null)
+                {
+                    if (owner.GetComponent<PlayerController>() != null)
+                        CameraEffects.Instance.OnLightAttack();
+                    else if (_asc.GetComponent<PlayerController>() != null)
+                        CameraEffects.Instance.OnPlayerHit(0.2f);
+                }
             }
             else
             {
