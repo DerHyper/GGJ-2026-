@@ -241,7 +241,7 @@ namespace Examples.Enemies
             }
 
             // TODO: Drop loot, play death animation, destroy after delay
-            Destroy(gameObject, 1f);
+            Destroy(gameObject, 2f);
         }
 
         #endregion
