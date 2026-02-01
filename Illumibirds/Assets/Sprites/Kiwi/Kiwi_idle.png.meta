@@ -1,41 +1,37 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
-guid: bada3c2241329bb4f81a1c1201377a46
-=======
-guid: b8307e344dd54bf4db988d70fec77829
->>>>>>> 30254e56b4916bb4ce0fcdc9610d0f17ba878d7f
+guid: bb9e8789b848e5447a7c8ecb4bfe05a8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8075583794091040330
-    second: Play_Again_font_0
+      213: 2733412788902539232
+    second: Kiwi_idle_0
   - first:
-      213: -3735358071687379408
-    second: Play_Again_font_1
+      213: -78033265887608372
+    second: Kiwi_idle_1
   - first:
-      213: 7389620825437733722
-    second: Play_Again_font_2
+      213: 5842019971424195987
+    second: Kiwi_idle_2
   - first:
-      213: -1064826638239277440
-    second: Play_Again_font_3
+      213: -3395904536648671242
+    second: Kiwi_idle_3
   - first:
-      213: 2487536467841819201
-    second: Play_Again_font_4
+      213: -5482710387996346540
+    second: Kiwi_idle_4
   - first:
-      213: 5991936454849613330
-    second: Play_Again_font_5
+      213: 7418850234917882767
+    second: Kiwi_idle_5
   - first:
-      213: -5679035010727363450
-    second: Play_Again_font_6
+      213: -6382099991480782687
+    second: Kiwi_idle_6
   - first:
-      213: 8145001734744681766
-    second: Play_Again_font_7
+      213: 5988566884043663205
+    second: Kiwi_idle_7
   - first:
-      213: 5320148999214439812
-    second: Play_Again_font_8
+      213: 782762819608974509
+    second: Kiwi_idle_8
   - first:
-      213: -2497039590077166286
-    second: Play_Again_font_9
+      213: 153319850128299383
+    second: Kiwi_idle_9
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -82,7 +78,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 516
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -127,7 +123,6 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-<<<<<<< HEAD
   - serializedVersion: 4
     buildTarget: Android
     maxTextureSize: 2048
@@ -141,19 +136,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-=======
->>>>>>> 30254e56b4916bb4ce0fcdc9610d0f17ba878d7f
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Play_Again_font_0
+      name: Kiwi_idle_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 22
-        width: 39
-        height: 83
+        x: 0
+        y: 1806
+        width: 996
+        height: 888
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,20 +155,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6b16d475353cdef80800000000000000
-      internalID: -8075583794091040330
+      spriteID: 0efab0303780fe520800000000000000
+      internalID: 2733412788902539232
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Play_Again_font_1
+      name: Kiwi_idle_1
       rect:
         serializedVersion: 2
-        x: 233
-        y: 51
-        width: 36
-        height: 52
+        x: 994
+        y: 1806
+        width: 1004
+        height: 891
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -184,20 +177,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0368f24ef97592cc0800000000000000
-      internalID: -3735358071687379408
+      spriteID: cc10b1a7825caeef0800000000000000
+      internalID: -78033265887608372
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Play_Again_font_2
+      name: Kiwi_idle_2
       rect:
         serializedVersion: 2
-        x: 268
-        y: 101
-        width: 12
-        height: 12
+        x: 1996
+        y: 1806
+        width: 1013
+        height: 917
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -206,20 +199,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a538b052df43d8660800000000000000
-      internalID: 7389620825437733722
+      spriteID: 3951a7f2636031150800000000000000
+      internalID: 5842019971424195987
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Play_Again_font_3
+      name: Kiwi_idle_3
       rect:
         serializedVersion: 2
-        x: 44
-        y: 28
-        width: 19
-        height: 71
+        x: 3007
+        y: 1806
+        width: 982
+        height: 906
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -228,20 +221,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 08edf5070d9f831f0800000000000000
-      internalID: -1064826638239277440
+      spriteID: 6ff1be1f0d25fd0d0800000000000000
+      internalID: -3395904536648671242
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Play_Again_font_4
+      name: Kiwi_idle_4
       rect:
         serializedVersion: 2
-        x: 64
-        y: 31
-        width: 36
-        height: 53
+        x: 3015
+        y: 888
+        width: 1012
+        height: 918
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -250,20 +243,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 142aa8bec31858220800000000000000
-      internalID: 2487536467841819201
+      spriteID: 457322563ff79e3b0800000000000000
+      internalID: -5482710387996346540
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Play_Again_font_5
+      name: Kiwi_idle_5
       rect:
         serializedVersion: 2
-        x: 102
-        y: 13
-        width: 36
-        height: 68
+        x: 0
+        y: 888
+        width: 964
+        height: 906
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -272,20 +265,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 21e46048572a72350800000000000000
-      internalID: 5991936454849613330
+      spriteID: f8b8a1e5bfc05f660800000000000000
+      internalID: 7418850234917882767
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Play_Again_font_6
+      name: Kiwi_idle_6
       rect:
         serializedVersion: 2
-        x: 159
-        y: 42
-        width: 37
-        height: 53
+        x: 0
+        y: 0
+        width: 996
+        height: 889
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -294,20 +287,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 68cb69e1fb30031b0800000000000000
-      internalID: -5679035010727363450
+      spriteID: 1a0b3ce1fd93e67a0800000000000000
+      internalID: -6382099991480782687
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Play_Again_font_7
+      name: Kiwi_idle_7
       rect:
         serializedVersion: 2
-        x: 198
-        y: 30
-        width: 33
-        height: 62
+        x: 994
+        y: 888
+        width: 993
+        height: 906
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -316,20 +309,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 62da5667cebd80170800000000000000
-      internalID: 8145001734744681766
+      spriteID: 567271d2ad9ab1350800000000000000
+      internalID: 5988566884043663205
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Play_Again_font_8
+      name: Kiwi_idle_8
       rect:
         serializedVersion: 2
-        x: 271
-        y: 59
-        width: 15
-        height: 38
+        x: 1996
+        y: 888
+        width: 962
+        height: 906
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -338,20 +331,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 48d9352d357f4d940800000000000000
-      internalID: 5320148999214439812
+      spriteID: da41d2e13aeecda00800000000000000
+      internalID: 782762819608974509
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Play_Again_font_9
+      name: Kiwi_idle_9
       rect:
         serializedVersion: 2
-        x: 288
-        y: 58
-        width: 39
-        height: 39
+        x: 994
+        y: 0
+        width: 997
+        height: 886
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -360,8 +353,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 23d0d5309bbb85dd0800000000000000
-      internalID: -2497039590077166286
+      spriteID: 775d9e36793b02200800000000000000
+      internalID: 153319850128299383
       vertices: []
       indices: 
       edges: []
@@ -380,16 +373,16 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Play_Again_font_0: -8075583794091040330
-      Play_Again_font_1: -3735358071687379408
-      Play_Again_font_2: 7389620825437733722
-      Play_Again_font_3: -1064826638239277440
-      Play_Again_font_4: 2487536467841819201
-      Play_Again_font_5: 5991936454849613330
-      Play_Again_font_6: -5679035010727363450
-      Play_Again_font_7: 8145001734744681766
-      Play_Again_font_8: 5320148999214439812
-      Play_Again_font_9: -2497039590077166286
+      Kiwi_idle_0: 2733412788902539232
+      Kiwi_idle_1: -78033265887608372
+      Kiwi_idle_2: 5842019971424195987
+      Kiwi_idle_3: -3395904536648671242
+      Kiwi_idle_4: -5482710387996346540
+      Kiwi_idle_5: 7418850234917882767
+      Kiwi_idle_6: -6382099991480782687
+      Kiwi_idle_7: 5988566884043663205
+      Kiwi_idle_8: 782762819608974509
+      Kiwi_idle_9: 153319850128299383
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -58,6 +58,8 @@ public class PlayerController : MonoBehaviour
     [Header("Animations")]
     PlayerAnimator anim;
 
+    [SerializeField] Transform hitboxParent;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -69,7 +71,7 @@ public class PlayerController : MonoBehaviour
     void OnEnable()
     {
         inputActions.Enable();
-        inputActions.Player.Look.performed += OnLook;
+        // inputActions.Player.Look.performed += OnLook;
 
         _asc.OnAttributeChanged += HandleAttributeChanged;
     }
@@ -77,7 +79,7 @@ public class PlayerController : MonoBehaviour
     void OnDisable()
     {
         inputActions.Disable();
-        inputActions.Player.Look.performed -= OnLook;
+        // inputActions.Player.Look.performed -= OnLook;
 
         if (_asc != null)
         {
@@ -108,6 +110,7 @@ public class PlayerController : MonoBehaviour
         }
 
         SetAnimations();
+        RotateTowardsMouse();
     }
 
     void TryRangeAttack()
@@ -148,17 +151,39 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    void OnLook(InputAction.CallbackContext ctx)
+    // void OnLook(InputAction.CallbackContext ctx)
+    // {
+    //     Vector2 lookVector = inputActions.Player.Look.ReadValue<Vector2>().normalized;
+
+    //     if (lookVector.sqrMagnitude > 0.1f)
+    //     {
+    //         float angle = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg;
+    //         hitboxParent.rotation = Quaternion.Euler(0, 0, angle);
+
+    //     }
+    // }
+
+    // void LookAtMousePos()
+    // {
+    //     Vector2 mousePos = inputActions.Player.Move.ReadValue<Vector2>();
+
+
+    //     float angle = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg;
+    //     hitboxParent.rotation = Quaternion.Euler(0, 0, angle);
+
+    // }
+
+    void RotateTowardsMouse()
     {
-        Vector2 lookVector = inputActions.Player.Look.ReadValue<Vector2>().normalized;
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(inputActions.Player.MousePos.ReadValue<Vector2>());
+        Vector2 lookDirection = (Vector2)mouseWorldPos - (Vector2)transform.position;
 
-        if (lookVector.sqrMagnitude > 0.1f)
-        {
-            float angle = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, angle);
+        float angle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
 
-        }
+        hitboxParent.rotation = Quaternion.Euler(0, 0, angle);
     }
+
+
 
     public void ToggleControl(bool _canMove)
     {
@@ -211,10 +236,10 @@ public class PlayerController : MonoBehaviour
 
     private void HandleAttributeChanged(GAS.Attributes.Attribute attribute, float oldValue, float newValue)
     {
-        if(attribute.Definition == _healthAttr && newValue < oldValue && newValue > 0)
+        if (attribute.Definition == _healthAttr && newValue < oldValue && newValue > 0)
         {
             anim.SetGetHitTrigger();
-            GameManager.Instance.FreezeFrame();
+            // GameManager.Instance.FreezeFrame();
         }
 
         // Check for death

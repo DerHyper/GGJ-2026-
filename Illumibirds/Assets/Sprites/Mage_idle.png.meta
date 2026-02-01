@@ -1,41 +1,43 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
-guid: bada3c2241329bb4f81a1c1201377a46
-=======
-guid: b8307e344dd54bf4db988d70fec77829
->>>>>>> 30254e56b4916bb4ce0fcdc9610d0f17ba878d7f
+guid: 672366cc9eed6e94aaadb14d97b44bc0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8075583794091040330
-    second: Play_Again_font_0
+      213: 6547117541946366506
+    second: Mage_idle_0
   - first:
-      213: -3735358071687379408
-    second: Play_Again_font_1
+      213: -9130010602417856674
+    second: Mage_idle_1
   - first:
-      213: 7389620825437733722
-    second: Play_Again_font_2
+      213: 211654806718559528
+    second: Mage_idle_2
   - first:
-      213: -1064826638239277440
-    second: Play_Again_font_3
+      213: 8694878145516904531
+    second: Mage_idle_3
   - first:
-      213: 2487536467841819201
-    second: Play_Again_font_4
+      213: -2554434141966166126
+    second: Mage_idle_4
   - first:
-      213: 5991936454849613330
-    second: Play_Again_font_5
+      213: -2082725686565715472
+    second: Mage_idle_5
   - first:
-      213: -5679035010727363450
-    second: Play_Again_font_6
+      213: -4611108536413746709
+    second: Mage_idle_6
   - first:
-      213: 8145001734744681766
-    second: Play_Again_font_7
+      213: 923229655846042307
+    second: Mage_idle_7
   - first:
-      213: 5320148999214439812
-    second: Play_Again_font_8
+      213: -8677561461311332249
+    second: Mage_idle_8
   - first:
-      213: -2497039590077166286
-    second: Play_Again_font_9
+      213: -2235344871524969581
+    second: Mage_idle_9
+  - first:
+      213: 7733188729320367652
+    second: Mage_idle_10
+  - first:
+      213: -3499857235517071502
+    second: Mage_idle_11
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -127,7 +129,6 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-<<<<<<< HEAD
   - serializedVersion: 4
     buildTarget: Android
     maxTextureSize: 2048
@@ -141,19 +142,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-=======
->>>>>>> 30254e56b4916bb4ce0fcdc9610d0f17ba878d7f
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Play_Again_font_0
+      name: Mage_idle_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 22
-        width: 39
-        height: 83
+        x: 0
+        y: 1288
+        width: 992
+        height: 2570
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,20 +161,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6b16d475353cdef80800000000000000
-      internalID: -8075583794091040330
+      spriteID: a2a117e57b80cda50800000000000000
+      internalID: 6547117541946366506
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Play_Again_font_1
+      name: Mage_idle_1
       rect:
         serializedVersion: 2
-        x: 233
-        y: 51
-        width: 36
-        height: 52
+        x: 969
+        y: 2698
+        width: 993
+        height: 1291
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -184,20 +183,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0368f24ef97592cc0800000000000000
-      internalID: -3735358071687379408
+      spriteID: e5f555fdabfab4180800000000000000
+      internalID: -9130010602417856674
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Play_Again_font_2
+      name: Mage_idle_2
       rect:
         serializedVersion: 2
-        x: 268
-        y: 101
-        width: 12
-        height: 12
+        x: 1960
+        y: 1290
+        width: 1015
+        height: 2699
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -206,20 +205,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a538b052df43d8660800000000000000
-      internalID: 7389620825437733722
+      spriteID: 825b671ece2ffe200800000000000000
+      internalID: 211654806718559528
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Play_Again_font_3
+      name: Mage_idle_3
       rect:
         serializedVersion: 2
-        x: 44
-        y: 28
-        width: 19
-        height: 71
+        x: 2954
+        y: 2698
+        width: 993
+        height: 1291
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -228,20 +227,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 08edf5070d9f831f0800000000000000
-      internalID: -1064826638239277440
+      spriteID: 350a7dc1b996aa870800000000000000
+      internalID: 8694878145516904531
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Play_Again_font_4
+      name: Mage_idle_4
       rect:
         serializedVersion: 2
-        x: 64
-        y: 31
-        width: 36
-        height: 53
+        x: 3947
+        y: 2698
+        width: 993
+        height: 1291
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -250,20 +249,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 142aa8bec31858220800000000000000
-      internalID: 2487536467841819201
+      spriteID: 2971afd8ea3dc8cd0800000000000000
+      internalID: -2554434141966166126
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Play_Again_font_5
+      name: Mage_idle_5
       rect:
         serializedVersion: 2
-        x: 102
-        y: 13
-        width: 36
-        height: 68
+        x: 0
+        y: 0
+        width: 992
+        height: 1290
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -272,20 +271,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 21e46048572a72350800000000000000
-      internalID: 5991936454849613330
+      spriteID: 0f14ba7d50ca813e0800000000000000
+      internalID: -2082725686565715472
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Play_Again_font_6
+      name: Mage_idle_6
       rect:
         serializedVersion: 2
-        x: 159
-        y: 42
-        width: 37
-        height: 53
+        x: 990
+        y: 1290
+        width: 993
+        height: 1396
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -294,20 +293,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 68cb69e1fb30031b0800000000000000
-      internalID: -5679035010727363450
+      spriteID: be98942873d0200c0800000000000000
+      internalID: -4611108536413746709
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Play_Again_font_7
+      name: Mage_idle_7
       rect:
         serializedVersion: 2
-        x: 198
-        y: 30
-        width: 33
-        height: 62
+        x: 990
+        y: 1
+        width: 993
+        height: 1291
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -316,20 +315,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 62da5667cebd80170800000000000000
-      internalID: 8145001734744681766
+      spriteID: 3ca3fc20b78ffcc00800000000000000
+      internalID: 923229655846042307
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Play_Again_font_8
+      name: Mage_idle_8
       rect:
         serializedVersion: 2
-        x: 271
-        y: 59
-        width: 15
-        height: 38
+        x: 1982
+        y: 0
+        width: 993
+        height: 1290
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -338,20 +337,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 48d9352d357f4d940800000000000000
-      internalID: 5320148999214439812
+      spriteID: 7602bed93db139780800000000000000
+      internalID: -8677561461311332249
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Play_Again_font_9
+      name: Mage_idle_9
       rect:
         serializedVersion: 2
-        x: 288
-        y: 58
-        width: 39
-        height: 39
+        x: 2974
+        y: 1288
+        width: 993
+        height: 1291
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -360,8 +359,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 23d0d5309bbb85dd0800000000000000
-      internalID: -2497039590077166286
+      spriteID: 3935346cea57af0e0800000000000000
+      internalID: -2235344871524969581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_idle_10
+      rect:
+        serializedVersion: 2
+        x: 3966
+        y: 1288
+        width: 993
+        height: 1291
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 426e1385d2ec15b60800000000000000
+      internalID: 7733188729320367652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_idle_11
+      rect:
+        serializedVersion: 2
+        x: 2974
+        y: 0
+        width: 972
+        height: 1160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27f9c6823620e6fc0800000000000000
+      internalID: -3499857235517071502
       vertices: []
       indices: 
       edges: []
@@ -380,16 +423,18 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Play_Again_font_0: -8075583794091040330
-      Play_Again_font_1: -3735358071687379408
-      Play_Again_font_2: 7389620825437733722
-      Play_Again_font_3: -1064826638239277440
-      Play_Again_font_4: 2487536467841819201
-      Play_Again_font_5: 5991936454849613330
-      Play_Again_font_6: -5679035010727363450
-      Play_Again_font_7: 8145001734744681766
-      Play_Again_font_8: 5320148999214439812
-      Play_Again_font_9: -2497039590077166286
+      Mage_idle_0: 6547117541946366506
+      Mage_idle_1: -9130010602417856674
+      Mage_idle_10: 7733188729320367652
+      Mage_idle_11: -3499857235517071502
+      Mage_idle_2: 211654806718559528
+      Mage_idle_3: 8694878145516904531
+      Mage_idle_4: -2554434141966166126
+      Mage_idle_5: -2082725686565715472
+      Mage_idle_6: -4611108536413746709
+      Mage_idle_7: 923229655846042307
+      Mage_idle_8: -8677561461311332249
+      Mage_idle_9: -2235344871524969581
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

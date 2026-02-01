@@ -1,32 +1,25 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
-guid: 36b94b6d3e1aca44fb96ef7a9bd13c5e
-=======
-guid: cc30eac818ace4143914decd04bb8f24
->>>>>>> 30254e56b4916bb4ce0fcdc9610d0f17ba878d7f
+guid: ffd647e574f21c04eb1fc75e09c823ae
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 534088422188620983
-    second: Pause_Text_0
+      213: 9205338661749001112
+    second: Kiwi_dodge_0
   - first:
-      213: 5101466587516362436
-    second: Pause_Text_1
+      213: 84893323793733686
+    second: Kiwi_dodge_1
   - first:
-      213: -476302294928375149
-    second: Pause_Text_2
+      213: -2889940258954623691
+    second: Kiwi_dodge_2
   - first:
-      213: -4693823352007677553
-    second: Pause_Text_3
+      213: 8432863837560686920
+    second: Kiwi_dodge_3
   - first:
-      213: 4580099286744056131
-    second: Pause_Text_4
+      213: 8894755862475117411
+    second: Kiwi_dodge_4
   - first:
-      213: -2391772422414319580
-    second: Pause_Text_5
-  - first:
-      213: 6096665465039550851
-    second: Pause_Text_6
+      213: -1853976950219786603
+    second: Kiwi_dodge_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -73,7 +66,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 516
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -118,7 +111,6 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-<<<<<<< HEAD
   - serializedVersion: 4
     buildTarget: Android
     maxTextureSize: 2048
@@ -132,161 +124,115 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-=======
->>>>>>> 30254e56b4916bb4ce0fcdc9610d0f17ba878d7f
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Pause_Text_0
+      name: Kiwi_dodge_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 9
-        width: 54
-        height: 108
+        x: 0
+        y: 847
+        width: 997
+        height: 888
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7bc933b1796796700800000000000000
-      internalID: 534088422188620983
+      spriteID: 89b08baadbeefbf70800000000000000
+      internalID: 9205338661749001112
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Pause_Text_1
+      name: Kiwi_dodge_1
       rect:
         serializedVersion: 2
-        x: 58
-        y: 11
-        width: 44
-        height: 69
+        x: 995
+        y: 847
+        width: 1274
+        height: 852
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4cedf6625dc0cc640800000000000000
-      internalID: 5101466587516362436
+      spriteID: 6381788370a9d2100800000000000000
+      internalID: 84893323793733686
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Pause_Text_2
+      name: Kiwi_dodge_3
       rect:
         serializedVersion: 2
-        x: 109
-        y: 9
-        width: 47
-        height: 61
+        x: 2298
+        y: 847
+        width: 1664
+        height: 895
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 39247191695d369f0800000000000000
-      internalID: -476302294928375149
+      spriteID: 849ca052bfc870570800000000000000
+      internalID: 8432863837560686920
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Pause_Text_3
+      name: Kiwi_dodge_4
       rect:
         serializedVersion: 2
-        x: 162
-        y: 4
-        width: 42
-        height: 69
+        x: 0
+        y: 0
+        width: 2350
+        height: 744
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f892621c7803cdeb0800000000000000
-      internalID: -4693823352007677553
+      spriteID: 36317aa9455807b70800000000000000
+      internalID: 8894755862475117411
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Pause_Text_4
+      name: Kiwi_dodge_5
       rect:
         serializedVersion: 2
-        x: 210
-        y: 13
-        width: 37
-        height: 60
+        x: 2349
+        y: 0
+        width: 1274
+        height: 846
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 341466ee808cf8f30800000000000000
-      internalID: 4580099286744056131
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pause_Text_5
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 26
-        width: 15
-        height: 101
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4204b6a67a7beced0800000000000000
-      internalID: -2391772422414319580
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pause_Text_6
-      rect:
-        serializedVersion: 2
-        x: 254
-        y: 1
-        width: 12
-        height: 14
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 389f21e50f4bb9450800000000000000
-      internalID: 6096665465039550851
+      spriteID: 596336c59c95546e0800000000000000
+      internalID: -1853976950219786603
       vertices: []
       indices: 
       edges: []
@@ -295,7 +241,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 1e49ddc916b47e44688de75bef8586a2
     internalID: 0
     vertices: []
     indices: 
@@ -305,13 +251,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Pause_Text_0: 534088422188620983
-      Pause_Text_1: 5101466587516362436
-      Pause_Text_2: -476302294928375149
-      Pause_Text_3: -4693823352007677553
-      Pause_Text_4: 4580099286744056131
-      Pause_Text_5: -2391772422414319580
-      Pause_Text_6: 6096665465039550851
+      Kiwi_dodge_0: 9205338661749001112
+      Kiwi_dodge_1: 84893323793733686
+      Kiwi_dodge_2: -2889940258954623691
+      Kiwi_dodge_3: 8432863837560686920
+      Kiwi_dodge_4: 8894755862475117411
+      Kiwi_dodge_5: -1853976950219786603
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

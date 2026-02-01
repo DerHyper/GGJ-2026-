@@ -179,7 +179,7 @@ namespace Examples.Enemies
         {
             _isDead = true;
             anim.SetDieBool();
-            
+
             Debug.Log($"{name} died!");
             OnDie?.Invoke(this);
 
