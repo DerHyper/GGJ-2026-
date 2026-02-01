@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GAS.Attributes.AttributeSetDefinition
   Attributes:
   - Attribute: {fileID: 11400000, guid: b85033ce5a1da465593d05d2e54688ed, type: 2}
-    InitialValue: 1
+    InitialValue: 0.88
   - Attribute: {fileID: 11400000, guid: be98bad68000443c9ae2eb11731c64ae, type: 2}
     InitialValue: 1
   - Attribute: {fileID: 11400000, guid: d03911df997dd4c019d66da0057503c8, type: 2}

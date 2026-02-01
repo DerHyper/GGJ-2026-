@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using GAS.Abilities;
 using GAS.Attributes;
 using GAS.Core;
@@ -48,6 +49,8 @@ namespace Examples.Enemies
 
         public static Action<EnemyBase> OnDie;
 
+        [SerializeField] SpriteRenderer spriteRenderer;
+
         protected virtual void Awake()
         {
             _asc = GetComponent<AbilitySystemComponent>();
@@ -89,6 +92,21 @@ namespace Examples.Enemies
 
             UpdateAttackCooldown();
             if (currentState != null) currentState.OnUpdate(this.gameObject);
+
+            SetSpriteFlip();
+
+
+        }
+
+        void SetSpriteFlip()
+        {
+            if(_target == null) return;
+
+            bool flip = _target.position.x > transform.position.x;
+
+            spriteRenderer.flipX = flip;
+
+            
         }
 
         public void ChangeState(EnemyState newState)
