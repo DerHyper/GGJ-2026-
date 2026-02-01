@@ -120,8 +120,8 @@ namespace Rooms
             // Calculate offset: rooms stack vertically
             Vector3Int offset = new Vector3Int(0, floorNumber * stackHeight, 0);
 
-            // Calculate actual tile bounds in master tilemap (template bounds + offset)
-            var tileBounds = new BoundsInt(templateBounds.position + offset, templateBounds.size);
+            // Calculate actual tile bounds in master tilemap (normalized to start at offset)
+            var tileBounds = new BoundsInt(offset, templateBounds.size);
 
             var genRoom = new GeneratedRoom(floorNumber, template, offset, actualSize, tileBounds);
             genRoom.RoomInstance = StampRoomToTilemap(template, offset);
@@ -183,8 +183,8 @@ namespace Rooms
 
             var templateBounds = prefabTilemap.cellBounds;
 
-            // Calculate world position for the prefab - include template bounds position to align sprites with tiles
-            Vector3 worldOffset = masterTilemap.CellToWorld(offset + templateBounds.position);
+            // Calculate world position for the prefab - subtract template bounds position to match normalized tile positions
+            Vector3 worldOffset = masterTilemap.CellToWorld(offset - templateBounds.position);
 
             // Instantiate the prefab for visual sprites
             var roomInstance = Instantiate(template.prefab, worldOffset, Quaternion.identity, transform);
@@ -194,13 +194,14 @@ namespace Rooms
             var instanceTilemap = roomInstance.GetComponentInChildren<Tilemap>(true);
             int tileCount = 0;
 
-            // Copy tiles to master tilemap - add offset to each position (no normalization)
+            // Copy tiles to master tilemap - normalize positions relative to template bounds origin
             foreach (var pos in templateBounds.allPositionsWithin)
             {
                 var tile = prefabTilemap.GetTile(pos);
                 if (tile != null)
                 {
-                    Vector3Int targetPos = pos + offset;
+                    // Subtract templateBounds.position to normalize tiles to start at (0,0) + offset
+                    Vector3Int targetPos = pos - templateBounds.position + offset;
                     masterTilemap.SetTile(targetPos, tile);
                     tileCount++;
                 }
