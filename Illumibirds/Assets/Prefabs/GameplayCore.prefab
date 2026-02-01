@@ -731,6 +731,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1102759874498626405}
     m_Modifications:
+    - target: {fileID: 196504492182893561, guid: e0d91d799797043428fe8b02d69c3fb9, type: 3}
+      propertyPath: debugMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1532028308910753599, guid: e0d91d799797043428fe8b02d69c3fb9, type: 3}
       propertyPath: m_Name
       value: RoomManager

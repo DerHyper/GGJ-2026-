@@ -94,7 +94,6 @@ namespace Rooms
             });
 
             CameraBounds = collider;
-            Debug.Log($"Room {Id}: Created CameraBounds at {WorldBounds.center} size {WorldBounds.size} (padded: top={PaddingTop}, bottom={PaddingBottom}, left={PaddingLeft}, right={PaddingRight})");
         }
 
         public bool ContainsWorldPosition(Vector3 worldPos)

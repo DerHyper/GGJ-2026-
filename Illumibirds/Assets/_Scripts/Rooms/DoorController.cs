@@ -101,11 +101,8 @@ namespace Rooms
         {
             if (room == null) return;
 
-            Debug.Log($"DoorController.OpenDoorsForRoom: Room {room.Id} has {room.DoorPositions.Count} door positions");
-
             foreach (var doorPos in room.DoorPositions)
             {
-                Debug.Log($"DoorController.OpenDoorsForRoom: Processing door at {doorPos}");
                 SetDoorOpen(doorPos, room);
                 doorStates[doorPos] = true;
 
@@ -162,20 +159,16 @@ namespace Rooms
         private void SetDoorOpen(Vector3Int pos, Room sourceRoom = null)
         {
             var currentTile = tilemap.GetTile<GameTile>(pos);
-            Debug.Log($"DoorController.SetDoorOpen: pos={pos}, tile={currentTile?.name ?? "NULL"}, type={currentTile?.tileType}");
 
             if (currentTile != null && currentTile.tileType == GameTile.TileType.DoorClosed)
             {
-                Debug.Log($"DoorController.SetDoorOpen: openDoorTile={currentTile.openDoorTile?.name ?? "NULL"}");
                 if (currentTile.openDoorTile != null)
                 {
                     tilemap.SetTile(pos, currentTile.openDoorTile);
                     tilemap.RefreshTile(pos);
-                    Debug.Log($"DoorController.SetDoorOpen: Swapped to open tile at {pos}");
 
                     // Verify the swap
                     var newTile = tilemap.GetTile<GameTile>(pos);
-                    Debug.Log($"DoorController.SetDoorOpen: After swap - tile={newTile?.name ?? "NULL"}, colliderType={newTile?.colliderType}");
                 }
                 else
                 {
@@ -185,10 +178,6 @@ namespace Rooms
             else if (currentTile == null)
             {
                 Debug.LogWarning($"DoorController.SetDoorOpen: No tile found at {pos}");
-            }
-            else
-            {
-                Debug.Log($"DoorController.SetDoorOpen: Tile at {pos} is not DoorClosed (is {currentTile.tileType})");
             }
 
             // Update collider state - open doors are passable

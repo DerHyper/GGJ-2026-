@@ -14,7 +14,6 @@ namespace Rooms
 
         private void Start()
         {
-            Debug.Log($"DoorTrigger.Start: Initializing at {transform.position}");
             roomManager = RoomManager.Instance;
             triggerCollider = GetComponent<BoxCollider2D>();
             triggerCollider.isTrigger = true;
@@ -33,15 +32,15 @@ namespace Rooms
                 cellPosition = roomManager.Tilemap.WorldToCell(transform.position);
             }
 
-            if (roomManager == null)
-            {
-                Debug.LogWarning("DoorTrigger: No RoomManager found in scene");
-            }
+            //if (roomManager == null)
+            //{
+            //    Debug.LogWarning("DoorTrigger: No RoomManager found in scene");
+            //}
         }
 
         public void SetDoorOpen(bool open)
         {
-            Debug.Log($"DoorTrigger.SetDoorOpen: {cellPosition} -> {open}");
+            //Debug.Log($"DoorTrigger.SetDoorOpen: {cellPosition} -> {open}");
             isDoorOpen = open;
             // Enable blocking collider when door is closed
             if (blockingCollider != null)
@@ -58,7 +57,7 @@ namespace Rooms
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            Debug.Log($"DoorTrigger.OnTriggerEnter2D: {other.name} entered, isDoorOpen={isDoorOpen}, isPlayer={other.CompareTag("Player")}");
+            //Debug.Log($"DoorTrigger.OnTriggerEnter2D: {other.name} entered, isDoorOpen={isDoorOpen}, isPlayer={other.CompareTag("Player")}");
             if (!isDoorOpen) return;
             if (!other.CompareTag("Player")) return;
             if (roomManager == null) return;
@@ -67,7 +66,7 @@ namespace Rooms
             var currentRoom = roomManager.CurrentRoom;
             if (currentRoom == null || targetRoom == currentRoom) return;
 
-            Debug.Log($"DoorTrigger: Player entering room {targetRoom.Id}");
+            //Debug.Log($"DoorTrigger: Player entering room {targetRoom.Id}");
             roomManager.EnterRoom(targetRoom);
         }
 
