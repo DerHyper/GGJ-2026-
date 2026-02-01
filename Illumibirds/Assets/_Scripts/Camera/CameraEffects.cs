@@ -59,6 +59,8 @@ public class CameraEffects : MonoBehaviour
 
     // Freeze frame
     private Coroutine _freezeCoroutine;
+    private float _preEffectTimeScale = 1f;
+    private bool _isFreezing;
 
     void Awake()
     {
@@ -523,10 +525,17 @@ public class CameraEffects : MonoBehaviour
 
     private IEnumerator FreezeRoutine(float duration)
     {
-        float originalTimeScale = Time.timeScale;
+        // Only capture the "real" time scale if we're not already freezing
+        if (!_isFreezing)
+            _preEffectTimeScale = Time.timeScale > 0 ? Time.timeScale : 1f;
+
+        _isFreezing = true;
         Time.timeScale = 0f;
+
         yield return new WaitForSecondsRealtime(duration);
-        Time.timeScale = originalTimeScale;
+
+        Time.timeScale = _preEffectTimeScale;
+        _isFreezing = false;
         _freezeCoroutine = null;
     }
 
@@ -537,7 +546,8 @@ public class CameraEffects : MonoBehaviour
 
     private IEnumerator SlowMotionRoutine(float targetScale, float duration, float transitionTime)
     {
-        float startScale = Time.timeScale;
+        _isFreezing = true;
+        float startScale = Time.timeScale > 0 ? Time.timeScale : 1f;
 
         float elapsed = 0f;
         while (elapsed < transitionTime)
@@ -558,6 +568,7 @@ public class CameraEffects : MonoBehaviour
             yield return null;
         }
         Time.timeScale = 1f;
+        _isFreezing = false;
     }
 
     #endregion
@@ -732,6 +743,8 @@ public class CameraEffects : MonoBehaviour
     {
         if (_virtualCamera == null) yield break;
 
+        _isFreezing = true;
+
         // Freeze + snap zoom
         Time.timeScale = 0f;
         float targetSize = _baseOrthographicSize - 0.6f;
@@ -789,6 +802,7 @@ public class CameraEffects : MonoBehaviour
 
         _virtualCamera.Lens.OrthographicSize = _baseOrthographicSize;
         Time.timeScale = 1f;
+        _isFreezing = false;
         if (_chromaticAberration != null) _chromaticAberration.intensity.Override(_baseChromaticAberration);
         if (_bloom != null) _bloom.intensity.Override(_baseBloomIntensity);
         if (_filmGrain != null) _filmGrain.intensity.Override(_baseFilmGrainIntensity);
