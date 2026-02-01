@@ -102,7 +102,7 @@ namespace Examples.Enemies
         {
             if(_target == null) return;
 
-            bool flip = _target.position.x < transform.position.x;
+            bool flip = _target.position.x > transform.position.x;
 
             spriteRenderer.flipX = flip;
 
