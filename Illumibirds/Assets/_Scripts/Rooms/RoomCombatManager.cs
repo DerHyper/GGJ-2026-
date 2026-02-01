@@ -75,6 +75,9 @@ namespace Rooms
             if (room.IsCleared)
             {
                 EndCombat();
+            } else
+            {
+                AudioManager.Instance.FadeInLayer(2); // Fade in combat music layer
             }
         }
 
@@ -116,6 +119,7 @@ namespace Rooms
             DoorController.Required.OpenDoorsForRoom(combatRoom);
 
             OnRoomCleared?.Invoke(combatRoom);
+            AudioManager.Instance.FadeOutLayer(2); // Fade out combat music layer
 
             inCombat = false;
             combatRoom = null;
