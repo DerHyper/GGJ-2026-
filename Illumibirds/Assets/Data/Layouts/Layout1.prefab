@@ -13097,6 +13097,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6017054057841478017}
+  - component: {fileID: 3963254197069743186}
   m_Layer: 0
   m_Name: Layout1
   m_TagString: Untagged
@@ -13126,6 +13127,20 @@ Transform:
   - {fileID: 8078403121302655495}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3963254197069743186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5921951534830921155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21ed5908e2522482cb40ad4c600bf3aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: IllumiBirds::Rooms.RoomDoorVisuals
+  doorClosedSprite: {fileID: 1309312408144510124}
+  doorOpenSprite: {fileID: 1208082050405348457}
 --- !u!1 &6621278199188628796
 GameObject:
   m_ObjectHideFlags: 0
