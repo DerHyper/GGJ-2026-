@@ -106,11 +106,19 @@ namespace Rooms
             foreach (var doorPos in room.DoorPositions)
             {
                 Debug.Log($"DoorController.OpenDoorsForRoom: Processing door at {doorPos}");
-                SetDoorOpen(doorPos);
+                SetDoorOpen(doorPos, room);
                 doorStates[doorPos] = true;
 
                 // Clear wall tiles adjacent to door (above and below)
                 ClearAdjacentWalls(doorPos);
+
+                // Also clear walls at the target room's entrance
+                var worldPos = scanner.CellToWorld(doorPos);
+                var targetRoom = RoomManager.Required.FindAdjacentRoom(room, worldPos);
+                if (targetRoom != null)
+                {
+                    ClearTargetRoomEntrance(room, doorPos, targetRoom);
+                }
             }
 
             // Update door sprite visuals
@@ -151,7 +159,7 @@ namespace Rooms
             return doorStates.TryGetValue(doorPos, out bool isOpen) && isOpen;
         }
 
-        private void SetDoorOpen(Vector3Int pos)
+        private void SetDoorOpen(Vector3Int pos, Room sourceRoom = null)
         {
             var currentTile = tilemap.GetTile<GameTile>(pos);
             Debug.Log($"DoorController.SetDoorOpen: pos={pos}, tile={currentTile?.name ?? "NULL"}, type={currentTile?.tileType}");
@@ -184,7 +192,7 @@ namespace Rooms
             }
 
             // Update collider state - open doors are passable
-            UpdateDoorCollider(pos, true);
+            UpdateDoorCollider(pos, true, sourceRoom);
         }
 
         private void SetDoorClosed(Vector3Int pos)
@@ -203,7 +211,7 @@ namespace Rooms
             UpdateDoorCollider(pos, false);
         }
 
-        private void UpdateDoorCollider(Vector3Int pos, bool isOpen)
+        private void UpdateDoorCollider(Vector3Int pos, bool isOpen, Room sourceRoom = null)
         {
             // Find the door trigger at this position and update it
             var worldPos = scanner.CellToWorld(pos);
@@ -215,6 +223,13 @@ namespace Rooms
                 if (doorTrigger != null)
                 {
                     doorTrigger.SetDoorOpen(isOpen);
+
+                    // Set target room when opening
+                    if (isOpen && sourceRoom != null)
+                    {
+                        var targetRoom = RoomManager.Required.FindAdjacentRoom(sourceRoom, worldPos);
+                        doorTrigger.SetTargetRoom(targetRoom);
+                    }
                 }
             }
         }
@@ -273,6 +288,66 @@ namespace Rooms
                     tilemap.RefreshTile(pos);
                     clearedWallTiles.Remove(pos);
                     Debug.Log($"DoorController: Restored wall at {pos}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Clears wall tiles at the target room's entrance to allow passage.
+        /// Scans from the source door all the way to the target room, clearing any blocking walls.
+        /// </summary>
+        private void ClearTargetRoomEntrance(Room sourceRoom, Vector3Int doorPos, Room targetRoom)
+        {
+            var doorWorldPos = scanner.CellToWorld(doorPos);
+            bool goingUp = doorWorldPos.y > sourceRoom.WorldBounds.center.y;
+
+            // Calculate the Y range to scan - from source door to target room interior
+            int startY = doorPos.y;
+            int endY;
+            int step;
+
+            if (goingUp)
+            {
+                // Scan upward from door to target room's interior
+                endY = Mathf.CeilToInt(targetRoom.WorldBounds.min.y) + 5;
+                step = 1;
+            }
+            else
+            {
+                // Scan downward from door to target room's interior
+                endY = Mathf.FloorToInt(targetRoom.WorldBounds.max.y) - 5;
+                step = -1;
+            }
+
+            Debug.Log($"DoorController: Scanning from Y={startY} to Y={endY} (step={step}) at X={doorPos.x}");
+
+            // Scan along the path and clear any walls
+            for (int y = startY; goingUp ? y <= endY : y >= endY; y += step)
+            {
+                var pos = new Vector3Int(doorPos.x, y, doorPos.z);
+
+                if (clearedWallTiles.ContainsKey(pos)) continue;
+
+                var tile = tilemap.GetTile<GameTile>(pos);
+                if (tile == null) continue;
+
+                if (tile.tileType == GameTile.TileType.Wall || tile.tileType == GameTile.TileType.HalfWall)
+                {
+                    clearedWallTiles[pos] = tile;
+                    tilemap.SetTile(pos, null);
+                    tilemap.RefreshTile(pos);
+                    Debug.Log($"DoorController: Cleared wall at {pos} for passage to room {targetRoom.Id}");
+                }
+                else if (tile.tileType == GameTile.TileType.DoorClosed)
+                {
+                    // Open any closed doors along the path
+                    if (tile.openDoorTile != null)
+                    {
+                        tilemap.SetTile(pos, tile.openDoorTile);
+                        tilemap.RefreshTile(pos);
+                        doorStates[pos] = true;
+                        Debug.Log($"DoorController: Opened door at {pos} for passage to room {targetRoom.Id}");
+                    }
                 }
             }
         }
