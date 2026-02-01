@@ -260,6 +260,11 @@ MonoBehaviour:
   dodgeAbility: {fileID: 11400000, guid: 390831cf71a48473e84a1273695b8bb1, type: 2}
   hitboxParent: {fileID: 2639834488428227575}
   spriteRenderer: {fileID: 1484756762840881162}
+  meleeAttackSound: {fileID: 8300000, guid: 679ce9ab28cd53a42a5ecf255fcf7f20, type: 3}
+  rangeAttackSound: {fileID: 8300000, guid: ac478c367cccf154ea4147e72c17cecb, type: 3}
+  dashSound: {fileID: 8300000, guid: 05f4372a5293cd343a2092e4c7ff52da, type: 3}
+  getHitSound: {fileID: 8300000, guid: e5a6a7066ffc28c48bf58f6dcda9e6b5, type: 3}
+  dieSound: {fileID: 8300000, guid: 05f4372a5293cd343a2092e4c7ff52da, type: 3}
 --- !u!114 &7481677671345493018
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -24,7 +24,7 @@ public class AttackState : EnemyState
         }
         else if (enemyBase.TargetIsInRange())
         {
-            
+
             TryAttack();
         }
         else
@@ -40,6 +40,7 @@ public class AttackState : EnemyState
         if (enemyBase._asc.TryActivateAbility(enemyBase.abilityToUse))
         {
             enemyBase.anim.SetAttackTrigger();
+            if (enemyBase.attackSound) enemyBase.PlaySound(enemyBase.attackSound);
         }
 
         // Debug.Log($"{enemyBase.name} attacked {enemyBase._target.name}");

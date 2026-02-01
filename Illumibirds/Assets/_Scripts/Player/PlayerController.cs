@@ -61,6 +61,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform hitboxParent;
     [SerializeField] SpriteRenderer spriteRenderer;
 
+    [Header("Sound Effects")]
+
+    [SerializeField] AudioClip meleeAttackSound, rangeAttackSound, dashSound, getHitSound, dieSound;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -116,7 +120,11 @@ public class PlayerController : MonoBehaviour
 
     void TryRangeAttack()
     {
-        _asc.TryActivateAbility(rangeAbility);
+        if (_asc.TryActivateAbility(rangeAbility))
+        {
+            if (rangeAttackSound)
+                PlaySound(rangeAttackSound);
+        }
 
     }
 
@@ -125,6 +133,8 @@ public class PlayerController : MonoBehaviour
         if (_asc.TryActivateAbility(dodgeAbility))
         {
             anim.SetDashTrigger();
+            if (dashSound)
+                PlaySound(dashSound);
         }
 
     }
@@ -134,6 +144,8 @@ public class PlayerController : MonoBehaviour
         if (_asc.TryActivateAbility(meleeAbility))
         {
             anim.SetAttackTrigger();
+            if (meleeAttackSound)
+                PlaySound(meleeAttackSound);
         }
 
     }
@@ -152,6 +164,10 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    void PlaySound(AudioClip sound)
+    {
+        AudioManager.Instance.PlayOncePitchedRandom(sound, 1);
+    }
 
     void RotateTowardsMouse()
     {
@@ -159,7 +175,7 @@ public class PlayerController : MonoBehaviour
         Vector2 lookDirection = (Vector2)mouseWorldPos - (Vector2)transform.position;
 
         FlipSprite(mouseWorldPos.x < transform.position.x);
-        
+
 
         float angle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
 
@@ -227,6 +243,7 @@ public class PlayerController : MonoBehaviour
         if (attribute.Definition == _healthAttr && newValue < oldValue && newValue > 0)
         {
             anim.SetGetHitTrigger();
+            if(getHitSound) PlaySound(getHitSound);
             // GameManager.Instance.FreezeFrame();
         }
 
@@ -234,6 +251,7 @@ public class PlayerController : MonoBehaviour
         if (attribute.Definition == _healthAttr && newValue <= 0 && !_isDead)
         {
             Die();
+            
         }
 
         // Clamp health to max health and handle low health effects
@@ -264,6 +282,7 @@ public class PlayerController : MonoBehaviour
 
     private void Die()
     {
+        if(dieSound) PlaySound(dieSound);
         _isDead = true;
         Debug.Log("PLAYER DIE");
         rb.linearVelocity = Vector2.zero;

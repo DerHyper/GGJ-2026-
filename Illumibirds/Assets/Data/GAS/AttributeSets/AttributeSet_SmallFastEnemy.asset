@@ -26,4 +26,4 @@ MonoBehaviour:
   - Attribute: {fileID: 11400000, guid: 03d969d41c94b45b5ba980e97ac9d76f, type: 2}
     InitialValue: 300
   - Attribute: {fileID: 11400000, guid: 1f50c8db874ec2948b7014102370801e, type: 2}
-    InitialValue: 7
+    InitialValue: 0

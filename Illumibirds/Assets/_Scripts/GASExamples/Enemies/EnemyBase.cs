@@ -51,6 +51,10 @@ namespace Examples.Enemies
 
         [SerializeField] SpriteRenderer spriteRenderer;
 
+        [Header("Sound Effects")]
+
+        public AudioClip attackSound, getHitSound, dieSound;
+
         protected virtual void Awake()
         {
             _asc = GetComponent<AbilitySystemComponent>();
@@ -84,6 +88,12 @@ namespace Examples.Enemies
             AStarPathfinding.Instance.RemoveRequester(GetInstanceID());
         }
 
+        public void PlaySound(AudioClip sound)
+        {
+            AudioManager.Instance.PlayOncePitchedRandom(sound, 1);
+        }
+
+
         protected virtual void Update()
         {
             FindTarget();
@@ -100,13 +110,13 @@ namespace Examples.Enemies
 
         void SetSpriteFlip()
         {
-            if(_target == null) return;
+            if (_target == null) return;
 
             bool flip = _target.position.x > transform.position.x;
 
             spriteRenderer.flipX = flip;
 
-            
+
         }
 
         public void ChangeState(EnemyState newState)
@@ -175,6 +185,7 @@ namespace Examples.Enemies
             if (attribute.Definition == _healthAttr && newValue < oldValue && newValue > 0)
             {
                 anim.SetGetHitTrigger();
+                if (getHitSound) PlaySound(getHitSound);
             }
 
             if (attribute.Definition == _healthAttr && newValue <= 0 && !_isDead)
@@ -195,6 +206,7 @@ namespace Examples.Enemies
 
         protected virtual void Die()
         {
+            if (dieSound) PlaySound(dieSound);
             _isDead = true;
             anim.SetDieBool();
 
