@@ -52,7 +52,6 @@ namespace Rooms
         public void SetTargetRoom(Room room)
         {
             targetRoom = room;
-            Debug.Log($"DoorTrigger: Door at {cellPosition} now leads to room {room?.Id}");
         }
 
         private void OnTriggerEnter2D(Collider2D other)

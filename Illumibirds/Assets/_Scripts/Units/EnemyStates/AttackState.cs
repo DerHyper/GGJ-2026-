@@ -21,7 +21,6 @@ public class AttackState : EnemyState
 
         if (enemyBase.IsTooCloseToTarget())
         {
-            Debug.Log("TOO CLOSE");
         }
         else if (enemyBase.TargetIsInRange())
         {
