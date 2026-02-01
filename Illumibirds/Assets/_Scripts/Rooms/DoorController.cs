@@ -101,11 +101,8 @@ namespace Rooms
         {
             if (room == null) return;
 
-            Debug.Log($"DoorController.OpenDoorsForRoom: Room {room.Id} has {room.DoorPositions.Count} door positions");
-
             foreach (var doorPos in room.DoorPositions)
             {
-                Debug.Log($"DoorController.OpenDoorsForRoom: Processing door at {doorPos}");
                 SetDoorOpen(doorPos, room);
                 doorStates[doorPos] = true;
 
@@ -162,20 +159,16 @@ namespace Rooms
         private void SetDoorOpen(Vector3Int pos, Room sourceRoom = null)
         {
             var currentTile = tilemap.GetTile<GameTile>(pos);
-            Debug.Log($"DoorController.SetDoorOpen: pos={pos}, tile={currentTile?.name ?? "NULL"}, type={currentTile?.tileType}");
 
             if (currentTile != null && currentTile.tileType == GameTile.TileType.DoorClosed)
             {
-                Debug.Log($"DoorController.SetDoorOpen: openDoorTile={currentTile.openDoorTile?.name ?? "NULL"}");
                 if (currentTile.openDoorTile != null)
                 {
                     tilemap.SetTile(pos, currentTile.openDoorTile);
                     tilemap.RefreshTile(pos);
-                    Debug.Log($"DoorController.SetDoorOpen: Swapped to open tile at {pos}");
 
                     // Verify the swap
                     var newTile = tilemap.GetTile<GameTile>(pos);
-                    Debug.Log($"DoorController.SetDoorOpen: After swap - tile={newTile?.name ?? "NULL"}, colliderType={newTile?.colliderType}");
                 }
                 else
                 {
@@ -185,10 +178,6 @@ namespace Rooms
             else if (currentTile == null)
             {
                 Debug.LogWarning($"DoorController.SetDoorOpen: No tile found at {pos}");
-            }
-            else
-            {
-                Debug.Log($"DoorController.SetDoorOpen: Tile at {pos} is not DoorClosed (is {currentTile.tileType})");
             }
 
             // Update collider state - open doors are passable
@@ -262,7 +251,6 @@ namespace Rooms
                     clearedWallTiles[pos] = tile;
                     tilemap.SetTile(pos, null);
                     tilemap.RefreshTile(pos);
-                    Debug.Log($"DoorController: Cleared wall at {pos} for doorway at {doorPos}");
                 }
             }
         }
@@ -287,7 +275,6 @@ namespace Rooms
                     tilemap.SetTile(pos, originalTile);
                     tilemap.RefreshTile(pos);
                     clearedWallTiles.Remove(pos);
-                    Debug.Log($"DoorController: Restored wall at {pos}");
                 }
             }
         }
@@ -318,9 +305,7 @@ namespace Rooms
                 endY = Mathf.FloorToInt(targetRoom.WorldBounds.max.y) - 5;
                 step = -1;
             }
-
-            Debug.Log($"DoorController: Scanning from Y={startY} to Y={endY} (step={step}) at X={doorPos.x}");
-
+            
             // Scan along the path and clear any walls
             for (int y = startY; goingUp ? y <= endY : y >= endY; y += step)
             {
@@ -336,7 +321,6 @@ namespace Rooms
                     clearedWallTiles[pos] = tile;
                     tilemap.SetTile(pos, null);
                     tilemap.RefreshTile(pos);
-                    Debug.Log($"DoorController: Cleared wall at {pos} for passage to room {targetRoom.Id}");
                 }
                 else if (tile.tileType == GameTile.TileType.DoorClosed)
                 {
@@ -346,7 +330,6 @@ namespace Rooms
                         tilemap.SetTile(pos, tile.openDoorTile);
                         tilemap.RefreshTile(pos);
                         doorStates[pos] = true;
-                        Debug.Log($"DoorController: Opened door at {pos} for passage to room {targetRoom.Id}");
                     }
                 }
             }

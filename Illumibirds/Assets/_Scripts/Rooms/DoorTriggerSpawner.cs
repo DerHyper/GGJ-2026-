@@ -88,11 +88,6 @@ namespace Rooms
                     }
                 }
             }
-
-            if (count > 0)
-            {
-                Debug.Log($"DoorTriggerSpawner: Spawned {count} door triggers in bounds");
-            }
         }
 
         /// <summary>

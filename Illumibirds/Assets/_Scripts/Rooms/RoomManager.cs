@@ -233,8 +233,6 @@ namespace Rooms
 
                 // Spawn door triggers in this area
                 doorTriggerSpawner?.SpawnTriggersInBounds(genRoom.TileBounds);
-
-                Debug.Log($"RoomManager: Registered procedural room {detectedRoom.Id} at floor {genRoom.FloorNumber}");
             }
             else
             {
