@@ -203,6 +203,7 @@ MonoBehaviour:
   _isDead: 0
   _attackTimer: 0
   _target: {fileID: 0}
+  spriteRenderer: {fileID: 4869566813346648653}
 --- !u!95 &177274659457600318
 Animator:
   serializedVersion: 7
@@ -375,7 +376,7 @@ MonoBehaviour:
   m_PreviousTrimEdge: 0.05
   m_PreviousEdgeProcessing: 1
   m_PreviousShadowCastingSource: 2
-  m_PreviousShadowShape2DSource: {fileID: 0}
+  m_PreviousShadowShape2DSource: {fileID: 4869566813346648653}
   references:
     version: 2
     RefIds:
