@@ -27,6 +27,7 @@ public class AudioManager : MonoBehaviour
         if (Instance != null && Instance != this)
         {
             Destroy(this);
+            DontDestroyOnLoad(this);
         }
         else
         {
@@ -131,12 +132,11 @@ public class MusicTrack
 public class AudioPlayer
 {
     public AudioSource musicPlayer;
-    public AudioClip nextMusic;
-    public float currentMusicTargetVolume = 0;
+    [HideInInspector] public float currentMusicTargetVolume = 0;
     private float nextMusicTargetVolume = 0;
-    public bool fadeIn = false;
-    public bool fadeOut = false;
-    public float fadeAmount = 1;
+    [HideInInspector] public bool fadeIn = false;
+    [HideInInspector] public bool fadeOut = false;
+    private float fadeAmount = 1;
 
     public void Update() {
         if (fadeIn && musicPlayer.volume < currentMusicTargetVolume)
@@ -174,7 +174,8 @@ public class AudioPlayer
         else
         {
             // Music is playing, fade out current and prepare next
-            nextMusic = musicTrack.clipLayers[index]; // Single layer
+            musicPlayer.clip = musicTrack.clipLayers[index];
+            musicPlayer.volume = 0;
             nextMusicTargetVolume = isSilent ? 0 : musicTrack.volumes[index];
             fadeOut = true;
         }
