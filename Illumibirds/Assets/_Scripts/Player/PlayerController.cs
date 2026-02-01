@@ -110,6 +110,7 @@ public class PlayerController : MonoBehaviour
         }
 
         SetAnimations();
+        RotateTowardsMouse();
     }
 
     void TryRangeAttack()
@@ -162,6 +163,28 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // void LookAtMousePos()
+    // {
+    //     Vector2 mousePos = inputActions.Player.Move.ReadValue<Vector2>();
+
+
+    //     float angle = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg;
+    //     hitboxParent.rotation = Quaternion.Euler(0, 0, angle);
+
+    // }
+
+    void RotateTowardsMouse()
+    {
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(inputActions.Player.Move.ReadValue<Vector2>());
+        Vector2 lookDirection = (Vector2)mouseWorldPos - (Vector2)transform.position;
+
+        float angle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
+
+        hitboxParent.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+
+
     public void ToggleControl(bool _canMove)
     {
         canMove = _canMove;
@@ -213,10 +236,10 @@ public class PlayerController : MonoBehaviour
 
     private void HandleAttributeChanged(GAS.Attributes.Attribute attribute, float oldValue, float newValue)
     {
-        if(attribute.Definition == _healthAttr && newValue < oldValue && newValue > 0)
+        if (attribute.Definition == _healthAttr && newValue < oldValue && newValue > 0)
         {
             anim.SetGetHitTrigger();
-            GameManager.Instance.FreezeFrame();
+            // GameManager.Instance.FreezeFrame();
         }
 
         // Check for death

@@ -154,6 +154,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MousePos"",
+                    ""type"": ""Value"",
+                    ""id"": ""f63b4265-11f0-440b-9193-8800fb53ecbc"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -396,6 +405,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""MeleeAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""29bceed4-6247-42a5-a889-02a9af59275f"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePos"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -990,6 +1010,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_PauseGame = m_Player.FindAction("PauseGame", throwIfNotFound: true);
         m_Player_Dodge = m_Player.FindAction("Dodge", throwIfNotFound: true);
         m_Player_MeleeAttack = m_Player.FindAction("MeleeAttack", throwIfNotFound: true);
+        m_Player_MousePos = m_Player.FindAction("MousePos", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1090,6 +1111,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_PauseGame;
     private readonly InputAction m_Player_Dodge;
     private readonly InputAction m_Player_MeleeAttack;
+    private readonly InputAction m_Player_MousePos;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1129,6 +1151,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/MeleeAttack".
         /// </summary>
         public InputAction @MeleeAttack => m_Wrapper.m_Player_MeleeAttack;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/MousePos".
+        /// </summary>
+        public InputAction @MousePos => m_Wrapper.m_Player_MousePos;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1176,6 +1202,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @MeleeAttack.started += instance.OnMeleeAttack;
             @MeleeAttack.performed += instance.OnMeleeAttack;
             @MeleeAttack.canceled += instance.OnMeleeAttack;
+            @MousePos.started += instance.OnMousePos;
+            @MousePos.performed += instance.OnMousePos;
+            @MousePos.canceled += instance.OnMousePos;
         }
 
         /// <summary>
@@ -1208,6 +1237,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @MeleeAttack.started -= instance.OnMeleeAttack;
             @MeleeAttack.performed -= instance.OnMeleeAttack;
             @MeleeAttack.canceled -= instance.OnMeleeAttack;
+            @MousePos.started -= instance.OnMousePos;
+            @MousePos.performed -= instance.OnMousePos;
+            @MousePos.canceled -= instance.OnMousePos;
         }
 
         /// <summary>
@@ -1557,6 +1589,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMeleeAttack(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "MousePos" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMousePos(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

@@ -1,7 +1,6 @@
-using UnityEditor.Animations;
 using UnityEngine;
 
-[RequireComponent(typeof(AnimatorController))]
+[RequireComponent(typeof(Animator))]
 public class PlayerAnimator : MonoBehaviour
 {
     Animator anim;
