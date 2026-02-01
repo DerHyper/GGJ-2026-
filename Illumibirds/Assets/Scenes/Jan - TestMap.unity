@@ -251,6 +251,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3166644134012750706, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: orthographic size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6087569796022257193, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: Lens.OrthographicSize
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6472171191899605161, guid: 92327c21457634a84aec438ebff307f6, type: 3}
       propertyPath: m_Name
       value: GameplayCore
