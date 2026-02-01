@@ -6,15 +6,25 @@ namespace Rooms
     public class DoorTrigger : MonoBehaviour
     {
         private RoomManager roomManager;
-        private BoxCollider2D boxCollider;
+        private BoxCollider2D triggerCollider;
+        private BoxCollider2D blockingCollider;
         private bool isDoorOpen;
         private Vector3Int cellPosition;
+        private Room targetRoom;
 
         private void Start()
         {
+            Debug.Log($"DoorTrigger.Start: Initializing at {transform.position}");
             roomManager = RoomManager.Instance;
-            boxCollider = GetComponent<BoxCollider2D>();
-            boxCollider.isTrigger = true;
+            triggerCollider = GetComponent<BoxCollider2D>();
+            triggerCollider.isTrigger = true;
+
+            // Create a blocking collider for when door is closed
+            blockingCollider = gameObject.AddComponent<BoxCollider2D>();
+            blockingCollider.size = triggerCollider.size;
+            blockingCollider.offset = triggerCollider.offset;
+            blockingCollider.isTrigger = false;
+            blockingCollider.enabled = true; // Doors start closed
 
             // Calculate cell position from world position
             if (roomManager != null && roomManager.Scanner != null)
@@ -31,40 +41,34 @@ namespace Rooms
 
         public void SetDoorOpen(bool open)
         {
+            Debug.Log($"DoorTrigger.SetDoorOpen: {cellPosition} -> {open}");
             isDoorOpen = open;
-            // When door is closed, it should block movement
-            // The tilemap collider handles blocking, this is for trigger detection
+            // Enable blocking collider when door is closed
+            if (blockingCollider != null)
+            {
+                blockingCollider.enabled = !open;
+            }
+        }
+
+        public void SetTargetRoom(Room room)
+        {
+            targetRoom = room;
+            Debug.Log($"DoorTrigger: Door at {cellPosition} now leads to room {room?.Id}");
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            Debug.Log($"DoorTrigger.OnTriggerEnter2D: {other.name} entered, isDoorOpen={isDoorOpen}, isPlayer={other.CompareTag("Player")}");
             if (!isDoorOpen) return;
             if (!other.CompareTag("Player")) return;
             if (roomManager == null) return;
+            if (targetRoom == null) return;
 
-            // Determine which room the player is entering
-            // The player is coming from their current room and entering an adjacent one
             var currentRoom = roomManager.CurrentRoom;
-            if (currentRoom == null) return;
+            if (currentRoom == null || targetRoom == currentRoom) return;
 
-            // Find the room on the other side of this door
-            Room targetRoom = null;
-            var adjacentRooms = roomManager.GetAdjacentRooms(currentRoom);
-
-            foreach (var adjRoom in adjacentRooms)
-            {
-                if (adjRoom.DoorPositions.Contains(cellPosition) && !adjRoom.IsRevealed)
-                {
-                    targetRoom = adjRoom;
-                    break;
-                }
-            }
-
-            if (targetRoom != null)
-            {
-                // Player is entering a new room
-                roomManager.EnterRoom(targetRoom);
-            }
+            Debug.Log($"DoorTrigger: Player entering room {targetRoom.Id}");
+            roomManager.EnterRoom(targetRoom);
         }
 
         public Vector3Int CellPosition => cellPosition;

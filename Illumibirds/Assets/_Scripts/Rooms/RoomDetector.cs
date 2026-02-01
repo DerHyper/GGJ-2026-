@@ -79,7 +79,7 @@ namespace Rooms
                 if (tile == null) continue;
 
                 // Add doors to the room's door list but don't flood through them
-                if (tile.tileType == GameTile.TileType.Door)
+                if (tile.tileType == GameTile.TileType.Door || tile.tileType == GameTile.TileType.DoorClosed)
                 {
                     if (!room.DoorPositions.Contains(current))
                     {
@@ -100,7 +100,7 @@ namespace Rooms
                     if (!localVisited.Contains(neighbor) && !globalVisited.Contains(neighbor))
                     {
                         var neighborTile = scanner.GetGameTileAt(neighbor);
-                        if (neighborTile != null && (neighborTile.isWalkable || neighborTile.tileType == GameTile.TileType.Door))
+                        if (neighborTile != null && (neighborTile.isWalkable || neighborTile.tileType == GameTile.TileType.Door || neighborTile.tileType == GameTile.TileType.DoorClosed))
                         {
                             queue.Enqueue(neighbor);
                             localVisited.Add(neighbor);
@@ -150,7 +150,7 @@ namespace Rooms
                 if (globalVisited.Contains(pos)) continue;
 
                 var tile = scanner.GetGameTileAt(pos);
-                if (tile != null && tile.isWalkable && tile.tileType != GameTile.TileType.Door)
+                if (tile != null && tile.isWalkable && tile.tileType != GameTile.TileType.Door && tile.tileType != GameTile.TileType.DoorClosed)
                 {
                     startPos = pos;
                     break;
@@ -188,7 +188,7 @@ namespace Rooms
                 if (tile == null) continue;
 
                 // Add doors to the room's door list but don't flood through them
-                if (tile.tileType == GameTile.TileType.Door)
+                if (tile.tileType == GameTile.TileType.Door || tile.tileType == GameTile.TileType.DoorClosed)
                 {
                     if (!room.DoorPositions.Contains(current))
                     {
@@ -212,7 +212,7 @@ namespace Rooms
                         if (bounds.Contains(neighbor))
                         {
                             var neighborTile = scanner.GetGameTileAt(neighbor);
-                            if (neighborTile != null && (neighborTile.isWalkable || neighborTile.tileType == GameTile.TileType.Door))
+                            if (neighborTile != null && (neighborTile.isWalkable || neighborTile.tileType == GameTile.TileType.Door || neighborTile.tileType == GameTile.TileType.DoorClosed))
                             {
                                 queue.Enqueue(neighbor);
                                 localVisited.Add(neighbor);

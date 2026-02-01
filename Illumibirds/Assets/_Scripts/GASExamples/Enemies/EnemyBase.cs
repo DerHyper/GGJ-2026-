@@ -20,7 +20,7 @@ namespace Examples.Enemies
         [SerializeField] protected AttributeDefinition _rangeAttr;
 
         [SerializeField] protected AttributeDefinition _minimumAttackDistance;
-        public float movementSpeed { get; private set; } = 4;
+        public float movementSpeed = 4;
 
 
         [Header("Combat")]
@@ -36,6 +36,8 @@ namespace Examples.Enemies
         public Transform aimTransform;
         protected Rigidbody2D _rb;
 
+        public EnemyAnimator anim;
+
         // State
         public bool _isDead;
         public float _attackTimer;
@@ -50,8 +52,7 @@ namespace Examples.Enemies
         {
             _asc = GetComponent<AbilitySystemComponent>();
             _rb = GetComponent<Rigidbody2D>();
-
-
+            anim = GetComponent<EnemyAnimator>();
         }
 
         void Start()
@@ -153,6 +154,11 @@ namespace Examples.Enemies
 
         protected virtual void HandleAttributeChanged(GAS.Attributes.Attribute attribute, float oldValue, float newValue)
         {
+            if (attribute.Definition == _healthAttr && newValue < oldValue && newValue > 0)
+            {
+                anim.SetGetHitTrigger();
+            }
+
             if (attribute.Definition == _healthAttr && newValue <= 0 && !_isDead)
             {
                 Die();
@@ -172,8 +178,11 @@ namespace Examples.Enemies
         protected virtual void Die()
         {
             _isDead = true;
+            anim.SetDieBool();
+            
             Debug.Log($"{name} died!");
             OnDie?.Invoke(this);
+
 
             // Stop movement
             if (_rb != null)

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Attr_MoveSpeed
   m_EditorClassIdentifier: GAS::GAS.Attributes.AttributeDefinition
   AttributeName: MoveSpeed
-  MinValue: 4
+  MinValue: 2
   MaxValue: 100

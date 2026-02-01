@@ -14,6 +14,8 @@ namespace Tiles.Editor
         private SerializedProperty colliderTypeProp;
         private SerializedProperty flagsProp;
         private SerializedProperty transformProp;
+        private SerializedProperty closedDoorTileProp;
+        private SerializedProperty openDoorTileProp;
 
         private static readonly Color FloorColor = new Color(0.3f, 0.8f, 0.3f);
         private static readonly Color WallColor = new Color(0.8f, 0.3f, 0.3f);
@@ -30,6 +32,8 @@ namespace Tiles.Editor
             colliderTypeProp = serializedObject.FindProperty("m_ColliderType");
             flagsProp = serializedObject.FindProperty("m_Flags");
             transformProp = serializedObject.FindProperty("m_TileMatrixType");
+            closedDoorTileProp = serializedObject.FindProperty("closedDoorTile");
+            openDoorTileProp = serializedObject.FindProperty("openDoorTile");
         }
 
         public override void OnInspectorGUI()
@@ -56,6 +60,23 @@ namespace Tiles.Editor
 
             // Walkable toggle
             EditorGUILayout.PropertyField(isWalkableProp);
+
+            // Door-specific settings
+            var currentType = (GameTile.TileType)tileTypeProp.enumValueIndex;
+            if (currentType == GameTile.TileType.Door || currentType == GameTile.TileType.DoorClosed)
+            {
+                EditorGUILayout.Space(10);
+                EditorGUILayout.LabelField("Door Settings", EditorStyles.boldLabel);
+
+                if (currentType == GameTile.TileType.Door)
+                {
+                    EditorGUILayout.PropertyField(closedDoorTileProp, new GUIContent("Closed Door Tile"));
+                }
+                else // DoorClosed
+                {
+                    EditorGUILayout.PropertyField(openDoorTileProp, new GUIContent("Open Door Tile"));
+                }
+            }
 
             EditorGUILayout.Space(10);
             EditorGUILayout.LabelField("Base Tile Settings", EditorStyles.boldLabel);
@@ -171,6 +192,7 @@ namespace Tiles.Editor
                 GameTile.TileType.Floor => FloorColor,
                 GameTile.TileType.Wall => WallColor,
                 GameTile.TileType.Door => DoorColor,
+                GameTile.TileType.DoorClosed => DoorColor,
                 GameTile.TileType.Spawn => SpawnColor,
                 GameTile.TileType.HalfWall => HalfWallColor,
                 _ => Color.gray
@@ -184,6 +206,7 @@ namespace Tiles.Editor
                 GameTile.TileType.Floor => "▢",
                 GameTile.TileType.Wall => "▣",
                 GameTile.TileType.Door => "◫",
+                GameTile.TileType.DoorClosed => "▣",
                 GameTile.TileType.Spawn => "★",
                 GameTile.TileType.HalfWall => "▤",
                 _ => "?"
@@ -197,6 +220,7 @@ namespace Tiles.Editor
                 GameTile.TileType.Floor => true,
                 GameTile.TileType.Wall => false,
                 GameTile.TileType.Door => true,
+                GameTile.TileType.DoorClosed => false,
                 GameTile.TileType.Spawn => true,
                 GameTile.TileType.HalfWall => false,
                 _ => false

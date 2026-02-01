@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -40,6 +41,20 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(GAMESCENE);
         ChangeState(GameState.inGame);
+    }
+
+    public void FreezeFrame()
+    {
+        StartCoroutine(FreezeFrameCoroutine(0.1f));
+    }
+
+    public IEnumerator FreezeFrameCoroutine(float duration)
+    {
+        Time.timeScale = 0;
+
+        yield return new WaitForSecondsRealtime(duration);
+
+        Time.timeScale = 1;
     }
 
 }

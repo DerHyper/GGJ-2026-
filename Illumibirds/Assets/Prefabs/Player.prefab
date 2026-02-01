@@ -138,6 +138,8 @@ GameObject:
   - component: {fileID: 7034735437236123231}
   - component: {fileID: 7481677671345493018}
   - component: {fileID: 2856769368504451170}
+  - component: {fileID: 2319649359466489852}
+  - component: {fileID: 5079204813984238500}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -332,6 +334,40 @@ MonoBehaviour:
     - rid: 1405686747385299218
       type: {class: ShadowShape2DProvider_Collider2D, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
       data: 
+--- !u!114 &2319649359466489852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5481047525141081903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21c72bc2143cfaf4193e6f2f2e5fa791, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: IllumiBirds::PlayerAnimator
+--- !u!95 &5079204813984238500
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5481047525141081903}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1cebc581d74d32c4293a49ac514aee87, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5846484743513602937
 GameObject:
   m_ObjectHideFlags: 0

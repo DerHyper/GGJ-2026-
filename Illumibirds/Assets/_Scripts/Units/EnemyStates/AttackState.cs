@@ -38,7 +38,10 @@ public class AttackState : EnemyState
     {
         if (enemyBase._target == null) return;
 
-        enemyBase._asc.TryActivateAbility(enemyBase.abilityToUse);
+        if (enemyBase._asc.TryActivateAbility(enemyBase.abilityToUse))
+        {
+            enemyBase.anim.SetAttackTrigger();
+        }
 
         // Debug.Log($"{enemyBase.name} attacked {enemyBase._target.name}");
     }

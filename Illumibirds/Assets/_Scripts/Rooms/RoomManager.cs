@@ -442,10 +442,10 @@ namespace Rooms
 
             Debug.Log($"RoomManager: Player entering room {room.Id}");
 
-            // Close doors behind (from previous room)
+            // Close doors behind (from previous room) with a delay to let player move through
             if (currentRoom != null)
             {
-                DoorController.Required.CloseDoorsForRoom(currentRoom);
+                StartCoroutine(CloseDoorsDelayed(currentRoom, 0.3f));
             }
 
             // Reveal the new room
@@ -458,6 +458,99 @@ namespace Rooms
 
             // Start combat in this room
             RoomCombatManager.Required.StartCombat(room);
+        }
+
+        private System.Collections.IEnumerator CloseDoorsDelayed(Room previousRoom, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            // Safety check: if player is still in the previous room, teleport them to current room
+            if (playerTransform != null && currentRoom != null && currentRoom != previousRoom)
+            {
+                var playerRoom = GetRoomAtPosition(playerTransform.position);
+                if (playerRoom == previousRoom || playerRoom == null)
+                {
+                    // Player didn't make it through - teleport to current room
+                    var targetPos = new Vector3(
+                        currentRoom.WorldBounds.center.x,
+                        currentRoom.WorldBounds.min.y + 1.5f,
+                        0f
+                    );
+                    playerTransform.position = targetPos;
+                    Debug.Log($"RoomManager: Teleported player to room {currentRoom.Id} at {targetPos}");
+                }
+            }
+
+            DoorController.Required.CloseDoorsForRoom(previousRoom);
+
+            // Fade out the previous room's sprites
+            StartCoroutine(FadeOutRoom(previousRoom, 0.5f));
+        }
+
+        private System.Collections.IEnumerator FadeOutRoom(Room room, float duration)
+        {
+            // Find the GeneratedRoom that corresponds to this Room
+            GeneratedRoom genRoom = null;
+            foreach (var gr in generator.GeneratedRooms)
+            {
+                if (gr.DetectedRoom == room)
+                {
+                    genRoom = gr;
+                    break;
+                }
+            }
+
+            if (genRoom == null || genRoom.RoomInstance == null)
+            {
+                yield break;
+            }
+
+            // Get all sprite renderers in the room instance
+            var spriteRenderers = genRoom.RoomInstance.GetComponentsInChildren<SpriteRenderer>();
+            if (spriteRenderers.Length == 0)
+            {
+                yield break;
+            }
+
+            // Store original colors
+            var originalColors = new Color[spriteRenderers.Length];
+            for (int i = 0; i < spriteRenderers.Length; i++)
+            {
+                originalColors[i] = spriteRenderers[i].color;
+            }
+
+            // Fade out over duration
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
+
+                for (int i = 0; i < spriteRenderers.Length; i++)
+                {
+                    if (spriteRenderers[i] != null)
+                    {
+                        var color = originalColors[i];
+                        color.a = Mathf.Lerp(originalColors[i].a, 0f, t);
+                        spriteRenderers[i].color = color;
+                    }
+                }
+
+                yield return null;
+            }
+
+            // Ensure fully transparent
+            foreach (var sr in spriteRenderers)
+            {
+                if (sr != null)
+                {
+                    var color = sr.color;
+                    color.a = 0f;
+                    sr.color = color;
+                }
+            }
+
+            Debug.Log($"RoomManager: Faded out room {room.Id}");
         }
 
         public void RevealRoom(Room room)
@@ -534,6 +627,32 @@ namespace Rooms
             }
 
             return adjacent;
+        }
+
+        public Room FindAdjacentRoom(Room sourceRoom, Vector3 doorWorldPos)
+        {
+            // Determine door direction relative to room center
+            bool doorIsAbove = doorWorldPos.y > sourceRoom.WorldBounds.center.y;
+
+            foreach (var room in rooms)
+            {
+                if (room == sourceRoom) continue;
+
+                // Check if this room is in the right direction
+                if (doorIsAbove && room.WorldBounds.min.y >= sourceRoom.WorldBounds.max.y - 1f)
+                {
+                    // Room is above source room
+                    if (Mathf.Abs(room.WorldBounds.center.x - doorWorldPos.x) < room.WorldBounds.extents.x + 2f)
+                        return room;
+                }
+                else if (!doorIsAbove && room.WorldBounds.max.y <= sourceRoom.WorldBounds.min.y + 1f)
+                {
+                    // Room is below source room
+                    if (Mathf.Abs(room.WorldBounds.center.x - doorWorldPos.x) < room.WorldBounds.extents.x + 2f)
+                        return room;
+                }
+            }
+            return null;
         }
 
         public Room CurrentRoom => currentRoom;

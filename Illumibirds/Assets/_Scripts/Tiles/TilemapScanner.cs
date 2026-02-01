@@ -42,7 +42,10 @@ namespace Tiles
 
         public List<Vector3Int> GetDoorPositions()
         {
-            return GetTilePositions(GameTile.TileType.Door);
+            var positions = new List<Vector3Int>();
+            positions.AddRange(GetTilePositions(GameTile.TileType.Door));
+            positions.AddRange(GetTilePositions(GameTile.TileType.DoorClosed));
+            return positions;
         }
 
         public List<Vector3Int> GetSpawnPositions()
