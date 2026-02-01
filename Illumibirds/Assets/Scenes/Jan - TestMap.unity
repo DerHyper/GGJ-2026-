@@ -350,6 +350,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1419932731208015151, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1419932731208015151, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1419932731208015151, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1419932731208015151, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2066922558120026378, guid: 92327c21457634a84aec438ebff307f6, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -384,6 +400,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5065472602246668720, guid: 92327c21457634a84aec438ebff307f6, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5424915082471580492, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5424915082471580492, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5424915082471580492, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5424915082471580492, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6472171191899605161, guid: 92327c21457634a84aec438ebff307f6, type: 3}
