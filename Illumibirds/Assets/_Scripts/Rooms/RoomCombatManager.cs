@@ -16,6 +16,11 @@ namespace Rooms
         public event Action<Room> OnRoomCleared;
         public event Action<Room> OnCombatStarted;
 
+        [SerializeField] private AudioClip doorOpenSFX;
+        [SerializeField] private float doorOpenSFXVolume = 0.5f;
+        [SerializeField] private AudioClip doorCloseSFX;
+        [SerializeField] private float doorCloseSFXVolume = 0.5f;
+
         private Room combatRoom;
         private bool inCombat;
 
@@ -70,6 +75,7 @@ namespace Rooms
 
             OnCombatStarted?.Invoke(room);
             Debug.Log($"RoomCombatManager: Combat started in room {room.Id} with {room.Enemies.Count} enemies");
+            AudioManager.Instance.PlayOnce(doorCloseSFX, doorCloseSFXVolume);
 
             // If room has no enemies, immediately clear it
             if (room.IsCleared)
@@ -117,6 +123,7 @@ namespace Rooms
 
             // Also open doors of the current room (so player can leave)
             DoorController.Required.OpenDoorsForRoom(combatRoom);
+            AudioManager.Instance.PlayOnce(doorOpenSFX, doorOpenSFXVolume);
 
             OnRoomCleared?.Invoke(combatRoom);
             AudioManager.Instance.FadeOutLayer(2); // Fade out combat music layer
