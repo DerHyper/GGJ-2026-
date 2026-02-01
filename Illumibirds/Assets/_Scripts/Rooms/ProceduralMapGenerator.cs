@@ -183,8 +183,8 @@ namespace Rooms
 
             var templateBounds = prefabTilemap.cellBounds;
 
-            // Calculate world position for the prefab - just convert cell offset to world
-            Vector3 worldOffset = masterTilemap.CellToWorld(offset);
+            // Calculate world position for the prefab - include template bounds position to align sprites with tiles
+            Vector3 worldOffset = masterTilemap.CellToWorld(offset + templateBounds.position);
 
             // Instantiate the prefab for visual sprites
             var roomInstance = Instantiate(template.prefab, worldOffset, Quaternion.identity, transform);
