@@ -1,19 +1,10 @@
 fileFormatVersion: 2
-guid: cd5bcd4ddb8084bbd85edfb85218e68e
+guid: f1f4f6fd52661704dbb8a33b150515c3
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8625129454543123616
-    second: kiwi_walk_0
-  - first:
-      213: -2979413979214199784
-    second: kiwi_walk_1
-  - first:
-      213: 5357822879952215827
-    second: kiwi_walk_2
-  - first:
-      213: -879640095277971270
-    second: kiwi_walk_3
+      213: -7582638170339866513
+    second: candles2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -60,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 516
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -122,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: kiwi_walk_0
+      name: candles2_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 0
-        width: 1049
-        height: 886
+        x: 436
+        y: 26
+        width: 305
+        height: 687
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,74 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0a43dcf7a8d92b770800000000000000
-      internalID: 8625129454543123616
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: kiwi_walk_1
-      rect:
-        serializedVersion: 2
-        x: 1058
-        y: 0
-        width: 1022
-        height: 886
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 814ca1285cef6a6d0800000000000000
-      internalID: -2979413979214199784
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: kiwi_walk_2
-      rect:
-        serializedVersion: 2
-        x: 2078
-        y: 0
-        width: 1041
-        height: 886
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 31f1309b58fca5a40800000000000000
-      internalID: 5357822879952215827
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: kiwi_walk_3
-      rect:
-        serializedVersion: 2
-        x: 3115
-        y: 0
-        width: 1020
-        height: 886
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ab804ce6ef3eac3f0800000000000000
-      internalID: -879640095277971270
+      spriteID: f68039432ce05c690800000000000000
+      internalID: -7582638170339866513
       vertices: []
       indices: 
       edges: []
@@ -223,10 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      kiwi_walk_0: 8625129454543123616
-      kiwi_walk_1: -2979413979214199784
-      kiwi_walk_2: 5357822879952215827
-      kiwi_walk_3: -879640095277971270
+      candles2_0: -7582638170339866513
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
