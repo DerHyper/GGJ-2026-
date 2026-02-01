@@ -2,4 +2,6 @@
   <Project Path="IllumiBirds.csproj" />
   <Project Path="GAS.Editor.csproj" />
   <Project Path="GAS.csproj" />
+  <Project Path="Tiles.csproj" />
+  <Project Path="Tiles.Editor.csproj" />
 </Solution>
