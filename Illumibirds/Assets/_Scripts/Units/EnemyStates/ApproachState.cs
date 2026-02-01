@@ -71,7 +71,7 @@ public class ApproachState : EnemyState
             {
                 float strength = 1f - (distance / SeparationRadius);
                 separationForce += toMe.normalized * strength;
-                Debug.Log($"[Separation] Force from {enemy.name}: {toMe.normalized * strength}, dist={distance}");
+                // Debug.Log($"[Separation] Force from {enemy.name}: {toMe.normalized * strength}, dist={distance}");
             }
         }
 

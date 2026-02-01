@@ -94,7 +94,7 @@ namespace Examples.Enemies
 
         public void PlaySound(AudioClip sound)
         {
-            AudioManager.Instance.PlayOncePitchedRandom(sound, 1);
+            AudioManager.Instance.PlayOncePitchedRandom(sound, 0.5f);
         }
 
 

@@ -12,9 +12,11 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] const string ATTACK = "attack";
     [SerializeField] const string GETHIT = "getHit";
 
+    [SerializeField] const string RANGE = "shoot";
+
     // bool isMoving = false;
 
-    public Action OnAttackAnimationHit;
+    public Action OnMeleeAttackAnimationHit, OnShootProjectile;
 
     void Awake()
     {
@@ -24,6 +26,11 @@ public class PlayerAnimator : MonoBehaviour
     public void SetAttackTrigger()
     {
         anim.SetTrigger(ATTACK);
+    }
+
+    public void SetRangeTrigger()
+    {
+        anim.SetTrigger(RANGE);
     }
 
     public void SetGetHitTrigger()
@@ -43,7 +50,12 @@ public class PlayerAnimator : MonoBehaviour
 
     public void AttackAnimationHit()
     {
-        OnAttackAnimationHit?.Invoke();
+        OnMeleeAttackAnimationHit?.Invoke();
+    }
+
+    public void OnShootProjectileAnimation()
+    {
+        OnShootProjectile?.Invoke();
     }
 
 }

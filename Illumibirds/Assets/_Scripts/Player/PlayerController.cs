@@ -76,19 +76,21 @@ public class PlayerController : MonoBehaviour
     void OnEnable()
     {
         inputActions.Enable();
-        // inputActions.Player.Look.performed += OnLook;
 
         _asc.OnAttributeChanged += HandleAttributeChanged;
+        anim.OnMeleeAttackAnimationHit += OnMeleeAttackAnimationHit;
+        anim.OnShootProjectile += OnShootProjectileAnimationHit;
     }
 
     void OnDisable()
     {
         inputActions.Disable();
-        // inputActions.Player.Look.performed -= OnLook;
 
         if (_asc != null)
         {
             _asc.OnAttributeChanged -= HandleAttributeChanged;
+            anim.OnMeleeAttackAnimationHit -= OnMeleeAttackAnimationHit;
+            anim.OnShootProjectile -= OnShootProjectileAnimationHit;
         }
     }
 
@@ -99,17 +101,17 @@ public class PlayerController : MonoBehaviour
         HandleStaminaRegen();
         if (canMove) DoMove();
 
-        if (inputActions.Player.RangeAttack.IsPressed())
+        if (inputActions.Player.RangeAttack.WasPressedThisFrame())
         {
             TryRangeAttack();
         }
 
-        if (inputActions.Player.MeleeAttack.IsPressed())
+        if (inputActions.Player.MeleeAttack.WasPerformedThisFrame())
         {
             TryMeleeAttack();
         }
 
-        if (inputActions.Player.Dodge.IsPressed())
+        if (inputActions.Player.Dodge.WasPressedThisFrame())
         {
             TryDodge();
         }
@@ -120,10 +122,11 @@ public class PlayerController : MonoBehaviour
 
     void TryRangeAttack()
     {
-        if (_asc.TryActivateAbility(rangeAbility))
+        Debug.Log("Trying Range");
+        if (_asc.CanActivateAbility(rangeAbility))
         {
-            if (rangeAttackSound)
-                PlaySound(rangeAttackSound);
+            anim.SetRangeTrigger();
+
         }
 
     }
@@ -136,18 +139,36 @@ public class PlayerController : MonoBehaviour
             if (dashSound)
                 PlaySound(dashSound);
         }
-
     }
 
     void TryMeleeAttack()
     {
-        if (_asc.TryActivateAbility(meleeAbility))
+        Debug.Log("Trying melee");
+        if (_asc.CanActivateAbility(meleeAbility))
         {
             anim.SetAttackTrigger();
+        }
+
+    }
+
+    void OnMeleeAttackAnimationHit()
+    {
+        if (_asc.TryActivateAbility(meleeAbility))
+        {
+            Debug.Log("MELEE HITTTTT");
             if (meleeAttackSound)
                 PlaySound(meleeAttackSound);
         }
+    }
 
+    void OnShootProjectileAnimationHit()
+    {
+        Debug.Log("SHOOT PROJECTILE");
+        if (_asc.TryActivateAbility(rangeAbility))
+        {
+            if (rangeAttackSound)
+                PlaySound(rangeAttackSound);
+        }
     }
 
     void DoMove()
@@ -166,7 +187,7 @@ public class PlayerController : MonoBehaviour
 
     void PlaySound(AudioClip sound)
     {
-        AudioManager.Instance.PlayOncePitchedRandom(sound, 1);
+        AudioManager.Instance.PlayOncePitchedRandom(sound, 0.5f);
     }
 
     void RotateTowardsMouse()
@@ -243,7 +264,7 @@ public class PlayerController : MonoBehaviour
         if (attribute.Definition == _healthAttr && newValue < oldValue && newValue > 0)
         {
             anim.SetGetHitTrigger();
-            if(getHitSound) PlaySound(getHitSound);
+            if (getHitSound) PlaySound(getHitSound);
             // GameManager.Instance.FreezeFrame();
         }
 
@@ -251,7 +272,7 @@ public class PlayerController : MonoBehaviour
         if (attribute.Definition == _healthAttr && newValue <= 0 && !_isDead)
         {
             Die();
-            
+
         }
 
         // Clamp health to max health and handle low health effects
@@ -282,7 +303,7 @@ public class PlayerController : MonoBehaviour
 
     private void Die()
     {
-        if(dieSound) PlaySound(dieSound);
+        if (dieSound) PlaySound(dieSound);
         _isDead = true;
         Debug.Log("PLAYER DIE");
         rb.linearVelocity = Vector2.zero;
