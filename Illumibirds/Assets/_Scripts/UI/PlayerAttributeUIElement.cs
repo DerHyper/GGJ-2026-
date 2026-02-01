@@ -14,7 +14,7 @@ public class PlayerAttributeUIElement : MonoBehaviour
 
     void Start()
     {
-        Initiate();
+        Invoke(nameof(Initiate),0.2f);
     }
 
     void Initiate()

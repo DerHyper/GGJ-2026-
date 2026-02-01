@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Danny - Main Menu.unity
     guid: 993bf656c1fed6b4d9de15f838e00940
   - enabled: 1
+    path: Assets/Scenes/Jan - TestMap.unity
+    guid: 65e30e7097a9f4b3ea8189fee6f0ac3d
+  - enabled: 1
     path: Assets/Scenes/Danny - PlayerController.unity
     guid: 2bb64c8448dfbef469fa7f689c37c3aa
   m_configObjects:
