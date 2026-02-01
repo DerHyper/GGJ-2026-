@@ -115,7 +115,6 @@ namespace Rooms
 
             // Subscribe to generation events
             generator.OnRoomGenerated += OnRoomGenerated;
-            generator.OnRoomUnloaded += OnRoomUnloaded;
 
             // Detect and register all initially generated rooms
             foreach (var genRoom in generator.GeneratedRooms)
@@ -207,14 +206,6 @@ namespace Rooms
         private void OnRoomGenerated(GeneratedRoom genRoom)
         {
             DetectAndRegisterRoom(genRoom);
-        }
-
-        private void OnRoomUnloaded(GeneratedRoom genRoom)
-        {
-            if (genRoom.DetectedRoom != null)
-            {
-                UnregisterRoom(genRoom.DetectedRoom, genRoom.TileBounds);
-            }
         }
 
         private void DetectAndRegisterRoom(GeneratedRoom genRoom)
@@ -311,7 +302,6 @@ namespace Rooms
             if (generator != null)
             {
                 generator.OnRoomGenerated -= OnRoomGenerated;
-                generator.OnRoomUnloaded -= OnRoomUnloaded;
             }
         }
 
@@ -483,8 +473,88 @@ namespace Rooms
 
             DoorController.Required.CloseDoorsForRoom(previousRoom);
 
-            // Fade out the previous room's sprites
-            StartCoroutine(FadeOutRoom(previousRoom, 0.5f));
+            // Fade out the previous room
+            yield return StartCoroutine(FadeOutRoom(previousRoom, 0.5f));
+
+            // Room unloading disabled for now - rooms will stay loaded
+            // TODO: Fix the room unloading bug where unloading affects wrong room's content
+        }
+
+        /// <summary>
+        /// Unloads a specific room by floor number if it's far enough behind the current room.
+        /// </summary>
+        private void TryUnloadRoom(int floorToUnload)
+        {
+            if (currentRoom == null || generator == null) return;
+
+            // Find current room's floor number
+            int currentFloor = -1;
+            foreach (var gr in generator.GeneratedRooms)
+            {
+                if (gr.DetectedRoom == currentRoom)
+                {
+                    currentFloor = gr.FloorNumber;
+                    break;
+                }
+            }
+
+            if (currentFloor < 0) return;
+
+            // Only unload if more than 2 floors behind current room
+            if (floorToUnload >= currentFloor - 2) return;
+
+            // Find and unload the specific room
+            foreach (var gr in generator.GeneratedRooms)
+            {
+                if (gr.FloorNumber == floorToUnload && gr.IsLoaded)
+                {
+                    UnloadGeneratedRoom(gr);
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Unloads a specific GeneratedRoom - clears tiles and destroys the prefab instance.
+        /// </summary>
+        private void UnloadGeneratedRoom(GeneratedRoom genRoom)
+        {
+            if (genRoom == null || !genRoom.IsLoaded) return;
+
+            // Calculate safe bounds for tile clearing that doesn't overlap with adjacent rooms
+            // Only clear from this floor's offset up to (but not including) the next floor's start
+            var tilemap = generator.MasterTilemap;
+            int startY = genRoom.WorldOffset.y;
+            int endY = startY + 24; // Use stacking height (25) minus 1 for safety
+
+            var safeBounds = new BoundsInt(
+                genRoom.TileBounds.x,
+                startY,
+                genRoom.TileBounds.z,
+                genRoom.TileBounds.size.x,
+                endY - startY,
+                genRoom.TileBounds.size.z
+            );
+
+            foreach (var pos in safeBounds.allPositionsWithin)
+            {
+                tilemap.SetTile(pos, null);
+            }
+
+            // Destroy the visual prefab instance
+            if (genRoom.RoomInstance != null)
+            {
+                Destroy(genRoom.RoomInstance);
+                genRoom.RoomInstance = null;
+            }
+
+            genRoom.IsLoaded = false;
+
+            // Unregister the Room using safe bounds
+            if (genRoom.DetectedRoom != null)
+            {
+                UnregisterRoom(genRoom.DetectedRoom, safeBounds);
+            }
         }
 
         private System.Collections.IEnumerator FadeOutRoom(Room room, float duration)
