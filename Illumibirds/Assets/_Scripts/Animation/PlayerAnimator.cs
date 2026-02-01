@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
@@ -7,11 +8,13 @@ public class PlayerAnimator : MonoBehaviour
 
     [Header("Animation Parameters")]
     [SerializeField] const string DASH = "dash";
-    [SerializeField] const string ISMOVING ="isMoving";
-    [SerializeField] const string ATTACK ="attack";
-    [SerializeField] const string GETHIT ="getHit";
+    [SerializeField] const string ISMOVING = "isMoving";
+    [SerializeField] const string ATTACK = "attack";
+    [SerializeField] const string GETHIT = "getHit";
 
     // bool isMoving = false;
+
+    public Action OnAttackAnimationHit;
 
     void Awake()
     {
@@ -38,6 +41,9 @@ public class PlayerAnimator : MonoBehaviour
         anim.SetBool(ISMOVING, moving);
     }
 
-    
+    public void AttackAnimationHit()
+    {
+        OnAttackAnimationHit?.Invoke();
+    }
 
 }

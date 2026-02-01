@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EnemyAnimator : MonoBehaviour
@@ -10,6 +11,8 @@ public class EnemyAnimator : MonoBehaviour
     [SerializeField] const string GETHIT = "getHit";
 
     [SerializeField] const string DIE = "isDead";
+
+    public Action OnAttackAnimationHit;
 
     // bool isMoving = false;
 
@@ -37,5 +40,10 @@ public class EnemyAnimator : MonoBehaviour
     public void SetIsMoving(bool moving)
     {
         anim.SetBool(ISMOVING, moving);
+    }
+
+    public void AttackAnimationHit()
+    {
+        OnAttackAnimationHit?.Invoke();
     }
 }

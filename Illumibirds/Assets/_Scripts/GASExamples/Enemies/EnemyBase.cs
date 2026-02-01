@@ -55,6 +55,8 @@ namespace Examples.Enemies
 
         public AudioClip attackSound, getHitSound, dieSound;
 
+        Vector2 lastPosition = Vector2.zero;
+
         protected virtual void Awake()
         {
             _asc = GetComponent<AbilitySystemComponent>();
@@ -70,11 +72,13 @@ namespace Examples.Enemies
         protected virtual void OnEnable()
         {
             _asc.OnAttributeChanged += HandleAttributeChanged;
+            anim.OnAttackAnimationHit += OnAttackAnimationHit;
         }
 
         protected virtual void OnDisable()
         {
             _asc.OnAttributeChanged -= HandleAttributeChanged;
+             anim.OnAttackAnimationHit -= OnAttackAnimationHit;
         }
 
         protected virtual void OnDestroy()
@@ -104,8 +108,16 @@ namespace Examples.Enemies
             if (currentState != null) currentState.OnUpdate(this.gameObject);
 
             SetSpriteFlip();
+            SetAnimations();
 
+            lastPosition = transform.position;
+        }
 
+        void SetAnimations()
+        {
+            bool isMoving = !(lastPosition == (Vector2)transform.position);
+
+            anim.SetIsMoving(isMoving);
         }
 
         void SetSpriteFlip()
@@ -125,6 +137,11 @@ namespace Examples.Enemies
             currentState = newState;
 
             currentState.OnStart(this.gameObject);
+        }
+
+        void OnAttackAnimationHit()
+        {
+            _asc.TryActivateAbility(abilityToUse);
         }
 
 
