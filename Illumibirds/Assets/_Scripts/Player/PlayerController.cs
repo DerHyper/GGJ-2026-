@@ -59,6 +59,7 @@ public class PlayerController : MonoBehaviour
     PlayerAnimator anim;
 
     [SerializeField] Transform hitboxParent;
+    [SerializeField] SpriteRenderer spriteRenderer;
 
     void Awake()
     {
@@ -151,36 +152,23 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    // void OnLook(InputAction.CallbackContext ctx)
-    // {
-    //     Vector2 lookVector = inputActions.Player.Look.ReadValue<Vector2>().normalized;
-
-    //     if (lookVector.sqrMagnitude > 0.1f)
-    //     {
-    //         float angle = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg;
-    //         hitboxParent.rotation = Quaternion.Euler(0, 0, angle);
-
-    //     }
-    // }
-
-    // void LookAtMousePos()
-    // {
-    //     Vector2 mousePos = inputActions.Player.Move.ReadValue<Vector2>();
-
-
-    //     float angle = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg;
-    //     hitboxParent.rotation = Quaternion.Euler(0, 0, angle);
-
-    // }
 
     void RotateTowardsMouse()
     {
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(inputActions.Player.MousePos.ReadValue<Vector2>());
         Vector2 lookDirection = (Vector2)mouseWorldPos - (Vector2)transform.position;
 
+        FlipSprite(mouseWorldPos.x < transform.position.x);
+        
+
         float angle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
 
         hitboxParent.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    void FlipSprite(bool flip)
+    {
+        spriteRenderer.flipX = flip;
     }
 
 
