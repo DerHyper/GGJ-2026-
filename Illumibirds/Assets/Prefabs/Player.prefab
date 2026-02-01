@@ -253,8 +253,8 @@ MonoBehaviour:
   _maxStaminaAttr: {fileID: 11400000, guid: 03d969d41c94b45b5ba980e97ac9d76f, type: 2}
   _attackSpeedAttr: {fileID: 11400000, guid: b85033ce5a1da465593d05d2e54688ed, type: 2}
   _moveSpeedAttr: {fileID: 11400000, guid: d4cd5747b2929c24993e413ba86adb38, type: 2}
-  _staminaRegenRate: 10
-  _staminaRegenDelay: 1
+  _staminaRegenRate: 20
+  _staminaRegenDelay: 2
   meleeAbility: {fileID: 11400000, guid: a8eb7d806bb99e24383a42bbe1e70191, type: 2}
   rangeAbility: {fileID: 11400000, guid: 7b6a5053e3b3e4c4d816b6d2ed41987d, type: 2}
   dodgeAbility: {fileID: 11400000, guid: 390831cf71a48473e84a1273695b8bb1, type: 2}

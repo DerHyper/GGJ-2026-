@@ -21,7 +21,8 @@ namespace GAS
         void IAbilityBehavior.OnActivate(AbilityInstance ability, AbilitySystemComponent owner)
         {
             Rigidbody2D rb = owner.GetComponent<Rigidbody2D>();
-            Vector2 direction = owner.transform.right.normalized;
+            Vector2 direction = owner.GetComponentInChildren<HitboxParentMarker>().transform.right;
+            // owner.transform.right.normalized;
 
             Debug.Log($"Dashing to: {direction}");
 
