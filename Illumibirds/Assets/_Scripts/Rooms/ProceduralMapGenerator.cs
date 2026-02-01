@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Tiles;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -121,7 +122,15 @@ namespace Rooms
             Vector3Int offset = new Vector3Int(0, floorNumber * stackHeight, 0);
 
             // Calculate actual tile bounds in master tilemap (normalized to start at offset)
-            var tileBounds = new BoundsInt(offset, templateBounds.size);
+            // For rooms above floor 0, extend bounds down by 1 row to include shared boundary doors
+            var boundsOffset = offset;
+            var boundsSize = templateBounds.size;
+            if (floorNumber > 0)
+            {
+                boundsOffset = new Vector3Int(offset.x, offset.y - 1, offset.z);
+                boundsSize = new Vector3Int(boundsSize.x, boundsSize.y + 1, boundsSize.z);
+            }
+            var tileBounds = new BoundsInt(boundsOffset, boundsSize);
 
             var genRoom = new GeneratedRoom(floorNumber, template, offset, actualSize, tileBounds);
             genRoom.RoomInstance = StampRoomToTilemap(template, offset);
@@ -202,6 +211,16 @@ namespace Rooms
                 {
                     // Subtract templateBounds.position to normalize tiles to start at (0,0) + offset
                     Vector3Int targetPos = pos - templateBounds.position + offset;
+
+                    // Don't overwrite existing door tiles - preserves doors at room boundaries
+                    var existingTile = masterTilemap.GetTile<GameTile>(targetPos);
+                    if (existingTile != null &&
+                        (existingTile.tileType == GameTile.TileType.Door ||
+                         existingTile.tileType == GameTile.TileType.DoorClosed))
+                    {
+                        continue; // Preserve the door
+                    }
+
                     masterTilemap.SetTile(targetPos, tile);
                     tileCount++;
                 }

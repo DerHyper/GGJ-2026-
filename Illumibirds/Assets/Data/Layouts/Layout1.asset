@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Layout1
   m_EditorClassIdentifier: IllumiBirds::Rooms.RoomTemplate
   prefab: {fileID: 5921951534830921155, guid: a70e1be20d3564aaeba5b5549a21662d, type: 3}
-  stackingHeight: 26
+  stackingHeight: 25
   minFloor: 0
   maxFloor: 0
   selectionWeight: 1
