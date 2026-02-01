@@ -1,31 +1,19 @@
 fileFormatVersion: 2
-guid: bf76f29d7bca1471b84169636c3e50f8
+guid: feb0808fe4cd87f44be524e68307d4b1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8009600402847162968
-    second: Credits_text_0
+      213: 4550704533360190860
+    second: Sword_attack_0
   - first:
-      213: 3900524277912355483
-    second: Credits_text_1
+      213: -7605462015040084675
+    second: Sword_attack_1
   - first:
-      213: -3545970909716128179
-    second: Credits_text_2
+      213: 7549502788960992622
+    second: Sword_attack_2
   - first:
-      213: 4414027314392248025
-    second: Credits_text_3
-  - first:
-      213: 4729688130667437183
-    second: Credits_text_4
-  - first:
-      213: 6137504799623936136
-    second: Credits_text_5
-  - first:
-      213: 3595818622322648392
-    second: Credits_text_6
-  - first:
-      213: -6801046361389134945
-    second: Credits_text_7
+      213: -4492441427943637528
+    second: Sword_attack_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -67,7 +55,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -121,13 +109,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Credits_text_0
+      name: Sword_attack_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 12
-        width: 46
-        height: 96
+        x: 1
+        y: 0
+        width: 1530
+        height: 1410
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -136,20 +124,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8ad187bcede28d090800000000000000
-      internalID: -8009600402847162968
+      spriteID: c85a1b499a9572f30800000000000000
+      internalID: 4550704533360190860
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Credits_text_1
+      name: Sword_attack_1
       rect:
         serializedVersion: 2
-        x: 137
-        y: 9
-        width: 47
-        height: 101
+        x: 1531
+        y: 0
+        width: 1722
+        height: 1493
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -158,20 +146,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b92c0c63a22712630800000000000000
-      internalID: 3900524277912355483
+      spriteID: d352fc0c798f37690800000000000000
+      internalID: -7605462015040084675
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Credits_text_2
+      name: Sword_attack_2
       rect:
         serializedVersion: 2
-        x: 190
-        y: 72
-        width: 15
-        height: 14
+        x: 3252
+        y: 170
+        width: 71
+        height: 716
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -180,20 +168,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d4e5086be3e2acec0800000000000000
-      internalID: -3545970909716128179
+      spriteID: e6d37de99c835c860800000000000000
+      internalID: 7549502788960992622
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Credits_text_3
+      name: Sword_attack_3
       rect:
         serializedVersion: 2
-        x: 205
-        y: 3
-        width: 61
-        height: 109
+        x: 3343
+        y: 0
+        width: 1588
+        height: 1399
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -202,96 +190,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9dea837b476c14d30800000000000000
-      internalID: 4414027314392248025
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Credits_text_4
-      rect:
-        serializedVersion: 2
-        x: 53
-        y: 5
-        width: 38
-        height: 60
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f7c50debb4a33a140800000000000000
-      internalID: 4729688130667437183
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Credits_text_5
-      rect:
-        serializedVersion: 2
-        x: 94
-        y: 8
-        width: 36
-        height: 61
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 888f6dce81ccc2550800000000000000
-      internalID: 6137504799623936136
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Credits_text_6
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 15
-        width: 14
-        height: 50
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 845a64c4cf9e6e130800000000000000
-      internalID: 3595818622322648392
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Credits_text_7
-      rect:
-        serializedVersion: 2
-        x: 272
-        y: 2
-        width: 42
-        height: 69
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f9b00782e54dd91a0800000000000000
-      internalID: -6801046361389134945
+      spriteID: 8edbb21c254a7a1c0800000000000000
+      internalID: -4492441427943637528
       vertices: []
       indices: 
       edges: []
@@ -300,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -310,14 +210,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Credits_text_0: -8009600402847162968
-      Credits_text_1: 3900524277912355483
-      Credits_text_2: -3545970909716128179
-      Credits_text_3: 4414027314392248025
-      Credits_text_4: 4729688130667437183
-      Credits_text_5: 6137504799623936136
-      Credits_text_6: 3595818622322648392
-      Credits_text_7: -6801046361389134945
+      Sword_attack_0: 4550704533360190860
+      Sword_attack_1: -7605462015040084675
+      Sword_attack_2: 7549502788960992622
+      Sword_attack_3: -4492441427943637528
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
