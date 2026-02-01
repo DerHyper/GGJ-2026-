@@ -104,6 +104,12 @@ namespace Rooms
                 doorStates[doorPos] = true;
             }
 
+            // Update door sprite visuals
+            if (room.DoorVisuals != null)
+            {
+                room.DoorVisuals.OpenDoors();
+            }
+
             room.DoorsOpen = true;
             Debug.Log($"DoorController: Opened doors for room {room.Id}");
         }
@@ -116,6 +122,12 @@ namespace Rooms
             {
                 SetDoorClosed(doorPos);
                 doorStates[doorPos] = false;
+            }
+
+            // Update door sprite visuals
+            if (room.DoorVisuals != null)
+            {
+                room.DoorVisuals.CloseDoors();
             }
 
             room.DoorsOpen = false;

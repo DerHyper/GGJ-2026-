@@ -23,6 +23,9 @@ namespace Rooms
         public bool IsCleared => Enemies.Count == 0;
         public bool DoorsOpen { get; set; }
 
+        // Door visuals (sprite-based doors in room prefab)
+        public RoomDoorVisuals DoorVisuals { get; set; }
+
         public Room(int id)
         {
             Id = id;
@@ -50,6 +53,39 @@ namespace Rooms
             Vector3 center = (min + max) / 2f;
             Vector3 size = max - min;
             WorldBounds = new Bounds(center, size);
+
+            // Create camera bounds collider from world bounds
+            CreateCameraBoundsCollider();
+        }
+
+        private void CreateCameraBoundsCollider()
+        {
+            // Destroy existing if any
+            if (CameraBounds != null)
+            {
+                Object.Destroy(CameraBounds.gameObject);
+            }
+
+            // Create a new GameObject with PolygonCollider2D for camera confiner
+            var boundsObj = new GameObject($"CameraBounds_Room{Id}");
+            boundsObj.transform.position = Vector3.zero;
+
+            var collider = boundsObj.AddComponent<PolygonCollider2D>();
+            collider.isTrigger = true;
+
+            // Set polygon points from bounds (clockwise rectangle)
+            Vector3 min = WorldBounds.min;
+            Vector3 max = WorldBounds.max;
+            collider.SetPath(0, new Vector2[]
+            {
+                new Vector2(min.x, min.y),
+                new Vector2(min.x, max.y),
+                new Vector2(max.x, max.y),
+                new Vector2(max.x, min.y)
+            });
+
+            CameraBounds = collider;
+            Debug.Log($"Room {Id}: Created CameraBounds at {WorldBounds.center} size {WorldBounds.size}");
         }
 
         public bool ContainsWorldPosition(Vector3 worldPos)

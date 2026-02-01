@@ -5,6 +5,9 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Tilemaps;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Rooms
 {
@@ -223,6 +226,14 @@ namespace Rooms
             {
                 genRoom.DetectedRoom = detectedRoom;
                 detectedRoom.SpawnPositions = genRoom.SpawnPositions;
+
+                // Link door visuals from the room prefab instance
+                var doorVisuals = genRoom.RoomInstance.GetComponent<RoomDoorVisuals>();
+                if (doorVisuals != null)
+                {
+                    detectedRoom.DoorVisuals = doorVisuals;
+                }
+
                 rooms.Add(detectedRoom);
                 CreateRoomOverlay(detectedRoom);
 
@@ -253,6 +264,13 @@ namespace Rooms
         public void UnregisterRoom(Room room, BoundsInt bounds)
         {
             if (room == null) return;
+
+            // Destroy camera bounds collider
+            if (room.CameraBounds != null)
+            {
+                Destroy(room.CameraBounds.gameObject);
+                room.CameraBounds = null;
+            }
 
             // Destroy overlay tiles
             foreach (var tile in room.BlackOverlayTiles)
@@ -523,5 +541,75 @@ namespace Rooms
         public Tilemap Tilemap => tilemap;
         public TilemapScanner Scanner => scanner;
         public bool UseProceduralGeneration => useProceduralGeneration;
+
+        [Header("Debug")]
+        [SerializeField] private bool showRoomBounds = true;
+
+        private void LateUpdate()
+        {
+            if (!showRoomBounds || rooms == null) return;
+            DrawRoomBoundsDebug();
+        }
+
+        private void DrawRoomBoundsDebug()
+        {
+            foreach (var room in rooms)
+            {
+                if (room == null) continue;
+
+                // Current room = green, revealed = yellow, hidden = red
+                Color color;
+                if (room == currentRoom)
+                    color = Color.green;
+                else if (room.IsRevealed)
+                    color = Color.yellow;
+                else
+                    color = Color.red;
+
+                DrawBoundsDebug(room.WorldBounds, color);
+            }
+        }
+
+        private void DrawBoundsDebug(Bounds bounds, Color color)
+        {
+            Vector3 min = bounds.min;
+            Vector3 max = bounds.max;
+
+            // Bottom edges
+            Debug.DrawLine(new Vector3(min.x, min.y, 0), new Vector3(max.x, min.y, 0), color);
+            Debug.DrawLine(new Vector3(min.x, min.y, 0), new Vector3(min.x, max.y, 0), color);
+            // Top edges
+            Debug.DrawLine(new Vector3(max.x, max.y, 0), new Vector3(min.x, max.y, 0), color);
+            Debug.DrawLine(new Vector3(max.x, max.y, 0), new Vector3(max.x, min.y, 0), color);
+            // Cross in center for visibility
+            Debug.DrawLine(new Vector3(bounds.center.x - 1, bounds.center.y, 0), new Vector3(bounds.center.x + 1, bounds.center.y, 0), color);
+            Debug.DrawLine(new Vector3(bounds.center.x, bounds.center.y - 1, 0), new Vector3(bounds.center.x, bounds.center.y + 1, 0), color);
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (!showRoomBounds || rooms == null) return;
+
+            foreach (var room in rooms)
+            {
+                if (room == null) continue;
+
+                // Current room = green, revealed = yellow, hidden = red
+                if (room == currentRoom)
+                    Gizmos.color = Color.green;
+                else if (room.IsRevealed)
+                    Gizmos.color = Color.yellow;
+                else
+                    Gizmos.color = Color.red;
+
+                // Draw wireframe cube for bounds
+                Gizmos.DrawWireCube(room.WorldBounds.center, room.WorldBounds.size);
+
+                // Draw label with room ID
+#if UNITY_EDITOR
+                UnityEditor.Handles.Label(room.WorldBounds.center, $"Room {room.Id}");
+#endif
+            }
+        }
     }
 }
