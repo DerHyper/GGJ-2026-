@@ -227,6 +227,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1020609238005837819, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: doorOpenSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 14f4ef50ccb764b49b37d23211f57eff, type: 3}
+    - target: {fileID: 1020609238005837819, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: doorCloseSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 42df63fbe7c51884a918d07f329fc340, type: 3}
     - target: {fileID: 1102759874498626405, guid: 92327c21457634a84aec438ebff307f6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.06
@@ -267,6 +275,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1598763722391629792, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1598763722391629792, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1598763722391629792, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2278057302403793492, guid: 92327c21457634a84aec438ebff307f6, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -296,6 +316,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5323147918130391397, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5679678973455700355, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5679678973455700355, guid: 92327c21457634a84aec438ebff307f6, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5679678973455700355, guid: 92327c21457634a84aec438ebff307f6, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}

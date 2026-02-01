@@ -1768,9 +1768,11 @@ MonoBehaviour:
     - {fileID: 8300000, guid: fc471865bd5d36b41a24d9428e9b14c9, type: 3}
     - {fileID: 8300000, guid: 8b270e150c142414698278fdf0c6f7bd, type: 3}
     volumes:
-    - 0.6
-    - 0.6
-    - 0.7
+    - 0.4
+    - 0.4
+    - 0.5
+  startGameSound: {fileID: 8300000, guid: 48d1d2ba42b8e264d84aa88fa1a42e8f, type: 3}
+  startGameSoundVolume: 0.3
 --- !u!1 &1608569934
 GameObject:
   m_ObjectHideFlags: 0
@@ -1976,6 +1978,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1837634093044547703, guid: f58f3440e9baaca4a817bdc4bef20098, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1837634093044547703, guid: f58f3440e9baaca4a817bdc4bef20098, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1608367677}
@@ -1984,7 +1990,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 191530240}
     - target: {fileID: 1837634093044547703, guid: f58f3440e9baaca4a817bdc4bef20098, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 2325967014684374906, guid: dfa09a7e40d2d6244927eb59635477f5, type: 3}
+    - target: {fileID: 1837634093044547703, guid: f58f3440e9baaca4a817bdc4bef20098, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1837634093044547703, guid: f58f3440e9baaca4a817bdc4bef20098, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1837634093044547703, guid: f58f3440e9baaca4a817bdc4bef20098, type: 3}
@@ -1993,6 +2007,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1837634093044547703, guid: f58f3440e9baaca4a817bdc4bef20098, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: AudioManager, IllumiBirds
+      objectReference: {fileID: 0}
+    - target: {fileID: 1837634093044547703, guid: f58f3440e9baaca4a817bdc4bef20098, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
       value: AudioManager, IllumiBirds
       objectReference: {fileID: 0}
     - target: {fileID: 1837634093044547703, guid: f58f3440e9baaca4a817bdc4bef20098, type: 3}
