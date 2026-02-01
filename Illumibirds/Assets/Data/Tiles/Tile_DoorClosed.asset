@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7766be702633645e985f2d2fcc77452d, type: 3}
-  m_Name: Tile_Door
+  m_Name: Tile_DoorClosed
   m_EditorClassIdentifier: IllumiBirds::Tiles.GameTile
   m_Sprite: {fileID: 1903869905, guid: a32e28f4ef9642b44aa8c0797a5235ef, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -37,4 +37,4 @@ MonoBehaviour:
   tileType: 3
   isWalkable: 0
   closedDoorTile: {fileID: 0}
-  openDoorTile: {fileID: 0}
+  openDoorTile: {fileID: 11400000, guid: 82610c9e87cd748d89601221d5617a10, type: 2}

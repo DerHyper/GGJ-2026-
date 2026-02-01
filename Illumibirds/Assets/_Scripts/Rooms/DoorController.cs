@@ -20,6 +20,9 @@ namespace Rooms
 
         private Dictionary<Vector3Int, bool> doorStates = new Dictionary<Vector3Int, bool>();
 
+        // Stores wall tiles that were cleared for doorways (position -> original tile)
+        private Dictionary<Vector3Int, GameTile> clearedWallTiles = new Dictionary<Vector3Int, GameTile>();
+
         private void Awake()
         {
             if (Instance == null)
@@ -98,10 +101,16 @@ namespace Rooms
         {
             if (room == null) return;
 
+            Debug.Log($"DoorController.OpenDoorsForRoom: Room {room.Id} has {room.DoorPositions.Count} door positions");
+
             foreach (var doorPos in room.DoorPositions)
             {
+                Debug.Log($"DoorController.OpenDoorsForRoom: Processing door at {doorPos}");
                 SetDoorOpen(doorPos);
                 doorStates[doorPos] = true;
+
+                // Clear wall tiles adjacent to door (above and below)
+                ClearAdjacentWalls(doorPos);
             }
 
             // Update door sprite visuals
@@ -122,6 +131,9 @@ namespace Rooms
             {
                 SetDoorClosed(doorPos);
                 doorStates[doorPos] = false;
+
+                // Restore wall tiles adjacent to door
+                RestoreAdjacentWalls(doorPos);
             }
 
             // Update door sprite visuals
@@ -142,12 +154,33 @@ namespace Rooms
         private void SetDoorOpen(Vector3Int pos)
         {
             var currentTile = tilemap.GetTile<GameTile>(pos);
+            Debug.Log($"DoorController.SetDoorOpen: pos={pos}, tile={currentTile?.name ?? "NULL"}, type={currentTile?.tileType}");
+
             if (currentTile != null && currentTile.tileType == GameTile.TileType.DoorClosed)
             {
+                Debug.Log($"DoorController.SetDoorOpen: openDoorTile={currentTile.openDoorTile?.name ?? "NULL"}");
                 if (currentTile.openDoorTile != null)
                 {
                     tilemap.SetTile(pos, currentTile.openDoorTile);
+                    tilemap.RefreshTile(pos);
+                    Debug.Log($"DoorController.SetDoorOpen: Swapped to open tile at {pos}");
+
+                    // Verify the swap
+                    var newTile = tilemap.GetTile<GameTile>(pos);
+                    Debug.Log($"DoorController.SetDoorOpen: After swap - tile={newTile?.name ?? "NULL"}, colliderType={newTile?.colliderType}");
                 }
+                else
+                {
+                    Debug.LogWarning($"DoorController.SetDoorOpen: openDoorTile is NULL for {currentTile.name}!");
+                }
+            }
+            else if (currentTile == null)
+            {
+                Debug.LogWarning($"DoorController.SetDoorOpen: No tile found at {pos}");
+            }
+            else
+            {
+                Debug.Log($"DoorController.SetDoorOpen: Tile at {pos} is not DoorClosed (is {currentTile.tileType})");
             }
 
             // Update collider state - open doors are passable
@@ -162,6 +195,7 @@ namespace Rooms
                 if (currentTile.closedDoorTile != null)
                 {
                     tilemap.SetTile(pos, currentTile.closedDoorTile);
+                    tilemap.RefreshTile(pos);
                 }
             }
 
@@ -186,5 +220,61 @@ namespace Rooms
         }
 
         public Tilemap Tilemap => tilemap;
+
+        /// <summary>
+        /// Clears wall tiles adjacent to a door position to allow passage.
+        /// Checks tiles above and below the door (for vertical room stacking).
+        /// </summary>
+        private void ClearAdjacentWalls(Vector3Int doorPos)
+        {
+            // Check positions above and below the door
+            Vector3Int[] adjacentPositions = new Vector3Int[]
+            {
+                doorPos + Vector3Int.up,
+                doorPos + Vector3Int.down,
+                doorPos + Vector3Int.up * 2,
+                doorPos + Vector3Int.down * 2
+            };
+
+            foreach (var pos in adjacentPositions)
+            {
+                if (clearedWallTiles.ContainsKey(pos)) continue;
+
+                var tile = tilemap.GetTile<GameTile>(pos);
+                if (tile != null && (tile.tileType == GameTile.TileType.Wall || tile.tileType == GameTile.TileType.HalfWall))
+                {
+                    // Store original tile and clear it
+                    clearedWallTiles[pos] = tile;
+                    tilemap.SetTile(pos, null);
+                    tilemap.RefreshTile(pos);
+                    Debug.Log($"DoorController: Cleared wall at {pos} for doorway at {doorPos}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Restores wall tiles that were cleared for a doorway.
+        /// </summary>
+        private void RestoreAdjacentWalls(Vector3Int doorPos)
+        {
+            Vector3Int[] adjacentPositions = new Vector3Int[]
+            {
+                doorPos + Vector3Int.up,
+                doorPos + Vector3Int.down,
+                doorPos + Vector3Int.up * 2,
+                doorPos + Vector3Int.down * 2
+            };
+
+            foreach (var pos in adjacentPositions)
+            {
+                if (clearedWallTiles.TryGetValue(pos, out var originalTile))
+                {
+                    tilemap.SetTile(pos, originalTile);
+                    tilemap.RefreshTile(pos);
+                    clearedWallTiles.Remove(pos);
+                    Debug.Log($"DoorController: Restored wall at {pos}");
+                }
+            }
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace Rooms
 
         private void Start()
         {
+            Debug.Log($"DoorTrigger.Start: Initializing at {transform.position}");
             roomManager = RoomManager.Instance;
             boxCollider = GetComponent<BoxCollider2D>();
             boxCollider.isTrigger = true;
@@ -31,6 +32,7 @@ namespace Rooms
 
         public void SetDoorOpen(bool open)
         {
+            Debug.Log($"DoorTrigger.SetDoorOpen: {cellPosition} -> {open}");
             isDoorOpen = open;
             // When door is closed, it should block movement
             // The tilemap collider handles blocking, this is for trigger detection
@@ -38,31 +40,33 @@ namespace Rooms
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            Debug.Log($"DoorTrigger.OnTriggerEnter2D: {other.name} entered, isDoorOpen={isDoorOpen}, isPlayer={other.CompareTag("Player")}");
             if (!isDoorOpen) return;
             if (!other.CompareTag("Player")) return;
             if (roomManager == null) return;
 
-            // Determine which room the player is entering
-            // The player is coming from their current room and entering an adjacent one
             var currentRoom = roomManager.CurrentRoom;
             if (currentRoom == null) return;
 
-            // Find the room on the other side of this door
+            // Find the target room by checking cells adjacent to the door
+            // One of them will belong to a different room
             Room targetRoom = null;
-            var adjacentRooms = roomManager.GetAdjacentRooms(currentRoom);
+            Vector3Int[] adjacentOffsets = { Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right };
 
-            foreach (var adjRoom in adjacentRooms)
+            foreach (var offset in adjacentOffsets)
             {
-                if (adjRoom.DoorPositions.Contains(cellPosition) && !adjRoom.IsRevealed)
+                var adjacentCell = cellPosition + offset;
+                var room = roomManager.GetRoomContainingCell(adjacentCell);
+                if (room != null && room != currentRoom)
                 {
-                    targetRoom = adjRoom;
+                    targetRoom = room;
                     break;
                 }
             }
 
             if (targetRoom != null)
             {
-                // Player is entering a new room
+                Debug.Log($"DoorTrigger: Door at {cellPosition} leads to room {targetRoom.Id}");
                 roomManager.EnterRoom(targetRoom);
             }
         }
