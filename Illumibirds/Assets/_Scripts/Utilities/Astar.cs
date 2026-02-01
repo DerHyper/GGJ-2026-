@@ -20,6 +20,27 @@ public class AStarPathfinding
             position = pos;
             walkable = isWalkable;
         }
+
+        public void Reset()
+        {
+            gCost = 0;
+            hCost = 0;
+            parent = null;
+        }
+    }
+
+    // Singleton instance
+    private static AStarPathfinding _instance;
+    public static AStarPathfinding Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = new AStarPathfinding();
+            }
+            return _instance;
+        }
     }
 
     const int WalkPointsPerTile = 4;
@@ -31,10 +52,33 @@ public class AStarPathfinding
     private Node[,] grid;
     private int gridWidth;
     private int gridHeight;
+    private bool isInitialized;
+
+    // Path caching per requester
+    private Dictionary<int, CachedPath> _pathCache = new Dictionary<int, CachedPath>();
+    private const float PATH_CACHE_DURATION = 0.3f; // Recalculate path every 0.3 seconds
+    private const float PATH_RECALC_DISTANCE = 1.5f; // Recalculate if target moved more than this
+
+    private class CachedPath
+    {
+        public List<Vector2Int> path;
+        public float timestamp;
+        public Vector2 lastTargetPos;
+        public int currentIndex;
+    }
 
     public AStarPathfinding()
     {
-        var roomManager = RoomManager.Required;
+        // Only initialize if this is the singleton instance being created
+    }
+
+    private void EnsureInitialized()
+    {
+        if (isInitialized) return;
+
+        var roomManager = RoomManager.Instance;
+        if (roomManager == null) return;
+
         tilemap = roomManager.Tilemap;
         scanner = roomManager.Scanner;
 
@@ -46,42 +90,96 @@ public class AStarPathfinding
 
         roomManager.CurrentRoomChanged.AddListener(OnCurrentRoomChanged);
         OnCurrentRoomChanged();
+        isInitialized = true;
     }
 
     public void DesubscribeFromEvent()
     {
-        RoomManager.Required.CurrentRoomChanged.RemoveListener(OnCurrentRoomChanged);
+        if (RoomManager.Instance != null)
+        {
+            RoomManager.Instance.CurrentRoomChanged.RemoveListener(OnCurrentRoomChanged);
+        }
     }
 
     /// <summary>
-    /// Get path from start to target in grid coordinates
+    /// Get next point for an entity to move towards (with caching)
+    /// </summary>
+    public Vector2 GetNextPointWorld(Vector2 start, Vector2 target, int requesterId)
+    {
+        EnsureInitialized();
+        if (grid == null) return start;
+
+        float currentTime = Time.time;
+        bool needsRecalc = true;
+        CachedPath cached = null;
+
+        if (_pathCache.TryGetValue(requesterId, out cached))
+        {
+            // Check if we can reuse the cached path
+            float timeSinceCalc = currentTime - cached.timestamp;
+            float targetMovement = Vector2.Distance(target, cached.lastTargetPos);
+
+            if (timeSinceCalc < PATH_CACHE_DURATION && targetMovement < PATH_RECALC_DISTANCE)
+            {
+                needsRecalc = false;
+            }
+        }
+
+        if (needsRecalc)
+        {
+            // Calculate new path
+            List<Vector2Int> path = FindPath(WorldToTileIndex(start), WorldToTileIndex(target));
+
+            if (cached == null)
+            {
+                cached = new CachedPath();
+                _pathCache[requesterId] = cached;
+            }
+
+            cached.path = path;
+            cached.timestamp = currentTime;
+            cached.lastTargetPos = target;
+            cached.currentIndex = 0;
+        }
+
+        // Return next point from cached path
+        if (cached == null || cached.path == null || cached.path.Count == 0)
+            return start;
+
+        // Advance index if we're close to current waypoint
+        while (cached.currentIndex < cached.path.Count)
+        {
+            Vector2 waypoint = TileIndexToWorld(cached.path[cached.currentIndex]);
+            if (Vector2.Distance(start, waypoint) < 0.3f)
+            {
+                cached.currentIndex++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        if (cached.currentIndex >= cached.path.Count)
+            return target; // Reached end of path
+
+        return TileIndexToWorld(cached.path[cached.currentIndex]);
+    }
+
+    /// <summary>
+    /// Legacy method - Get path from start to target in grid coordinates
     /// </summary>
     public List<Vector2Int> GetPathGrid(Vector2 start, Vector2 target)
     {
+        EnsureInitialized();
         List<Vector2Int> path = FindPath(WorldToTileIndex(start), WorldToTileIndex(target));
-
-        if (path == null || path.Count == 0)
-            return path;
-
-        // Debug Path
-        var lastItem = path[0];
-        foreach (Vector2Int item in path)
-        {
-            Debug.DrawLine(TileIndexToWorld(lastItem), TileIndexToWorld(item), Color.red);
-            lastItem = item;
-        }
-
         return path;
     }
 
     public Vector2 GetNextPointWorld(Vector2 start, Vector2 target)
     {
-        List<Vector2Int> path = FindPath(WorldToTileIndex(start), WorldToTileIndex(target));
-        if (path == null || path.Count == 0)
-            return start; // No path found or already at target
-
-        Vector2Int nextIndex = path[0];
-        return TileIndexToWorld(nextIndex);
+        // Legacy method without caching - use instance ID 0
+        return GetNextPointWorld(start, target, 0);
     }
 
     private void OnCurrentRoomChanged()
@@ -95,6 +193,9 @@ public class AStarPathfinding
         InitializeGrid(width, height);
         SetWalkableForTilemap();
         DilateObstacles();
+
+        // Clear path cache when room changes
+        _pathCache.Clear();
     }
 
     private void SetWalkableForTilemap()
@@ -287,29 +388,34 @@ public class AStarPathfinding
         if (start.x < 0 || start.x >= gridWidth || start.y < 0 || start.y >= gridHeight) return null;
         if (target.x < 0 || target.x >= gridWidth || target.y < 0 || target.y >= gridHeight) return null;
 
+        // Reset nodes used in previous search
+        ResetGridCosts();
+
         Node startNode = grid[start.x, start.y];
         Node targetNode = grid[target.x, target.y];
 
-        List<Node> openList = new List<Node>();
-        HashSet<Node> closedList = new HashSet<Node>();
+        // Use a simple priority approach - sorted insert
+        List<Node> openList = new List<Node>(256);
+        HashSet<Node> closedSet = new HashSet<Node>();
+        HashSet<Node> openSet = new HashSet<Node>();
 
+        startNode.gCost = 0;
+        startNode.hCost = GetDistance(startNode, targetNode);
         openList.Add(startNode);
+        openSet.Add(startNode);
 
-        while (openList.Count > 0)
+        int maxIterations = 5000; // Prevent infinite loops
+        int iterations = 0;
+
+        while (openList.Count > 0 && iterations < maxIterations)
         {
-            // Find node with lowest fCost
-            Node currentNode = openList[0];
-            for (int i = 1; i < openList.Count; i++)
-            {
-                if (openList[i].fCost < currentNode.fCost ||
-                    (openList[i].fCost == currentNode.fCost && openList[i].hCost < currentNode.hCost))
-                {
-                    currentNode = openList[i];
-                }
-            }
+            iterations++;
 
-            openList.Remove(currentNode);
-            closedList.Add(currentNode);
+            // Find node with lowest fCost (from end is faster for sorted list)
+            Node currentNode = openList[openList.Count - 1];
+            openList.RemoveAt(openList.Count - 1);
+            openSet.Remove(currentNode);
+            closedSet.Add(currentNode);
 
             // Goal reached?
             if (currentNode == targetNode)
@@ -320,19 +426,23 @@ public class AStarPathfinding
             // Check neighbors
             foreach (Node neighbor in GetNeighbors(currentNode))
             {
-                if (!neighbor.walkable || closedList.Contains(neighbor))
+                if (!neighbor.walkable || closedSet.Contains(neighbor))
                     continue;
 
                 float newGCost = currentNode.gCost + GetDistance(currentNode, neighbor);
 
-                if (newGCost < neighbor.gCost || !openList.Contains(neighbor))
+                if (newGCost < neighbor.gCost || !openSet.Contains(neighbor))
                 {
                     neighbor.gCost = newGCost;
                     neighbor.hCost = GetDistance(neighbor, targetNode);
                     neighbor.parent = currentNode;
 
-                    if (!openList.Contains(neighbor))
-                        openList.Add(neighbor);
+                    if (!openSet.Contains(neighbor))
+                    {
+                        // Insert sorted (highest fCost first, so lowest is at end)
+                        InsertSorted(openList, neighbor);
+                        openSet.Add(neighbor);
+                    }
                 }
             }
         }
@@ -340,10 +450,41 @@ public class AStarPathfinding
         return null; // No path found
     }
 
+    private void InsertSorted(List<Node> list, Node node)
+    {
+        float fCost = node.fCost;
+        // Insert in descending order (highest first, lowest at end)
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (list[i].fCost < fCost)
+            {
+                list.Insert(i, node);
+                return;
+            }
+        }
+        list.Add(node);
+    }
+
+    private void ResetGridCosts()
+    {
+        for (int x = 0; x < gridWidth; x++)
+        {
+            for (int y = 0; y < gridHeight; y++)
+            {
+                grid[x, y].gCost = float.MaxValue;
+                grid[x, y].hCost = 0;
+                grid[x, y].parent = null;
+            }
+        }
+    }
+
+    // Reusable list for neighbors to reduce allocations
+    private List<Node> _neighborCache = new List<Node>(8);
+
     // Find neighbors of a node (8 directions)
     private List<Node> GetNeighbors(Node node)
     {
-        List<Node> neighbors = new List<Node>();
+        _neighborCache.Clear();
 
         for (int x = -1; x <= 1; x++)
         {
@@ -357,12 +498,12 @@ public class AStarPathfinding
 
                 if (checkX >= 0 && checkX < gridWidth && checkY >= 0 && checkY < gridHeight)
                 {
-                    neighbors.Add(grid[checkX, checkY]);
+                    _neighborCache.Add(grid[checkX, checkY]);
                 }
             }
         }
 
-        return neighbors;
+        return _neighborCache;
     }
 
     // Calculate distance between two nodes
@@ -391,5 +532,10 @@ public class AStarPathfinding
 
         path.Reverse();
         return path;
+    }
+
+    public void RemoveRequester(int requesterId)
+    {
+        _pathCache.Remove(requesterId);
     }
 }

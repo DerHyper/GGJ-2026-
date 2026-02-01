@@ -3,28 +3,30 @@ using UnityEngine;
 
 public class ApproachState : EnemyState
 {
+    private EnemyBase enemyBase;
+    private int instanceId;
 
-    EnemyBase enemyBase;
     public void OnStart(GameObject gameObject)
     {
         enemyBase = gameObject.GetComponent<EnemyBase>();
+        instanceId = gameObject.GetInstanceID();
     }
-    
+
     public void OnUpdate(GameObject gameObject)
     {
-        
         if (enemyBase.TargetIsInRange())
         {
             enemyBase.ChangeState(new AttackState());
             return;
         }
-        
 
-        AStarPathfinding pathfinding = enemyBase.pathfinding;
+        Transform player = Finder.FindPlayer();
+        if (player == null) return;
 
-        Vector2 nextWalkPoint = pathfinding.GetNextPointWorld(
-            gameObject.transform.position, 
-            Finder.FindPlayer().position);
+        Vector2 nextWalkPoint = AStarPathfinding.Instance.GetNextPointWorld(
+            gameObject.transform.position,
+            player.position,
+            instanceId);
 
         MoveTowards(gameObject, nextWalkPoint);
     }
@@ -33,8 +35,8 @@ public class ApproachState : EnemyState
     {
         float step = enemyBase.movementSpeed * Time.deltaTime;
         gameObject.transform.position = Vector2.MoveTowards(
-            gameObject.transform.position, 
-            targetPosition, 
+            gameObject.transform.position,
+            targetPosition,
             step);
     }
 }

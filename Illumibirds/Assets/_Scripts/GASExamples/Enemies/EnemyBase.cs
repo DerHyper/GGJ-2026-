@@ -30,8 +30,6 @@ namespace Examples.Enemies
 
         [Header("Detection")]
         // [SerializeField] protected float _detectionRange = 10f;
-        [SerializeField] protected string PLAYERTAG = "Player";
-        public AStarPathfinding pathfinding;
 
         // Components
         public AbilitySystemComponent _asc;
@@ -58,7 +56,6 @@ namespace Examples.Enemies
 
         void Start()
         {
-            pathfinding = new();
             ChangeState(startingState);
         }
 
@@ -79,8 +76,8 @@ namespace Examples.Enemies
                 _asc.OnAttributeChanged -= HandleAttributeChanged;
             }
 
-            pathfinding.DesubscribeFromEvent();
-            pathfinding = null;
+            // Clean up cached path for this enemy
+            AStarPathfinding.Instance.RemoveRequester(GetInstanceID());
         }
 
         protected virtual void Update()
@@ -106,18 +103,10 @@ namespace Examples.Enemies
 
         protected virtual void FindTarget()
         {
-            // Simple: find player by tag or layer
+            // Use cached player lookup
             if (_target == null)
             {
-                var player = GameObject.FindGameObjectWithTag(PLAYERTAG);
-                if (player != null)
-                {
-                    _target = player.transform;
-                }
-                else
-                {
-                    Debug.LogWarning("No Player found");
-                }
+                _target = Finder.FindPlayer();
             }
         }
 

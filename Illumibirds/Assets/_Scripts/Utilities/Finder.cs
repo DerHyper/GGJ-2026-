@@ -2,10 +2,22 @@ using UnityEngine;
 
 public static class Finder
 {
+    private static Transform _cachedPlayer;
+
     public static Transform FindPlayer()
     {
-        Transform playerTransform = GameObject.FindWithTag("Player").transform;
-        return playerTransform;
+        if (_cachedPlayer == null)
+        {
+            var player = GameObject.FindWithTag("Player");
+            if (player != null)
+                _cachedPlayer = player.transform;
+        }
+        return _cachedPlayer;
+    }
+
+    public static void ClearCache()
+    {
+        _cachedPlayer = null;
     }
 
     /// <summary>
