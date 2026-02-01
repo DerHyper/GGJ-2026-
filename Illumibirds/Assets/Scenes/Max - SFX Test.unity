@@ -2134,8 +2134,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1485642203}
-  - component: {fileID: 1485642202}
   - component: {fileID: 1485642204}
+  - component: {fileID: 1485642205}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -2143,42 +2143,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1485642202
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1485642201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 468c9683d03e2984fb24fef3d856c068, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: IllumiBirds::AudioManager
-  _sfxParent: {fileID: 731486690}
-  musicPlayer:
-  - musicPlayer: {fileID: 402105757}
-    nextMusic: {fileID: 0}
-    currentMusicTargetVolume: 0
-    fadeIn: 0
-    fadeOut: 0
-    fadeAmount: 1
-  - musicPlayer: {fileID: 50436519}
-    nextMusic: {fileID: 0}
-    currentMusicTargetVolume: 0
-    fadeIn: 0
-    fadeOut: 0
-    fadeAmount: 1
-  - musicPlayer: {fileID: 194371603}
-    nextMusic: {fileID: 0}
-    currentMusicTargetVolume: 0
-    fadeIn: 0
-    fadeOut: 0
-    fadeAmount: 1
-  fadeAmount: 1
-  pitchIncrease: 0.1
-  randomPitchRange: 0.2
-  pitchResetTime: 1
 --- !u!4 &1485642203
 Transform:
   m_ObjectHideFlags: 0
@@ -2220,6 +2184,42 @@ MonoBehaviour:
     - 1
     - 1
     - 1
+--- !u!114 &1485642205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1485642201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dd234735c650d43b2033d7b95e6946, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: IllumiBirds::AudioManager
+  _sfxParent: {fileID: 731486690}
+  musicPlayer:
+  - musicPlayer: {fileID: 402105757}
+    nextMusic: {fileID: 0}
+    currentMusicTargetVolume: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeAmount: 0
+  - musicPlayer: {fileID: 50436519}
+    nextMusic: {fileID: 0}
+    currentMusicTargetVolume: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeAmount: 0
+  - musicPlayer: {fileID: 194371603}
+    nextMusic: {fileID: 0}
+    currentMusicTargetVolume: 0
+    fadeIn: 0
+    fadeOut: 0
+    fadeAmount: 0
+  fadeAmount: 1
+  pitchIncrease: 0.1
+  randomPitchRange: 0.2
+  pitchResetTime: 1
 --- !u!1 &1848141690
 GameObject:
   m_ObjectHideFlags: 0

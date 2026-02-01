@@ -39,4 +39,6 @@ public class PlayerAnimator : MonoBehaviour
         anim.SetBool(ISMOVING, moving);
     }
 
+    
+
 }

@@ -58,6 +58,8 @@ public class PlayerController : MonoBehaviour
     [Header("Animations")]
     PlayerAnimator anim;
 
+    [SerializeField] Transform hitboxParent;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -155,7 +157,7 @@ public class PlayerController : MonoBehaviour
         if (lookVector.sqrMagnitude > 0.1f)
         {
             float angle = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, angle);
+            hitboxParent.rotation = Quaternion.Euler(0, 0, angle);
 
         }
     }
