@@ -27,8 +27,8 @@ public class DeathScreen : MonoBehaviour
 
     public void GoBackToMainMenu()
     {
+        Finder.ClearCache();
         GameManager.Instance.ChangeState(GameState.mainMenu);
         SceneManager.LoadScene(0);
-
     }
 }

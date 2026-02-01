@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        Finder.ClearCache();
         SceneManager.LoadScene(GAMESCENE);
         ChangeState(GameState.inGame);
     }

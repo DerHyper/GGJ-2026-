@@ -45,6 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0e56c420c448420182276e7eb191056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: IllumiBirds::Rooms.RoomCombatManager
+  doorOpenSFX: {fileID: 8300000, guid: 0a716b5f72c3f284e9b7cbe9eed48a18, type: 3}
+  doorOpenSFXVolume: 0.5
+  doorCloseSFX: {fileID: 8300000, guid: 9f834fd973450db48af578ec300d38ee, type: 3}
+  doorCloseSFXVolume: 0.5
 --- !u!1 &3858268925513336138
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,6 +315,7 @@ MonoBehaviour:
   CurrentRoomChanged:
     m_PersistentCalls:
       m_Calls: []
+  showRoomBounds: 1
 --- !u!19719996 &8927969843252571779
 TilemapCollider2D:
   m_ObjectHideFlags: 0
