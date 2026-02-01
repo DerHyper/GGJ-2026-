@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 640014022337759859, guid: b874337bc20578a48bdd8b30dcfc87ae, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.5
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 2853259111270074443, guid: b874337bc20578a48bdd8b30dcfc87ae, type: 3}
       propertyPath: _attackEffect
@@ -171,7 +171,7 @@ MonoBehaviour:
     m_TrimEdge: 0.07
     m_FlipX: 0
     m_FlipY: 0
-    m_InitialTrim: 0.2
+    m_InitialTrim: 0
   m_CastingOption: 1
   m_PreviousTrimEdge: 0.07
   m_PreviousEdgeProcessing: 1

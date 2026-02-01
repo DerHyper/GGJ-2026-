@@ -18,9 +18,9 @@ MonoBehaviour:
   - Attribute: {fileID: 11400000, guid: be98bad68000443c9ae2eb11731c64ae, type: 2}
     InitialValue: 1
   - Attribute: {fileID: 11400000, guid: d03911df997dd4c019d66da0057503c8, type: 2}
-    InitialValue: 100
+    InitialValue: 150
   - Attribute: {fileID: 11400000, guid: c9cd7e9438c54428cbac825ff990f8e8, type: 2}
-    InitialValue: 100
+    InitialValue: 150
   - Attribute: {fileID: 11400000, guid: 03d969d41c94b45b5ba980e97ac9d76f, type: 2}
     InitialValue: 100
   - Attribute: {fileID: 11400000, guid: 1f2bf365f8c3643ab94d74dcdadecbe2, type: 2}

@@ -53,11 +53,8 @@ public class ApproachState : EnemyState
         var room = Rooms.RoomCombatManager.Instance?.CurrentCombatRoom;
         if (room == null)
         {
-            Debug.Log($"[Separation] No combat room for {instanceId}");
             return separationForce;
         }
-
-        Debug.Log($"[Separation] Room has {room.Enemies.Count} enemies");
 
         foreach (var enemy in room.Enemies)
         {
@@ -71,7 +68,6 @@ public class ApproachState : EnemyState
             {
                 float strength = 1f - (distance / SeparationRadius);
                 separationForce += toMe.normalized * strength;
-                Debug.Log($"[Separation] Force from {enemy.name}: {toMe.normalized * strength}, dist={distance}");
             }
         }
 

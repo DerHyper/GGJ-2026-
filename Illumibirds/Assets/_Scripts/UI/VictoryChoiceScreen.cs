@@ -44,6 +44,7 @@ public class VictoryChoiceScreen : MonoBehaviour
 
     public void OnExitClicked()
     {
+        Finder.ClearCache();
         Time.timeScale = 1f;
         GameManager.Instance.ChangeState(GameState.mainMenu);
         SceneManager.LoadScene(0);
