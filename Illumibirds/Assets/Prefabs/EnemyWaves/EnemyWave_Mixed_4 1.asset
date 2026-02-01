@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee2f10bf20651b14c9f69574f96914a2, type: 3}
-  m_Name: EnemyWave_Mixed_4
+  m_Name: EnemyWave_Mixed_4 1
   m_EditorClassIdentifier: IllumiBirds::EnemyWave
   enemies:
   - {fileID: 2853259111270074443, guid: b874337bc20578a48bdd8b30dcfc87ae, type: 3}
   - {fileID: 2853259111270074443, guid: b874337bc20578a48bdd8b30dcfc87ae, type: 3}
-  - {fileID: 6235532803041763748, guid: c721e5b70af1fc240bd5b66384b4ef7c, type: 3}
+  - {fileID: 7475677319559284294, guid: 9b00a37c21bf35149b8baa16e24b651a, type: 3}
   - {fileID: 6235532803041763748, guid: c721e5b70af1fc240bd5b66384b4ef7c, type: 3}
   - {fileID: 6235532803041763748, guid: c721e5b70af1fc240bd5b66384b4ef7c, type: 3}
