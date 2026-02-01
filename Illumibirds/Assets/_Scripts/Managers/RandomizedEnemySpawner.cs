@@ -12,35 +12,15 @@ public class RandomizedEnemySpawner : MonoBehaviour
     [SerializeField] RandomAbilityPickup abilityPickupPrefab;
 
     private Room currentCombatRoom;
-    private bool initialized;
 
-    private void Start()
-    {
-        initialized = true;
-        Subscribe();
-    }
-
-    private void OnEnable()
-    {
-        // Only subscribe on re-enable (after Start has run once)
-        if (initialized)
-            Subscribe();
-    }
-
-    private void OnDisable()
-    {
-        Unsubscribe();
-    }
-
-    private void Subscribe()
+    private void Awake()
     {
         RoomCombatManager.Required.OnCombatStarted += OnCombatStarted;
         RoomCombatManager.Required.OnRoomCleared += OnRoomCleared;
     }
 
-    private void Unsubscribe()
+    private void OnDestroy()
     {
-        // Use Instance (not Required) for cleanup - may be null during shutdown
         if (RoomCombatManager.Instance != null)
         {
             RoomCombatManager.Instance.OnCombatStarted -= OnCombatStarted;

@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace Rooms
 {
+    // Run early to ensure singleton is ready before other scripts subscribe
+    [DefaultExecutionOrder(-100)]
     public class RoomCombatManager : MonoBehaviour
     {
         public static RoomCombatManager Instance { get; private set; }
